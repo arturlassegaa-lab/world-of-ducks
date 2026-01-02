@@ -1,82 +1,270 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>World of Ducks</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>World of Ducks — Start</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
   <style>
-    /* Dekorative Enten links/rechts auf der Landing-Page */
-    .frame { position: relative; }
+    /* --- NEUES DESIGN --- */
+    :root {
+      --bg-dark: #1a0e05;
+      --bg-wood: url('https://www.transparenttextures.com/patterns/wood-pattern.png');
+      --frame-border: #d4af37; /* Gold */
+      --frame-bg: #f4e4bc; /* Helles Pergament */
+      --text-dark: #3e2a14;
+      --text-gold: #d4af37;
+      --accent: #c0392b; /* Ein Hauch von Rot für Akzente */
+    }
 
-    .duck-decor {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 160px;
-      max-width: 18vw;
-      pointer-events: none;
-      user-select: none;
-      z-index: 5;
+    body {
+      margin: 0;
+      padding: 20px;
+      background-color: var(--bg-dark);
+      background-image: var(--bg-wood);
+      font-family: 'MedievalSharp', cursive;
+      color: var(--text-dark);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-sizing: border-box;
+    }
 
-      /* Neu: dezenter Rahmen, abgerundete Ecken, leichter Hintergrund und Schatten */
-      border: 4px solid rgba(0,0,0,0.12);
+    .main-frame {
+      background: var(--frame-bg);
+      background-image: url('https://www.transparenttextures.com/patterns/old-paper.png'); /* Pergament-Textur */
+      max-width: 900px;
+      width: 100%;
+      border: 4px double var(--frame-border);
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.6), inset 0 0 30px rgba(212, 175, 55, 0.2);
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Dekorativer Header */
+    .header {
+      text-align: center;
+      padding: 25px 0;
+      background: linear-gradient(to bottom, rgba(212, 175, 55, 0.2), transparent);
+      border-bottom: 2px solid rgba(212, 175, 55, 0.3);
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 2.8rem;
+      color: var(--text-dark);
+      text-shadow: 1px 1px 2px rgba(255,255,255,0.5), -1px -1px 2px rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    /* Moderne Navigation */
+    .menu-container {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 20px;
+      background: rgba(0,0,0,0.03);
+    }
+
+    .nav-btn {
+      text-decoration: none;
+      color: var(--text-dark);
+      font-weight: bold;
+      padding: 10px 20px;
+      border: 2px solid var(--frame-border);
       border-radius: 12px;
-      padding: 6px;
-      background: rgba(255,255,255,0.9);
-      box-shadow: 0 8px 18px rgba(0,0,0,0.18);
-      transition: transform 180ms ease, box-shadow 180ms ease;
+      background: linear-gradient(145deg, #fff, #e6d8a7);
+      box-shadow: 3px 3px 8px rgba(0,0,0,0.1);
+      transition: all 0.2s ease;
+      position: relative;
+      overflow: hidden;
     }
 
-    /* Optional: kleiner Hover-Effekt auf großen Bildschirmen */
-    @media (min-width: 601px) {
-      .duck-decor:hover {
-        transform: translateY(-50%) scale(1.03);
-        box-shadow: 0 12px 28px rgba(0,0,0,0.22);
-      }
+    .nav-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 4px 4px 12px rgba(0,0,0,0.2);
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+    
+    .nav-btn::after {
+        content: '';
+        position: absolute;
+        top: 0; left: -100%;
+        width: 100%; height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+        transition: 0.4s;
+    }
+    
+    .nav-btn:hover::after {
+        left: 100%;
     }
 
-    .duck-decor.left { left: 12px; }
-    .duck-decor.right { right: 12px; }
 
-    /* Platz schaffen, damit Inhalt nicht unter den Enten liegt */
-    @media (min-width: 601px) {
-      .hero { margin: 0 200px; }
-      .menu { margin: 0 200px; }
+    /* Helden-Bereich */
+    .hero-section {
+      text-align: center;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
-    @media (max-width: 600px) {
-      .duck-decor { display: none; }
-      .hero, .menu { margin: 0; }
+
+    /* Das neue Herzstück: Das runde Bild */
+    .hero-image-wrapper {
+      position: relative;
+      width: 280px;
+      height: 280px;
+      margin-bottom: 30px;
+    }
+
+    .hero-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 6px solid var(--frame-border);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+      position: relative;
+      z-index: 2;
+    }
+    
+    /* Ein leuchtender Heiligenschein hinter der Ente */
+    .hero-image-wrapper::before {
+        content: '';
+        position: absolute;
+        top: 50%; left: 50%;
+        width: 110%; height: 110%;
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(212, 175, 55, 0.6) 0%, transparent 70%);
+        z-index: 1;
+        animation: pulse 3s infinite ease-in-out;
+    }
+    
+    @keyframes pulse {
+        0%, 100% { opacity: 0.6; scale: 1; }
+        50% { opacity: 1; scale: 1.05; }
+    }
+
+    /* Bereich für die Sprüche */
+    .quote-container {
+      max-width: 80%;
+      min-height: 80px; /* Platz reservieren */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(255,255,255,0.3);
+      border-radius: 15px;
+      border: 2px dashed rgba(212, 175, 55, 0.5);
+      position: relative;
+    }
+    
+    .quote-container::before, .quote-container::after {
+        content: '✨';
+        font-size: 1.5rem;
+        position: absolute;
+    }
+    .quote-container::before { top: -10px; left: -10px; }
+    .quote-container::after { bottom: -10px; right: -10px; }
+
+    #quote-text {
+      font-size: 1.5rem;
+      margin: 0;
+      color: var(--text-dark);
+      font-weight: bold;
+      animation: fadeIn 0.5s ease-in;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .footer {
+      text-align: center;
+      padding: 15px;
+      font-size: 0.9rem;
+      color: rgba(62, 42, 20, 0.7);
+      background: rgba(0,0,0,0.05);
+      border-top: 1px solid rgba(0,0,0,0.1);
     }
   </style>
 </head>
 <body>
-  <div class="frame">
+
+  <div class="main-frame">
     <header class="header">
-      <h1>🦆 World of Ducks</h1>
+      <h1>👑 World of Ducks 👑</h1>
     </header>
 
-    <img src="imgs/entedollar.avif" alt="Ente links" class="duck-decor left">
-    <img src="imgs/ente3.jpg" alt="Ente rechts" class="duck-decor right">
+    <nav class="menu-container">
+      <a href="blogs.html" class="nav-btn">📜 Blogs</a>
+      <a href="memory.html" class="nav-btn">🧠 Memory</a>
+      <a href="chat.html" class="nav-btn">💬 Chat</a>
+      <a href="galgenman.html" class="nav-btn">😵 Galgenman</a>
+      <a href="inspo.html" class="nav-btn">✨ Inspo</a>
+    </nav>
 
-    <main class="main">
-      <div class="menu">
-        <a href="blogs.html" class="btn">Blogs</a>
-        <a href="memory.html" class="btn">Memory</a>
-        <a href="chat.html" class="btn">Chat</a>
-        <a href="galgenman.html" class="btn">Galgenman</a>
-        <a href="inspo.html" class="btn">Inspo</a>
+    <main class="hero-section">
+      <div class="hero-image-wrapper">
+        <img src="imgs/ente7.jpg" alt="Die Helden-Ente" class="hero-img">
       </div>
 
-      <div class="hero">
-        <img src="imgs/ente7.jpg" alt="Ente Held" class="duck-img">
-        <p class="intro-text">Begib dich auf ein Abenteuer in der sagenhaften <strong>World of Ducks</strong>!</p>
+      <div class="quote-container">
+        <p id="quote-text">Lädt Motivation...</p>
       </div>
     </main>
 
     <footer class="footer">
-      <p>© 2025 World of Ducks – Ein Projekt im Retro-RPG Stil</p>
+      © 2025 World of Ducks – Ein Projekt im Retro-RPG Stil
     </footer>
   </div>
+
+  <script>
+    /* --- GEN Z MOTIVATION --- */
+    const quotes = [
+      "Main Character Energy geladen. Dein Abenteuer beginnt jetzt. 🚀",
+      "Vibe check: bestanden. Zeit, Geschichte zu schreiben, Bestie.",
+      "Nicht nur träumen, machen. Level up dein Leben! ✨",
+      "Dein Potenzial ist krasser als du denkst, no cap.",
+      "Hol dir den Win. Die Welt wartet auf dich. 🏆",
+      "Sei der Plot Twist, den niemand kommen sah.",
+      "Weniger overthinken, mehr machen. You got this!",
+      "Glaub an deinen Hype. Du bist ein Unikat.",
+      "Energie hochfahren. Es ist Zeit zu glänzen. 🌟",
+      "Keine NPCs hier. Du bist der Held deiner Story."
+    ];
+
+    const quoteElement = document.getElementById('quote-text');
+
+    function showRandomQuote() {
+      // Wählt einen zufälligen Spruch aus
+      const randomIndex = Math.floor(Math.random() * quotes.length);
+      
+      // Kurzer Ausblend-Effekt für smootheren Übergang
+      quoteElement.style.opacity = 0;
+      
+      setTimeout(() => {
+        quoteElement.textContent = quotes[randomIndex];
+        quoteElement.style.opacity = 1;
+      }, 200);
+    }
+
+    // Zeigt den ersten Spruch sofort an
+    showRandomQuote();
+
+    // Wechselt den Spruch alle 6 Sekunden
+    setInterval(showRandomQuote, 60000);
+  </script>
+
 </body>
 </html>
