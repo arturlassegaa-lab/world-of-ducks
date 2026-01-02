@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Galgenman — World of Ducks</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  body{
+    margin:0;
+    text-align:center;
+    background-color:#2a2a2a;
+    background-image:url('https://www.transparenttextures.com/patterns/wood-pattern.png');
+    font-family:'MedievalSharp',cursive;
+    color:#ffd26a;
+  }
+
+  .frame{
+    max-width:1000px;
+    margin:40px auto;
+    border:5px solid #5b3b1d;
+    border-radius:10px;
+    background-color:rgba(40,25,10,0.9);
+    box-shadow:0 0 25px #000;
+    padding:20px;
+  }
+
+  header.header{
+    background:linear-gradient(to bottom,#3c2b15,#1a0e05);
+    padding:20px;
+    border-bottom:3px solid #5b3b1d;
+  }
+
+  header.header h1{
+    color:#ffcc33;
+    text-shadow:2px 2px 4px #000;
+    font-size:2.2em;
+    margin:0;
+  }
+
+  nav.menu{margin:25px 0;}
+  .btn{
+    display:inline-block;margin:8px;padding:10px 22px;
+    background:#5b3b1d;color:#ffcc33;border:2px solid #d6a85b;
+    border-radius:8px;text-decoration:none;text-shadow:1px 1px 3px #000;
+    box-shadow:inset 0 0 10px #000;transition:all .2s ease;
+  }
+  .btn:hover{background:#7a5028;transform:scale(1.05);}
+
+  main{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:30px;
+    margin-top:20px;
+  }
+
+  .game-box{
+    background:linear-gradient(180deg,#6b4f2b,#5b3d1a);
+    border:3px solid #5b3b1d;
+    border-radius:10px;
+    padding:20px;
+    width:460px;
+    box-shadow:inset 0 0 10px #000;
+  }
+
+  #wordDisplay{
+    font-size:2.1em;
+    letter-spacing:10px;
+    margin:20px 0;
+    color:#ffe28a;
+    text-shadow:1px 1px 3px #000;
+  }
+
+  #letters{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:6px;
+    margin:15px 0;
+  }
+
+  .letter-btn{
+    width:32px;height:32px;
+    border:none;
+    border-radius:6px;
+    background:#5b3b1d;
+    color:#ffcc33;
+    font-family:'MedievalSharp',cursive;
+    font-size:1em;
+    cursor:pointer;
+    box-shadow:inset 0 0 6px #000;
+    transition:all .15s;
+  }
+  .letter-btn:hover{background:#7a5028;transform:scale(1.1);}
+  .letter-btn.used{background:#2a2a2a;color:#888;cursor:default;transform:none;}
+
+  #message{
+    margin-top:10px;
+    font-size:1.1em;
+    color:#ffcc33;
+    text-shadow:1px 1px 2px #000;
+    min-height:30px;
+  }
+
+  .ente-img{
+    width:300px;
+    max-width:90%;
+    border:5px solid #d6a85b;
+    border-radius:12px;
+    box-shadow:0 0 15px #000;
+  }
+
+  .bomb{
+    margin:20px auto;
+    font-size:4em;
+    height:1.2em;
+    transition:transform 0.2s;
+  }
+
+  /* Explosion Animation */
+  @keyframes explode {
+    0% { transform: scale(1) rotate(0deg); }
+    20% { transform: scale(1.4) rotate(20deg); }
+    40% { transform: scale(0.8) rotate(-20deg); }
+    60% { transform: scale(1.8) rotate(0deg); }
+    80% { transform: scale(0.5); }
+    100% { transform: scale(3); opacity:0; }
+  }
+
+  .explode{
+    animation: explode 0.7s forwards;
+  }
+
+  .footer{
+    background:#1a0e05;
+    padding:10px;
+    border-top:3px solid #5b3b1d;
+    font-size:0.9em;
+    color:#d6a85b;
+    margin-top:30px;
+    border-radius:0 0 10px 10px;
+  }
+
+  .greeting{
+    font-style:italic;
+    color:#ffe28a;
+    margin-top:15px;
+    text-shadow:1px 1px 2px #000;
+  }
+</style>
+</head>
+<body>
+  <div class="frame">
+    <header class="header">
+      <h1>💣 World of Ducks – Galgenman</h1>
+    </header>
+
+    <nav class="menu">
+      <a href="index.html" class="btn">Home</a>
+      <a href="blogs.html" class="btn">Blogs</a>
+      <a href="memory.html" class="btn">Memory</a>
+      <a href="chat.html" class="btn">Chat</a>
+      <a href="galgenman.html" class="btn" aria-current="page">Galgenman</a>
+      <a href="inspo.html" class="btn">Inspo</a>
+    </nav>
+
+    <main>
+      <section class="game-box">
+        <h2>🔤 Errate das geheime Entenwort!</h2>
+
+        <p>Das Wort hat 6 Buchstaben… schaffst du es, bevor die Bombe explodiert? 💣</p>
+
+        <div class="bomb" id="bomb">💣</div>
+
+        <div id="wordDisplay">_ _ _ _ _ _</div>
+        <div id="letters"></div>
+
+        <div id="message"></div>
+
+        <button id="restartBtn" class="btn" style="margin-top:10px;">Neues Spiel</button>
+
+        <p class="greeting">👋 Grüße an Bjarne – möge deine Bombe niemals platzen!</p>
+      </section>
+
+      <img src="imgs/ente4.jpg" alt="Ente beim Galgenman-Spiel" class="ente-img">
+    </main>
+
+    <footer class="footer">© 2025 World of Ducks – Explosive Abenteuer</footer>
+  </div>
+
+<script>
+  let chosenWord = "CANARD"; // Fixes Wort
+  let guessed = [];
+  let fails = 0;
+  const maxFails = 6;
+
+  const wordDisplay = document.getElementById("wordDisplay");
+  const lettersDiv = document.getElementById("letters");
+  const message = document.getElementById("message");
+  const bomb = document.getElementById("bomb");
+  const restartBtn = document.getElementById("restartBtn");
+
+  function initGame(){
+    guessed = [];
+    fails = 0;
+    message.textContent = "";
+    bomb.textContent = "💣";
+    bomb.classList.remove("explode");
+    renderWord();
+    createLetters();
+  }
+
+  function renderWord(){
+    let out = "";
+    for (let c of chosenWord){
+      out += guessed.includes(c) ? c + " " : "_ ";
+    }
+    wordDisplay.textContent = out.trim();
+  }
+
+  function createLetters(){
+    lettersDiv.innerHTML = "";
+    const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    for (let l of alphabet){
+      let b = document.createElement("button");
+      b.textContent = l;
+      b.className = "letter-btn";
+      b.onclick = () => guess(l, b);
+      lettersDiv.appendChild(b);
+    }
+  }
+
+  function guess(letter, btn){
+    if (btn.classList.contains("used")) return;
+    btn.classList.add("used");
+
+    if (chosenWord.includes(letter)){
+      guessed.push(letter);
+      renderWord();
+      checkWin();
+    } else {
+      fails++;
+      bombShake();
+      message.textContent = `Falsch geraten (${fails}/${maxFails})`;
+      if (fails >= maxFails){
+        explodeBomb();
+      }
+    }
+  }
+
+  function bombShake(){
+    bomb.style.transform = "scale(1.1)";
+    setTimeout(()=> bomb.style.transform = "scale(1)", 150);
+  }
+
+  function checkWin(){
+    const all = [...chosenWord].every(c => guessed.includes(c));
+    if (all){
+      message.textContent = "🎉 GEWONNEN! Du hast CANARD entschärft!";
+      disableAll();
+    }
+  }
+
+  function explodeBomb(){
+    message.textContent = "💥 BOOOOM! Die Bombe ist explodiert! Das Wort war CANARD!";
+    bomb.classList.add("explode");
+    disableAll();
+  }
+
+  function disableAll(){
+    document.querySelectorAll(".letter-btn").forEach(b=>b.classList.add("used"));
+  }
+
+  restartBtn.onclick = initGame;
+
+  initGame();
+</script>
+</body>
+</html>

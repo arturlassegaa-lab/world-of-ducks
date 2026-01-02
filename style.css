@@ -1,0 +1,86 @@
+@import url('https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap');
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #2a2a2a;
+  background-image: url('https://www.transparenttextures.com/patterns/wood-pattern.png');
+  font-family: 'MedievalSharp', cursive;
+  color: #ffd26a;
+  text-align: center;
+}
+
+.frame {
+  border: 5px solid #5b3b1d;
+  background-color: rgba(40, 25, 10, 0.9);
+  max-width: 1000px;
+  margin: 40px auto;
+  box-shadow: 0 0 25px #000;
+  border-radius: 10px;
+}
+
+.header {
+  background: linear-gradient(to bottom, #3c2b15, #1a0e05);
+  padding: 20px;
+  border-bottom: 3px solid #5b3b1d;
+}
+
+.header h1 {
+  color: #ffcc33;
+  text-shadow: 2px 2px 4px #000;
+  font-size: 2.5em;
+  margin: 0;
+}
+
+.main {
+  padding: 20px;
+}
+
+.menu {
+  margin: 30px 0;
+}
+
+.btn {
+  display: inline-block;
+  margin: 10px;
+  padding: 12px 25px;
+  background: #5b3b1d;
+  color: #ffcc33;
+  border: 2px solid #d6a85b;
+  border-radius: 8px;
+  text-decoration: none;
+  text-shadow: 1px 1px 3px #000;
+  box-shadow: inset 0 0 10px #000;
+  transition: all 0.2s ease;
+}
+
+.btn:hover {
+  background: #7a5028;
+  transform: scale(1.05);
+}
+
+.hero {
+  margin-top: 40px;
+}
+
+.duck-img {
+  width: 200px;
+  border: 3px solid #d6a85b;
+  border-radius: 10px;
+  box-shadow: 0 0 15px #000;
+}
+
+.intro-text {
+  margin-top: 15px;
+  font-size: 1.3em;
+  color: #ffe28a;
+  text-shadow: 1px 1px 2px #000;
+}
+
+.footer {
+  background: #1a0e05;
+  padding: 10px;
+  border-top: 3px solid #5b3b1d;
+  font-size: 0.9em;
+  color: #d6a85b;
+}

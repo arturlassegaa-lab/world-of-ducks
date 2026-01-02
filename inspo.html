@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Inspo — World of Ducks</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    :root{
+      --accent-blue:#0b3d91;
+      --gold:#d4af37;
+      --bg:#faf7f2;
+      --panel-brown-start:#6b4f2b;
+      --panel-brown-end:#5b3d1a;
+    }
+
+    /* Gleiche Basis wie index.html / chat.html */
+    body{font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; margin:0; background:var(--bg); color:#111;}
+    .frame{position:relative; min-height:100vh; padding:18px; box-sizing:border-box;}
+    header.header{display:flex;align-items:center;gap:14px}
+    h1.site-title{margin:0; font-size:1.25rem; display:flex; align-items:center; gap:8px;}
+    nav.menu{display:flex;gap:10px;padding:12px 0;flex-wrap:wrap}
+    .btn{padding:8px 12px;border-radius:8px;background:#fff;border:1px solid rgba(0,0,0,0.06);text-decoration:none;color:inherit;display:inline-block}
+
+    /* Hauptbereich */
+    .container{display:flex;gap:20px;align-items:flex-start}
+    .hero{flex:1;min-height:60vh;padding:12px}
+    .panel{
+      max-width:980px;
+      margin:0 auto;
+      padding:22px;
+      border-radius:12px;
+      background: linear-gradient(180deg,var(--panel-brown-start),var(--panel-brown-end));
+      color:var(--gold);
+      border: 3px solid var(--accent-blue);
+      box-shadow: 0 8px 24px rgba(6,43,107,0.12), 0 0 0 6px rgba(212,175,55,0.06);
+    }
+
+    .announce{
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(0,0,0,0.04));
+      border-radius:10px;
+      padding:18px;
+      color:#fff;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      align-items:flex-start;
+    }
+    .announce h2{margin:0;font-size:1.6rem;color:#ffd87a}
+    .announce p{margin:0;color:#fffde6}
+    .to-be{font-weight:800;font-size:2.4rem;color:#ffd87a;letter-spacing:2px}
+
+    .small-note{margin-top:12px;font-size:.95rem;color:#f3e0b3}
+
+    footer.footer{margin-top:18px;color:#666;font-size:.9rem}
+    @media(max-width:800px){
+      .panel{padding:16px}
+      .to-be{font-size:1.8rem}
+    }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <header class="header">
+      <h1 class="site-title">🦆 World of Ducks</h1>
+    </header>
+
+    <!-- Reiter / Menü exakt wie auf den anderen Seiten -->
+    <nav class="menu" aria-label="Hauptnavigation">
+      <a href="index.html" class="btn">Home</a>
+      <a href="blogs.html" class="btn">Blogs</a>
+      <a href="memory.html" class="btn">Memory</a>
+      <a href="chat.html" class="btn">Chat</a>
+      <a href="galgenman.html" class="btn">Galgenman</a>
+      <a href="inspo.html" class="btn" aria-current="page">Inspo</a>
+    </nav>
+
+    <main class="hero">
+      <section class="panel" role="main" aria-labelledby="inspoTitle">
+        <div class="announce" id="inspoTitle">
+          <div class="to-be">TO BE CONTINUED</div>
+          <h2>Komm bald wieder — mehr Inspiration ist in Arbeit</h2>
+          <p>Wir basteln gerade an neuen Inhalten, Artwork und Ideen für World of Ducks. Bald gibt es neue Artikel, Bilder und Überraschungen.</p>
+          <p class="small-note">Tipp: Schau dir die anderen Bereiche an — vielleicht findest du dort schon Inspiration.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">© 2025 World of Ducks</footer>
+  </div>
+</body>
+</html>
+```<!-- filepath: /Users/lassesczepan/Desktop/WoD/inspo.html -->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Inspo — World of Ducks</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    :root{
+      --accent-blue:#0b3d91;
+      --gold:#d4af37;
+      --bg:#faf7f2;
+      --panel-brown-start:#6b4f2b;
+      --panel-brown-end:#5b3d1a;
+    }
+
+    /* Gleiche Basis wie index.html / chat.html */
+    body{font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; margin:0; background:var(--bg); color:#111;}
+    .frame{position:relative; min-height:100vh; padding:18px; box-sizing:border-box;}
+    header.header{display:flex;align-items:center;gap:14px}
+    h1.site-title{margin:0; font-size:1.25rem; display:flex; align-items:center; gap:8px;}
+    nav.menu{display:flex;gap:10px;padding:12px 0;flex-wrap:wrap}
+    .btn{padding:8px 12px;border-radius:8px;background:#fff;border:1px solid rgba(0,0,0,0.06);text-decoration:none;color:inherit;display:inline-block}
+
+    /* Hauptbereich */
+    .container{display:flex;gap:20px;align-items:flex-start}
+    .hero{flex:1;min-height:60vh;padding:12px}
+    .panel{
+      max-width:980px;
+      margin:0 auto;
+      padding:22px;
+      border-radius:12px;
+      background: linear-gradient(180deg,var(--panel-brown-start),var(--panel-brown-end));
+      color:var(--gold);
+      border: 3px solid var(--accent-blue);
+      box-shadow: 0 8px 24px rgba(6,43,107,0.12), 0 0 0 6px rgba(212,175,55,0.06);
+    }
+
+    .announce{
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(0,0,0,0.04));
+      border-radius:10px;
+      padding:18px;
+      color:#fff;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      align-items:flex-start;
+    }
+    .announce h2{margin:0;font-size:1.6rem;color:#ffd87a}
+    .announce p{margin:0;color:#fffde6}
+    .to-be{font-weight:800;font-size:2.4rem;color:#ffd87a;letter-spacing:2px}
+
+    .small-note{margin-top:12px;font-size:.95rem;color:#f3e0b3}
+
+    footer.footer{margin-top:18px;color:#666;font-size:.9rem}
+    @media(max-width:800px){
+      .panel{padding:16px}
+      .to-be{font-size:1.8rem}
+    }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <header class="header">
+      <h1 class="site-title">🦆 World of Ducks</h1>
+    </header>
+
+    <!-- Reiter / Menü exakt wie auf den anderen Seiten -->
+    <nav class="menu" aria-label="Hauptnavigation">
+      <a href="index.html" class="btn">Home</a>
+      <a href="blogs.html" class="btn">Blogs</a>
+      <a href="memory.html" class="btn">Memory</a>
+      <a href="chat.html" class="btn">Chat</a>
+      <a href="galgenman.html" class="btn">Galgenman</a>
+      <a href="inspo.html" class="btn" aria-current="page">Inspo</a>
+    </nav>
+
+    <main class="hero">
+      <section class="panel" role="main" aria-labelledby="inspoTitle">
+        <div class="announce" id="inspoTitle">
+          <div class="to-be">TO BE CONTINUED</div>
+          <h2>Komm bald wieder — mehr Inspiration ist in Arbeit</h2>
+          <p>Wir basteln gerade an neuen Inhalten, Artwork und Ideen für World of Ducks. Bald gibt es neue Artikel, Bilder und Überraschungen.</p>
+          <p class="small-note">Tipp: Schau dir die anderen Bereiche an — vielleicht findest du dort schon Inspiration.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">© 2025 World of Ducks</footer>
+  </div>
+</body>
+</html>

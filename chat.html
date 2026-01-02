@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Chat — World of Ducks</title>
+  <script src="/socket.io/socket.io.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Dein CSS ist in style.css, hier nur chat-spezifisches */
+    body{
+      text-align:center;
+      /* Hintergrund wird aus style.css geladen, falls dort definiert */
+    }
+    .chat-panel{
+      border:3px solid #5b3b1d;
+      border-radius:10px;
+      background:linear-gradient(180deg,#6b4f2b,#5b3d1a);
+      color:#ffcc33;
+      padding:0;
+      display:flex;
+      flex-direction:column;
+      overflow:hidden;
+      height:500px;
+      box-shadow:0 0 15px #000 inset;
+      max-width: 800px;
+      margin: 20px auto;
+    }
+    .chat-header{
+      background:linear-gradient(90deg,#04326a,#0b3d91);
+      color:#ffd87a;
+      padding:10px;
+      font-weight:bold;
+      display:flex;justify-content:space-between;align-items:center;
+    }
+    .chat-body{
+      flex:1;
+      overflow-y:auto;
+      padding:15px;
+      display:flex;flex-direction:column;gap:10px;
+      background:rgba(0,0,0,0.2);
+      text-align: left;
+    }
+    .msg{max-width:70%;padding:8px 12px;border-radius:10px;word-break:break-word;font-size:0.95rem;}
+    
+    /* Farben der Nachrichten */
+    .msg.user{align-self:flex-end;background:rgba(247,201,72,0.9);color:#2a1d10;}
+    .msg.bot{align-self:flex-start;background:rgba(255,236,179,0.9);color:#3b2a12;} /* Offline Bot */
+    .msg.other{align-self:flex-start;background:rgba(102,153,255,0.85);color:#fff;} /* Andere echte Menschen */
+    .msg.system{align-self:center; font-size: 0.8em; color: #ccc; font-style: italic;}
+
+    .chat-footer{
+      padding:10px;display:flex;gap:8px;
+      background:rgba(0,0,0,0.2);
+      border-top:1px solid rgba(255,255,255,0.2);
+    }
+    .chat-input{
+      flex:1;padding:10px;border-radius:6px;border:none;
+      font-family:'MedievalSharp',cursive;
+    }
+    .btn-send{
+      padding:10px 16px;background:#0b3d91;color:#ffd87a;border:none;border-radius:8px;cursor:pointer;
+    }
+    
+    /* Calculator Styles */
+    .calculator{
+      margin-top:20px;
+      background:linear-gradient(180deg,#3c2b15,#1a0e05);
+      border:3px solid #5b3b1d;
+      border-radius:10px;
+      padding:10px;
+      width:260px;
+      margin-inline:auto;
+      color:#ffd26a;
+      box-shadow:inset 0 0 10px #000;
+    }
+    .calc-display{
+      background:#000;
+      color:#0f0;
+      padding:8px;
+      font-family:monospace;
+      border-radius:4px;
+      margin-bottom:10px;
+      text-align:right;
+    }
+    .calc-buttons{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
+    .calc-btn{
+      background:#5b3b1d;
+      border:2px solid #d6a85b;
+      border-radius:6px;
+      padding:8px;
+      cursor:pointer;
+      color:#ffd87a;
+      font-family:'MedievalSharp',cursive;
+      transition:all .2s;
+    }
+    .calc-btn:hover{background:#7a5028;}
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <header class="header">
+      <h1>🦆 World of Ducks</h1>
+    </header>
+
+    <nav class="menu">
+      <a href="index.html" class="btn">Home</a>
+      <a href="blogs.html" class="btn">Blogs</a>
+      <a href="memory.html" class="btn">Memory</a>
+      <a href="chat.html" class="btn" aria-current="page">Chat</a>
+      <a href="galgenman.html" class="btn">Galgenman</a>
+      <a href="inspo.html" class="btn">Inspo</a>
+    </nav>
+
+    <section class="chat-panel">
+      <div class="chat-header">
+        <span id="chatTitle">🦆 DuckBot</span>
+        <span id="modeLabel">(Offline-Modus)</span>
+      </div>
+      <div id="chatBody" class="chat-body">
+        <div class="msg bot">Willkommen! Tippe den Code im Rechner, um online zu gehen. 🔒</div>
+      </div>
+      <div class="chat-footer">
+        <input id="chatInput" class="chat-input" placeholder="Nachricht eingeben...">
+        <button id="sendBtn" class="btn-send">Senden</button>
+      </div>
+    </section>
+
+    <div class="calculator">
+      <div id="calcDisplay" class="calc-display">----</div>
+      <div class="calc-buttons">
+        <button class="calc-btn">7</button>
+        <button class="calc-btn">8</button>
+        <button class="calc-btn">9</button>
+        <button class="calc-btn">C</button>
+        <button class="calc-btn">4</button>
+        <button class="calc-btn">5</button>
+        <button class="calc-btn">6</button>
+        <button class="calc-btn">←</button>
+        <button class="calc-btn">1</button>
+        <button class="calc-btn">2</button>
+        <button class="calc-btn">3</button>
+        <button class="calc-btn">0</button>
+      </div>
+    </div>
+
+    <footer class="footer">© 2025 World of Ducks</footer>
+  </div>
+
+  <script>
+    // --- VARIABLEN ---
+    const sendBtn = document.getElementById('sendBtn');
+    const input = document.getElementById('chatInput');
+    const chatBody = document.getElementById('chatBody');
+    const chatTitle = document.getElementById('chatTitle');
+    const modeLabel = document.getElementById('modeLabel');
+
+    let isMultiplayer = false;
+    let myName = null;
+    let socket = null; 
+
+    // Gen Z Namen
+    const genZNames=["duckie4lyfe","xXQuackLordXx","softyduck","bobaquack","crybaby.exe","toxicfluff","dripnugget","vibeonaut","uwuOverlord","yeetMage","LilPuddle","HyperFrog","qkDuck","emoByte","zazaWizard","404notquack","nvmbruh","moonloaf","snackRat","puddlecore","astroquacker","honkbaby","cloutCanoe","milkysauce","sleepDepraved","binkybrain","duckNFurious","sigmaBirb","fluffy.exe","P1xelDuck","betaBoi","quackaholic","vaporwaveTear","p1nkvoid","sillystringz","nerdjuice","blazebread","duckdrip69","neonOmelet","voidling13","kewlkid","midnightmuffin","zippyquack","moodSlime","froggostyle","sunsetbot","bytebaby","crashchick","hollowtoast","y2kduck"];
+
+    function getRandomName(){ return genZNames[Math.floor(Math.random()*genZNames.length)]; }
+
+    // --- NACHRICHT ANZEIGEN ---
+    function addMessage(text, type){
+      const div = document.createElement('div');
+      div.className = 'msg ' + type;
+      div.textContent = text;
+      chatBody.appendChild(div);
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
+
+    // --- OFFLINE BOT (Rückwärts) ---
+    function offlineBotReply(text){
+      const reply = text.split('').reverse().join('');
+      setTimeout(() => addMessage("🤖 Bot: " + reply, 'bot'), 400);
+    }
+
+    // --- SENDEN ---
+    sendBtn.onclick = () => {
+      const v = input.value.trim();
+      if(!v) return;
+
+      if (!isMultiplayer) {
+        // Offline Verhalten
+        addMessage(v, 'user');
+        offlineBotReply(v);
+      } else {
+        // Online Verhalten: Nachricht an Server senden
+        if(socket) {
+          socket.emit('chat message', { user: myName, text: v });
+        }
+      }
+      input.value = '';
+    };
+
+    input.addEventListener('keydown', e => { if(e.key === 'Enter') sendBtn.click(); });
+
+    // --- CALCULATOR & UNLOCK ---
+    const calcBtns = document.querySelectorAll('.calc-btn');
+    const calcDisplay = document.getElementById('calcDisplay');
+    let calcInput = '';
+
+    // Funktion zum Starten des Multiplayers
+    function activateMultiplayer() {
+      if(isMultiplayer) return;
+
+      isMultiplayer = true;
+      myName = getRandomName();
+      
+      // UI anpassen
+      calcDisplay.textContent = "ONLINE";
+      chatTitle.textContent = "💬 DuckNet Live";
+      modeLabel.textContent = "(Du bist: " + myName + ")";
+      chatBody.innerHTML = ''; // Chat leeren
+      addMessage("🔥 System: Du bist verbunden als " + myName, 'system');
+
+      // Socket starten
+      socket = io();
+
+      // Wenn Nachricht vom Server kommt
+      socket.on('chat message', (msgData) => {
+        // Prüfen ob die Nachricht von mir ist oder von anderen
+        if (msgData.user === myName) {
+          addMessage(msgData.text, 'user');
+        } else {
+          addMessage(msgData.user + ": " + msgData.text, 'other');
+        }
+      });
+    }
+
+    calcBtns.forEach(b => {
+      b.onclick = () => {
+        const val = b.textContent;
+        if(val === 'C') { calcInput = ''; }
+        else if(val === '←') { calcInput = calcInput.slice(0,-1); }
+        else { calcInput += val; }
+        
+        if(!isMultiplayer) calcDisplay.textContent = calcInput || '----';
+
+        // DER GEHEIME CODE
+        if(calcInput === '1312' && !isMultiplayer){
+          activateMultiplayer();
+          calcInput = '';
+        }
+      };
+    });
+  </script>
+</body>
+</html>

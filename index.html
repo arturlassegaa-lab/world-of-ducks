@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>World of Ducks</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Dekorative Enten links/rechts auf der Landing-Page */
+    .frame { position: relative; }
+
+    .duck-decor {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 160px;
+      max-width: 18vw;
+      pointer-events: none;
+      user-select: none;
+      z-index: 5;
+
+      /* Neu: dezenter Rahmen, abgerundete Ecken, leichter Hintergrund und Schatten */
+      border: 4px solid rgba(0,0,0,0.12);
+      border-radius: 12px;
+      padding: 6px;
+      background: rgba(255,255,255,0.9);
+      box-shadow: 0 8px 18px rgba(0,0,0,0.18);
+      transition: transform 180ms ease, box-shadow 180ms ease;
+    }
+
+    /* Optional: kleiner Hover-Effekt auf großen Bildschirmen */
+    @media (min-width: 601px) {
+      .duck-decor:hover {
+        transform: translateY(-50%) scale(1.03);
+        box-shadow: 0 12px 28px rgba(0,0,0,0.22);
+      }
+    }
+
+    .duck-decor.left { left: 12px; }
+    .duck-decor.right { right: 12px; }
+
+    /* Platz schaffen, damit Inhalt nicht unter den Enten liegt */
+    @media (min-width: 601px) {
+      .hero { margin: 0 200px; }
+      .menu { margin: 0 200px; }
+    }
+    @media (max-width: 600px) {
+      .duck-decor { display: none; }
+      .hero, .menu { margin: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <header class="header">
+      <h1>🦆 World of Ducks</h1>
+    </header>
+
+    <img src="imgs/ente%24.avif" alt="Ente links" class="duck-decor left">
+    <img src="imgs/ente3.jpg" alt="Ente rechts" class="duck-decor right">
+
+    <main class="main">
+      <div class="menu">
+        <a href="blogs.html" class="btn">Blogs</a>
+        <a href="memory.html" class="btn">Memory</a>
+        <a href="chat.html" class="btn">Chat</a>
+        <a href="galgenman.html" class="btn">Galgenman</a>
+        <a href="inspo.html" class="btn">Inspo</a>
+      </div>
+
+      <div class="hero">
+        <img src="imgs/ente7.jpg" alt="Ente Held" class="duck-img">
+        <p class="intro-text">Begib dich auf ein Abenteuer in der sagenhaften <strong>World of Ducks</strong>!</p>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <p>© 2025 World of Ducks – Ein Projekt im Retro-RPG Stil</p>
+    </footer>
+  </div>
+</body>
+</html>

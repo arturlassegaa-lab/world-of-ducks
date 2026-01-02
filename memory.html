@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Memory — World of Ducks</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ===== Retro-/Landing-Page-Look ===== */
+    body{
+      margin:0;
+      text-align:center;
+      background-color:#2a2a2a;
+      background-image:url('https://www.transparenttextures.com/patterns/wood-pattern.png');
+      font-family:'MedievalSharp', cursive;
+      color:#ffd26a;
+    }
+    .frame{
+      max-width:1000px;
+      margin:40px auto;
+      border:5px solid #5b3b1d;
+      border-radius:10px;
+      background-color:rgba(40,25,10,0.9);
+      box-shadow:0 0 25px #000;
+      padding:20px;
+    }
+    header.header{
+      background:linear-gradient(to bottom,#3c2b15,#1a0e05);
+      padding:20px;
+      border-bottom:3px solid #5b3b1d;
+      border-radius:6px 6px 0 0;
+    }
+    header.header h1{
+      margin:0;
+      color:#ffcc33;
+      text-shadow:2px 2px 4px #000;
+      font-size:2em;
+    }
+    nav.menu{ margin:25px 0; }
+    .btn{
+      display:inline-block;
+      margin:8px;
+      padding:10px 22px;
+      background:#5b3b1d;
+      color:#ffcc33;
+      border:2px solid #d6a85b;
+      border-radius:8px;
+      text-decoration:none;
+      text-shadow:1px 1px 3px #000;
+      box-shadow:inset 0 0 10px #000;
+      transition:all .2s ease;
+    }
+    .btn:hover{ background:#7a5028; transform:scale(1.05); }
+
+    .content{
+      display:flex; flex-wrap:wrap; justify-content:center; gap:25px; margin-top:20px;
+    }
+    .panel{ flex:1; min-width:600px; text-align:center; }
+
+    .controls{
+      display:flex; gap:16px; align-items:center; justify-content:space-between;
+      margin-bottom:15px; padding:10px;
+      background:#3c2b15; border:2px solid #5b3b1d; border-radius:8px; box-shadow:inset 0 0 10px #000;
+    }
+    .stats{ font-weight:700; color:#ffcc33; text-shadow:1px 1px 2px #000; }
+    .btn-primary{
+      background:#7a5028; color:#ffe28a; border:2px solid #d6a85b;
+      border-radius:8px; padding:10px 16px; cursor:pointer;
+      font-family:'MedievalSharp', cursive; transition:all .2s ease;
+    }
+    .btn-primary:hover{ background:#8e6337; transform:scale(1.05); }
+
+    .board{
+      display:grid; gap:12px; grid-template-columns:repeat(4,minmax(100px,1fr)); justify-items:center;
+    }
+    @media (min-width:900px){ .board{ grid-template-columns:repeat(7,minmax(80px,1fr)); } }
+    @media (max-width:700px){ .panel{ min-width:100%; } .board{ grid-template-columns:repeat(3,minmax(80px,1fr)); } }
+
+    .card{ perspective:900px; width:100%; position:relative; aspect-ratio:3/4; cursor:pointer; }
+    .card-inner{
+      position:absolute; inset:0; border-radius:8px;
+      transform-style:preserve-3d; transition:transform .45s cubic-bezier(.2,.9,.3,1);
+      box-shadow:0 10px 20px rgba(0,0,0,.35);
+    }
+    .card.flipped .card-inner{ transform:rotateY(180deg); }
+    .card-face{
+      position:absolute; inset:0; border-radius:8px; backface-visibility:hidden;
+      display:flex; align-items:center; justify-content:center; overflow:hidden;
+    }
+    .card-back{
+      background:#5b3b1d; color:#ffcc33; font-size:2em;
+      text-shadow:1px 1px 3px #000; border:2px solid #d6a85b;
+    }
+    .card-front{ background:#2a2a2a; border:2px solid #d6a85b; transform:rotateY(180deg); }
+    .card-front img{ width:100%; height:100%; object-fit:cover; border-radius:6px; }
+
+    .sidebar{
+      width:260px; border:3px solid #5b3b1d; border-radius:10px;
+      background:linear-gradient(180deg,#6b4f2b,#5b3d1a); color:#ffcc33;
+      box-shadow:0 0 10px #000; padding:15px;
+    }
+
+    .message{ margin-top:10px; color:#ffe28a; text-shadow:1px 1px 2px #000; }
+
+    .footer{
+      background:#1a0e05; padding:10px; margin-top:20px;
+      border-top:3px solid #5b3b1d; color:#d6a85b; font-size:.9em; border-radius:0 0 10px 10px;
+    }
+
+    #fadeOverlay{
+      position:fixed; inset:0; background:#000; opacity:0; pointer-events:none;
+      transition:opacity 1400ms ease-in; z-index:9999;
+    }
+    #fadeOverlay.active{ opacity:1; pointer-events:auto; }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <header class="header">
+      <h1>🦆 World of Ducks – Memory</h1>
+    </header>
+
+    <nav class="menu" aria-label="Hauptnavigation">
+      <a href="index.html" class="btn">Home</a>
+      <a href="blogs.html" class="btn">Blogs</a>
+      <a href="memory.html" class="btn" aria-current="page">Memory</a>
+      <a href="chat.html" class="btn">Chat</a>
+      <a href="galgenman.html" class="btn">Galgenman</a>
+      <a href="inspo.html" class="btn">Inspo</a>
+    </nav>
+
+    <div class="content">
+      <main class="panel" aria-live="polite">
+        <div class="controls">
+          <div class="stats">Züge: <span id="moves">0</span> · Paare: <span id="pairs">0</span>/7</div>
+          <button id="restart" class="btn-primary">Neu starten</button>
+          <div id="timer" class="stats">01:00</div>
+        </div>
+
+        <section id="board" class="board" aria-label="Memory Spiel" tabindex="0">
+          <!-- Karten werden hier erzeugt -->
+        </section>
+
+        <div id="info" class="message"></div>
+      </main>
+
+      <aside class="sidebar">
+        <h3 style="margin-top:0">Spielbeschreibung</h3>
+        <p>Finde die 7 Paare, bevor die Zeit abläuft!</p>
+      </aside>
+    </div>
+
+    <footer class="footer">© 2025 World of Ducks</footer>
+  </div>
+
+  <div id="fadeOverlay" aria-hidden="true"></div>
+
+  <script>
+  // Gesamtzeit in Sekunden (jetzt 30s)
+  const TOTAL_TIME = 30;
+
+  // genau die 7 Dateien, jede zweimal (URL-encoding für $)
+  const requiredImages = [
+    'imgs/ente%24.avif',
+    'imgs/ente1.webp',
+    'imgs/ente2.jpg',
+    'imgs/ente3.jpg',
+    'imgs/ente4.jpg',
+    'imgs/enten6.jpg',
+    'imgs/ente7.jpg'
+  ];
+
+  const boardEl = document.getElementById('board');
+  const movesEl = document.getElementById('moves');
+  const pairsEl = document.getElementById('pairs');
+  const infoEl = document.getElementById('info');
+  const restartBtn = document.getElementById('restart');
+  const timerEl = document.getElementById('timer');
+  const fadeOverlay = document.getElementById('fadeOverlay');
+
+  let cards = [];
+  let firstCard = null;
+  let lock = false;
+  let moves = 0;
+  let matched = 0;
+  const totalPairs = 7;
+
+  // Countdown basierend auf TOTAL_TIME
+  let remaining = TOTAL_TIME;
+  let timerInterval = null;
+  let losing = false;
+
+  function startTimer(){
+    clearInterval(timerInterval);
+    remaining = TOTAL_TIME;
+    updateTimerDisplay();
+    timerInterval = setInterval(()=>{
+      remaining--;
+      updateTimerDisplay();
+      if(remaining <= 0){
+        clearInterval(timerInterval);
+        onTimeUp();
+      }
+    }, 1000);
+  }
+  function stopTimer(){ clearInterval(timerInterval); timerInterval = null; }
+  function updateTimerDisplay(){
+    const m = String(Math.floor(remaining/60)).padStart(2,'0');
+    const s = String(remaining%60).padStart(2,'0');
+    timerEl.textContent = `${m}:${s}`;
+  }
+
+  function shuffle(a){ for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]} return a; }
+
+  function preloadImages(list){
+    const checks = list.map(src => new Promise(res=>{
+      const img = new Image();
+      img.onload = () => res({src,ok:true});
+      img.onerror = () => res({src,ok:false});
+      img.src = src;
+    }));
+    return Promise.all(checks);
+  }
+
+  function buildCards(imageList){
+    cards = [];
+    imageList.forEach(src => { cards.push(src); cards.push(src); });
+    shuffle(cards);
+    renderBoard();
+  }
+
+  function renderBoard(){
+    boardEl.innerHTML = '';
+    cards.forEach((src, idx) => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.tabIndex = 0;
+      card.dataset.src = src;
+      card.dataset.index = idx;
+
+      const inner = document.createElement('div'); inner.className = 'card-inner';
+      const back = document.createElement('div'); back.className = 'card-face card-back'; back.textContent='?';
+      const front = document.createElement('div'); front.className = 'card-face card-front';
+      const im = document.createElement('img'); im.src = src; im.alt = 'Karte';
+      front.appendChild(im);
+
+      inner.appendChild(back);
+      inner.appendChild(front);
+      card.appendChild(inner);
+
+      card.addEventListener('click', () => onCardClick(card));
+      card.addEventListener('keydown', (e) => { if(e.key==='Enter' || e.key===' ') { e.preventDefault(); card.click(); } });
+      boardEl.appendChild(card);
+    });
+  }
+
+  function onCardClick(card){
+    if(lock || losing) return;
+    if(card.classList.contains('flipped')) return;
+    if(moves===0 && matched===0 && !timerInterval) startTimer();
+
+    card.classList.add('flipped');
+
+    if(!firstCard){
+      firstCard = card;
+      return;
+    }
+
+    lock = true;
+    moves++;
+    movesEl.textContent = moves;
+
+    const a = firstCard.dataset.src;
+    const b = card.dataset.src;
+
+    if(a === b){
+      matched++;
+      pairsEl.textContent = matched;
+      firstCard = null;
+      lock = false;
+      if(matched === totalPairs){
+        stopTimer();
+        infoEl.textContent = `Gewonnen in ${moves} Zügen (${formatElapsed()}).`;
+      }
+    } else {
+      setTimeout(() => {
+        firstCard.classList.remove('flipped');
+        card.classList.remove('flipped');
+        firstCard = null;
+        lock = false;
+      }, 900);
+    }
+  }
+
+  function formatElapsed(){
+    const used = TOTAL_TIME - remaining;
+    const m = String(Math.floor(used/60)).padStart(2,'0');
+    const s = String(used%60).padStart(2,'0');
+    return `${m}:${s}`;
+  }
+
+  function onTimeUp(){
+    losing = true;
+    infoEl.textContent = 'Zeit abgelaufen — du hast verloren.';
+    fadeOverlay.classList.add('active');
+    setTimeout(()=> { location.href = 'index.html'; }, 1700);
+  }
+
+  restartBtn.addEventListener('click', ()=>{
+    stopTimer();
+    moves = 0; matched = 0; movesEl.textContent = '0'; pairsEl.textContent = '0'; infoEl.textContent = '';
+    losing = false;
+    fadeOverlay.classList.remove('active');
+    shuffle(cards);
+    renderBoard();
+  });
+
+  // lade die exakt gewünschten 7 Dateien und starte das Spiel
+  preloadImages(requiredImages).then(results => {
+    const missing = results.filter(r => !r.ok).map(r => r.src);
+    if(missing.length){
+      infoEl.textContent = 'Fehlende Bilddateien im Ordner imgs/: ' + missing.join(', ') + '. Bitte hinzufügen und Seite neu laden.';
+      return;
+    }
+    buildCards(requiredImages);
+    moves = 0; matched = 0;
+    movesEl.textContent = '0';
+    pairsEl.textContent = '0';
+    infoEl.textContent = '';
+    remaining = TOTAL_TIME;
+    updateTimerDisplay();
+  }).catch(err => {
+    infoEl.textContent = 'Fehler beim Laden der Bilder.';
+    console.error(err);
+  });
+  </script>
+</body>
+</html>
