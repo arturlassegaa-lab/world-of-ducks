@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Inspo — World of Ducks</title>
   <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,700&family=Poppins:wght@700&family=Amiri&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Playfair+Display:ital,wght@1,700&family=Poppins:wght@700&family=Amiri&display=swap" rel="stylesheet">
   
   <style>
     /* --- BASIC SETUP --- */
@@ -38,15 +38,15 @@
       box-sizing: border-box;
     }
 
-    /* --- RPG HEADER --- */
+    /* --- UNIFIED RPG HEADER DESIGN (Wie auf anderen Seiten) --- */
     .header {
       width: 100%;
       text-align: center;
       padding: 20px 0;
-      background-color: #1a0e05; 
-      background-image: url('https://www.transparenttextures.com/patterns/wood-pattern.png');
-      border-bottom: 3px solid #d4af37;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+      /* Der klassische RPG-Verlauf */
+      background: linear-gradient(to bottom, #3c2b15, #1a0e05);
+      border-bottom: 3px solid #5b3b1d;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.8);
       position: relative;
       z-index: 20;
     }
@@ -54,45 +54,51 @@
     .header h1 {
       font-size: 2.5rem;
       margin: 0;
-      font-family: 'Playfair Display', serif;
-      font-style: italic;
-      background: linear-gradient(to bottom, #fff 0%, #e0e0e0 40%, #999 50%, #fff 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
+      /* Medieval Style statt Glossy */
+      font-family: 'MedievalSharp', cursive;
+      color: #ffcc33;
+      text-shadow: 2px 2px 4px #000;
       letter-spacing: 1px;
+      background: none;
+      -webkit-text-fill-color: initial;
     }
 
-    /* Navigation */
+    /* --- UNIFIED MENU BUTTONS --- */
     .menu-container {
       display: flex;
-      gap: 15px;
+      gap: 10px;
       flex-wrap: wrap;
       justify-content: center;
       padding: 15px;
       width: 100%;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+      /* Hintergrund leicht abgedunkelt, aber passend */
+      background: rgba(20, 10, 5, 0.6); 
     }
 
     .nav-btn {
       text-decoration: none;
-      color: #d4af37;
-      font-size: 0.9rem;
-      padding: 8px 16px;
-      border: 1px solid #d4af37;
-      border-radius: 12px;
-      background: rgba(26, 14, 5, 0.7);
-      transition: all 0.3s ease;
+      font-size: 1rem;
+      padding: 10px 22px;
+      margin: 5px;
+      /* Der Retro-Button Style */
+      background: #5b3b1d;
+      color: #ffcc33;
+      border: 2px solid #d6a85b;
+      border-radius: 8px;
+      text-shadow: 1px 1px 3px #000;
+      box-shadow: inset 0 0 10px #000;
+      transition: all 0.2s ease;
+      font-family: 'MedievalSharp', cursive;
     }
 
     .nav-btn:hover {
-      background: #d4af37;
-      color: #1a0e05;
-      box-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
+      background: #7a5028;
+      transform: scale(1.05);
+      color: #fff;
+      box-shadow: 0 0 10px rgba(255, 204, 51, 0.4);
     }
 
-    /* --- MITTEL-TEIL (ASCII VERSION) --- */
+    /* --- MITTEL-TEIL (Bleibt im Inspo Style) --- */
     .center-piece {
       flex-grow: 1; 
       display: flex;
@@ -111,6 +117,7 @@
       text-align: center;
       cursor: pointer;
       line-height: 1.4;
+      /* Hier behalten wir den Glossy Look für den Content */
       background: linear-gradient(to bottom, #ffffff 0%, #dcdcdc 50%, #888888 51%, #ffffff 100%);
       -webkit-background-clip: text;
       background-clip: text;
@@ -160,6 +167,9 @@
       font-size: 0.8rem;
       padding: 15px;
       text-align: center;
+      /* Kleiner Trenner unten */
+      border-top: 1px solid #333;
+      background: #000;
     }
 
     /* --- SNAKE SECRET STYLE --- */
@@ -287,17 +297,16 @@
   <div class="content-layer">
     
     <header class="header">
-      <h1 class="glossy-text">World of Ducks</h1>
+      <h1>World of Ducks</h1>
     </header>
 
-    <nav class="menu">
-      <a href="index.html" class="btn">Home</a>
-      <a href="blogs.html" class="btn">Blogs</a>
-      <a href="memory.html" class="btn">Memory</a>
-      <a href="chat.html" class="btn">Chat</a>
-      <a href="galgenman.html" class="btn">Galgenman</a>
-      <a href="inspo.html" class="btn">Inspo</a>
-      <a href="chinese-zodiac.html" class="btn">CYZ</a>
+    <nav class="menu-container">
+      <a href="index.html" class="nav-btn">Home</a>
+      <a href="blogs.html" class="nav-btn">Blogs</a>
+      <a href="memory.html" class="nav-btn">Memory</a>
+      <a href="chat.html" class="nav-btn">Chat</a>
+      <a href="galgenman.html" class="nav-btn">Game</a>
+      <a href="chinese-zodiac.html" class="nav-btn">CYZ</a>
     </nav>
 
     <div class="center-piece">
