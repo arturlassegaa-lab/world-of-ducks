@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Chinesisches Orakel — World of Ducks</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+  <style>
+    /* --- DARK MODE & LAYOUT --- */
+    body {
+      margin: 0;
+      background-color: #000;
+      font-family: 'MedievalSharp', cursive;
+      color: #fff;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Der Hintergrund-Drache */
+    .dragon-bg-layer {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      pointer-events: none;
+    }
+
+    .dragon-frame {
+      width: 130vmax; 
+      height: 130vmax;
+      border: none;
+      /* Langsame Drehung für Atmosphäre */
+      animation: dragonDance 200s linear infinite;
+      opacity: 0.6; /* Drache ist gut sichtbar */
+    }
+
+    @keyframes dragonDance {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* --- INHALT --- */
+    .content-layer {
+      position: relative;
+      z-index: 10;
+      padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    header.header {
+      padding: 30px 0;
+      margin-bottom: 30px;
+    }
+
+    header.header h1 {
+      color: #ffd700;
+      text-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
+      font-size: 3.5em;
+      margin: 0;
+      font-family: 'Ma Shan Zheng', cursive;
+    }
+    
+    header.header p {
+      color: #ccc;
+      font-size: 1.2em;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-top: 10px;
+    }
+
+    nav.menu { margin-bottom: 40px; }
+    .btn {
+      display: inline-block; margin: 8px; padding: 10px 22px;
+      background: rgba(0, 0, 0, 0.6); 
+      color: #d4af37; border: 1px solid #d4af37;
+      border-radius: 8px; text-decoration: none;
+      transition: all .2s ease;
+      backdrop-filter: blur(4px);
+    }
+    .btn:hover { background: #d4af37; color: #000; box-shadow: 0 0 15px rgba(212, 175, 55, 0.8); }
+
+    /* --- DAS ÄSTHETISCHE GLAS-GRID --- */
+    .zodiac-grid {
+      display: grid;
+      /* Automatisch anpassendes Gitter (meist 3 oder 4 Spalten auf Desktop) */
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+      padding: 10px;
+    }
+
+    .zodiac-card {
+      /* Sehr transparentes Schwarz -> Drache scheint durch */
+      background: rgba(0, 0, 0, 0.25); 
+      /* Leichter Blur, damit Text lesbar bleibt, aber Hintergrund sichtbar ist */
+      backdrop-filter: blur(3px); 
+      -webkit-backdrop-filter: blur(3px);
+      
+      border: 1px solid rgba(255, 215, 0, 0.15); /* Feiner Goldrand */
+      border-radius: 12px;
+      padding: 20px;
+      text-align: left;
+      transition: all 0.3s ease;
+    }
+
+    /* Hover-Effekt: Karte wird deutlicher */
+    .zodiac-card:hover {
+      transform: translateY(-5px) scale(1.02);
+      background: rgba(0, 0, 0, 0.7); /* Wird dunkler beim Hover für Lesbarkeit */
+      border-color: #ffd700;
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+      z-index: 20;
+    }
+
+    .zodiac-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      padding-bottom: 10px;
+    }
+
+    .zodiac-icon { font-size: 2.5rem; text-shadow: 0 0 10px rgba(255,255,255,0.2); }
+
+    .zodiac-title h3 {
+      margin: 0; color: #ffd700; font-size: 1.5em;
+      font-family: 'Ma Shan Zheng', cursive;
+    }
+    .zodiac-years { 
+      font-size: 0.8em; color: #bbb; font-style: italic; display: block; margin-top: 3px;
+    }
+
+    .zodiac-desc { 
+      font-size: 0.95em; 
+      line-height: 1.5; 
+      color: #eee; 
+      text-shadow: 1px 1px 2px #000; /* Textschatten für Lesbarkeit auf Drachen */
+    }
+
+    .footer {
+      margin-top: 60px;
+      color: #666;
+      font-size: 0.8em;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="dragon-bg-layer">
+    <iframe src="ascii-art-2.html" class="dragon-frame"></iframe>
+  </div>
+
+  <div class="content-layer">
+
+    <header class="header">
+      <h1>🀄 Choose your Zodiac 🀄</h1>
+      <p>Finde dein inneres Tier</p>
+    </header>
+
+    <nav class="menu">
+      <a href="index.html" class="btn">Home</a>
+      <a href="blogs.html" class="btn">Blogs</a>
+      <a href="memory.html" class="btn">Memory</a>
+      <a href="chat.html" class="btn">Chat</a>
+      <a href="galgenman.html" class="btn">Game</a>
+      <a href="inspo.html" class="btn">Inspo</a>
+    </nav>
+
+    <div class="zodiac-grid">
+      
+      <div class="zodiac-card">
+        <div class="zodiac-header">
+          <span class="zodiac-icon">🐀</span>
+          <div class="zodiac-title">
+            <h3>Ratte (Shǔ)</h3>
+            <span class="zodiac-years">1996, 2008, 2020</span>
+          </div>
+        </div>
+        <p class="zodiac-desc">Schlau und flink. Findet immer das letzte Stück Brot. Ein wahrer Überlebenskünstler.</p>
+      </div>
+
+      <div class="zodiac-card">
+        <div class="zodiac-header">
+          <span class="zodiac-icon">🐂</span>
+          <div class="zodiac-title">
+            <h3>Büffel (Niú)</h3>
+            <span class="zodiac-years">1997, 2009, 2021</span>
+          </div>
+        </div>
+        <p class="zodiac-desc">Stark und geduldig. Zieht den Karren durch tiefen Schlamm. Verlässlich wie ein Fels.</p>
+      </div>
+
+      <div class="zodiac-card">
+        <div class="zodiac-header">
+          <span class="zodiac-icon">🐅</span>
+          <div class="zodiac-title">
+            <h3>Tiger (Hǔ)</h3>
+            <span class="zodiac-years">1998, 2010, 2022</span>
+          </div>
+        </div>
+        <p class="zodiac-desc">Mutig und unberechenbar. Ein geborener Anführer voller Leidenschaft.</p>
+      </div>
+
+      <div class="zodiac-card">
+        <div class="zodiac-header">
+          <span class="zodiac-icon">🐇</span>
+          <div class="zodiac-title">
+            <h3>Hase (Tù)</h3>
+            <span class="zodiac-years">1999, 2011, 2023</span>
+          </div>
+        </div>
+        <p class="zodiac-desc">Sanft und elegant. Hoppelt lieber elegant davon, als Streit zu suchen. Diplomatisch.</p>
+      </div>
+
+      <div class="zodiac-card" style="border-color: rgba(255, 50, 50, 0.4);">
+        <div class="zodiac-header">
+          <span class="zodiac-icon">🐉</span>
+          <div class="zodiac-title">
+            <h3>Drache (Lóng)</h3>
+            <span class="zodiac-years">2000, 2012, 2024</span>
+          </div>
+        </div>
+        <p class="zodiac-desc">Mächtig und charismatisch. Spuckt Feuer der Begeisterung. Der Boss im Horoskop.</p>
+      </div>
+
+      <div class="zodiac-card">
+        <div class="zodiac-header">
+          <span class="zodiac-icon">🐍</span>
+          <div class="zodiac-title">
+            <h3>Schlange (Shé)</h3>
+            <span class="zodiac-years">2001, 2013, 2025</span>
+          </div>
+        </div>
+        <p class="zodiac-desc">Weise und geheimnisvoll. Beobachtet alles aus dem Schilf. Plant den nächsten Zug.</p>
+      </div>
+
+      <div class="zodiac-card">
+        <div class="zodiac-header">
+          <span class="zodiac-icon">🐎</span>
+          <div class="zodiac-title">
+            <h3>Pferd (Mǎ)</h3>
+            <span class="zodiac-years">2002, 2014, 2026</span>
+          </div>
+        </div>
+        <p class="zodiac-desc">Freiheitsliebend und energisch. Galoppiert immer Richtung Horizont. Niemals stillstehen!</p>
+      </div>
+
+      <div class="zodiac-card">
+        <div class="zodiac-header">
+          <span class="zodiac-icon">🐐</span>
+          <div class="zodiac-title">
+            <h3>Ziege (Yáng)</h3>
+            <span class="zodiac-years">2003, 2015, 2027</span>
+          </div>
+        </div>
+        <p class="zodiac-desc">Kreativ und friedlich. Träumt von grünen Wiesen und Harmonie. Ein Künstler.</p>
+      </div>
+
+      <div class="zodiac-card">
+        <div class="zodiac-header">
+          <span class="zodiac-icon">🐒</span>
+          <div class="zodiac-title">
+            <h3>Affe (Hóu)</h3>
+            <span class="zodiac-years">2004, 2016, 2028</span>
+          </div>
+        </div>
+        <p class="zodiac-desc">Witzig und intelligent. Hat immer einen genialen Streich auf Lager. Der Clown.</p>
+      </div>
+
+      <div class="zodiac-card">
+        <div class="zodiac-header">
+          <span class="zodiac-icon">🐓</span>
+          <div class="zodiac-title">
+            <h3>Hahn (Jī)</h3>
+            <span class="zodiac-years">2005, 2017, 2029</span>
+          </div>
+        </div>
+        <p class="zodiac-desc">Stolz und pünktlich. Liebt das Rampenlicht und glänzende Federn.</p>
+      </div>
+
+      <div class="zodiac-card">
+        <div class="zodiac-header">
+          <span class="zodiac-icon">🐕</span>
+          <div class="zodiac-title">
+            <h3>Hund (Gǒu)</h3>
+            <span class="zodiac-years">2006, 2018, 2030</span>
+          </div>
+        </div>
+        <p class="zodiac-desc">Loyal und ehrlich. Passt auf die Herde auf. Ein treuer Freund fürs Leben.</p>
+      </div>
+
+      <div class="zodiac-card">
+        <div class="zodiac-header">
+          <span class="zodiac-icon">🐖</span>
+          <div class="zodiac-title">
+            <h3>Schwein (Zhū)</h3>
+            <span class="zodiac-years">2007, 2019, 2031</span>
+          </div>
+        </div>
+        <p class="zodiac-desc">Großzügig und gutmütig. Genießt das Leben und gutes Essen in vollen Zügen.</p>
+      </div>
+
+    </div>
+
+    <footer class="footer">
+      © 2025 World of Ducks – Das alte Wissen des Ostens
+    </footer>
+  </div>
+
+</body>
+</html>
