@@ -67,7 +67,7 @@
 
     /* --- DETAIL CARD --- */
     .detail-card {
-      background: rgba(10, 10, 10, 0.75);
+      background: rgba(10, 10, 10, 0.85);
       backdrop-filter: blur(15px);
       border: 2px solid #d4af37;
       border-radius: 20px;
@@ -99,12 +99,51 @@
       text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
     }
 
-    .detail-years { color: #aaa; font-style: italic; font-size: 1.1em; display: block; margin-top: 5px; }
+    /* Verbesserte Text-Darstellung */
+    .detail-content { 
+      font-size: 1.15em; 
+      line-height: 1.8; 
+      color: #eee; 
+      white-space: pre-wrap; /* Wichtig für Absätze */
+      margin-bottom: 30px;
+    }
 
-    .detail-content { font-size: 1.2em; line-height: 1.8; color: #eee; white-space: pre-wrap; }
-    
+    /* --- TABELLEN STYLING --- */
+    .elements-table-container {
+      overflow-x: auto;
+      margin-top: 20px;
+      border-radius: 8px;
+      border: 1px solid #d4af37;
+    }
+
+    .elements-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95em;
+      min-width: 500px;
+    }
+
+    .elements-table th {
+      background: rgba(212, 175, 55, 0.2);
+      color: #ffd700;
+      font-family: 'MedievalSharp', cursive;
+      text-align: left;
+      padding: 12px;
+      border-bottom: 2px solid #d4af37;
+    }
+
+    .elements-table td {
+      padding: 12px;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+      vertical-align: top;
+    }
+
+    .elements-table tr:last-child td { border-bottom: none; }
+    .elements-table tr:hover { background: rgba(255, 255, 255, 0.05); }
+
+    /* Bild Container */
     .detail-image-container {
-      margin-top: 30px;
+      margin-top: 40px;
       text-align: center;
     }
     .detail-img {
@@ -121,7 +160,6 @@
       font-size: 1.2rem; background: #d4af37; color: #000;
     }
 
-    /* Responsive */
     @media (max-width: 700px) {
       .detail-header { flex-direction: column; text-align: center; }
     }
@@ -144,13 +182,13 @@
         <span class="zodiac-big-icon" id="z-icon">❓</span>
         <div class="detail-title">
           <h1 id="z-name">Lädt...</h1>
-          <span class="detail-years" id="z-years"></span>
         </div>
       </div>
 
-      <div class="detail-content" id="z-text">
-        Wähle ein Tierzeichen aus der Übersicht.
-      </div>
+      <div class="detail-content" id="z-text"></div>
+
+      <h3 style="color: #d4af37; border-bottom: 1px solid #d4af37; display: inline-block; padding-bottom: 5px;">Die 5 Elemente & Jahrgänge</h3>
+      <div id="z-table-area" class="elements-table-container"></div>
 
       <div class="detail-image-container">
         <img id="z-img" src="" alt="" style="display:none;" class="detail-img">
@@ -163,144 +201,292 @@
   </div>
 
   <script>
-    [cite_start]// --- DATENBANK DER ENTE [cite: 1-86] ---
+    // --- DATENBANK ---
+    // Enthält alle Texte und Tabellen aus dem Dokument.
+    
     const zodiacData = {
       ratte: {
         name: "Ratte (Der Visionär)",
         icon: "🐀",
-        years: "1924, 1936, 1948, 1960, 1972, 1984, 1996, 2008, 2020, 2032",
-        text: "Die Ratte ist der charmante Eroberer des Tierkreises. Sie ist intelligent, schnell im Denken und besitzt eine fast magische Intuition, wenn es um Gelegenheiten geht.\n\nSie ist gesellig, ehrgeizig, manchmal aber auch kritisch. In der Liebe leidenschaftlich, aber sie braucht einen Partner, der ihre geistige Flinkheit teilt.",
-        img: "imgs/ratte.jpg" 
+        text: `Charakter: Die Ratte ist der charmante Eroberer des Tierkreises. Sie ist intelligent, schnell im Denken und besitzt eine fast magische Intuition, wenn es um Gelegenheiten geht.
+
+Auf Sternenpfade würde man sagen: Die Ratte hört das Flüstern des Universums, bevor andere es wahrnehmen.
+
+Sie ist gesellig, ehrgeizig, manchmal aber auch kritisch. In der Liebe leidenschaftlich, aber sie braucht einen Partner, der ihre geistige Flinkheit teilt.`,
+        img: "imgs/ratte.jpg",
+        table: [
+          ["1924, 1984, 2044", "Holz", "Die kreative Ratte: Künstlerisch begabt, flexibel und moralisch gefestigt. Sie sucht nach innerem Wachstum."],
+          ["1936, 1996, 2056", "Feuer", "Die dynamische Ratte: Voller Energie und Abenteuerlust. Impulsiver und liebt das Risiko."],
+          ["1948, 2008, 2068", "Erde", "Die pragmatische Ratte: Bodenständiger und stabiler. Baut langsam, aber sicher an ihrer Zukunft."],
+          ["1960, 2020, 2080", "Metall", "Die willensstarke Ratte: Entschlossen, ehrgeizig und liebt Ordnung. Wirkt oft kühl, fühlt aber tief."],
+          ["1972, 2032, 2092", "Wasser", "Die intuitive Ratte: Meister der Anpassung. Diplomatisch, weise und psychologisch sehr begabt."]
+        ]
       },
       bueffel: {
         name: "Büffel (Der Fels)",
         icon: "🐂",
-        years: "1925, 1937, 1949, 1961, 1973, 1985, 1997, 2009, 2021, 2033",
-        text: "Der Büffel (oder Ochse) symbolisiert Sanftmut, verhüllt in unerschütterlicher Stärke. Er ist der geduldige Arbeiter, der Traditionen wahrt.\n\nWo andere aufgeben, fängt der Büffel erst an. Er ist loyal, ehrlich und ein Beschützer der Familie. Seine Seele ruht in sich selbst.",
-        img: "imgs/bueffel.jpg"
+        text: `Charakter: Der Büffel (oder Ochse) symbolisiert Sanftmut, verhüllt in unerschütterlicher Stärke. Er ist der geduldige Arbeiter, der Traditionen wahrt.
+
+Wo andere aufgeben, fängt der Büffel erst an. Er ist loyal, ehrlich und ein Beschützer der Familie.
+
+Seine Seele ruht in sich selbst, doch wehe dem, der seine Gutmütigkeit ausnutzt – dann zeigt er seine hörnerbewehrte Durchsetzungskraft.`,
+        img: "imgs/bueffel.jpg",
+        table: [
+          ["1925, 1985, 2045", "Holz", "Der flexible Büffel: Offener für neue Ideen und weniger stur. Starkes Gerechtigkeitsempfinden."],
+          ["1937, 1997, 2057", "Feuer", "Der leidenschaftliche Büffel: Ein geborener Anführer. Energiegeladen, impulsiv, duldet wenig Widerspruch."],
+          ["1949, 2009, 2069", "Erde", "Der treue Büffel: Geduldig, bescheiden und extrem zuverlässig. Architekt seines eigenen Schicksals."],
+          ["1961, 2021, 2081", "Metall", "Der eiserne Büffel: Willen aus Stahl. Pflichtbewusst, wortkarg, harter Arbeiter."],
+          ["1973, 2033, 2093", "Wasser", "Der sensible Büffel: Anpassungsfähiger und intuitiver. Realistisch, aber mit emotionaler Intelligenz."]
+        ]
       },
       tiger: {
         name: "Tiger (Der Rebell)",
         icon: "🐅",
-        years: "1926, 1938, 1950, 1962, 1974, 1986, 1998, 2010, 2022, 2034",
-        text: "Der Tiger ist pure Energie, Mut und Leidenschaft. Ein magnetisches Zeichen, das geboren wurde, um zu führen und zu inspirieren. Er steht für den Mut, dem eigenen Herzen zu folgen.\n\nEr ist unberechenbar, charmant und ein ewiger Optimist. In der Liebe ist er stürmisch und intensiv.",
-        img: "imgs/tiger.jpg"
+        text: `Charakter: Der Tiger ist pure Energie, Mut und Leidenschaft. Ein magnetisches Zeichen, das geboren wurde, um zu führen und zu inspirieren.
+
+Auf Sternenpfade steht der Tiger für den Mut, dem eigenen Herzen zu folgen, auch gegen Widerstände.
+
+Er ist unberechenbar, charmant und ein ewiger Optimist. In der Liebe ist er stürmisch und intensiv.`,
+        img: "imgs/tiger.jpg",
+        table: [
+          ["1914, 1974, 2034", "Holz", "Der kooperative Tiger: Toleranter, arbeitet besser im Team. Rationaler und weniger egozentrisch."],
+          ["1926, 1986, 2046", "Feuer", "Der wilde Tiger: Feuerwerk an Energie. Dramatisch, enthusiastisch. Inspiriert Massen."],
+          ["1938, 1998, 2058", "Erde", "Der bedachte Tiger: Ruhigster Tiger. Denkt nach, bevor er springt. Realistisch und verantwortungsbewusst."],
+          ["1950, 2010, 2070", "Metall", "Der ehrgeizige Tiger: Scharf wie eine Klinge. Liebt Wettbewerb, will gewinnen. Zielorientiert."],
+          ["1962, 2022, 2082", "Wasser", "Der sanfte Tiger: Tiefe Intuition und Empathie. Offen für neue Erfahrungen, spirituelle Ader."]
+        ]
       },
       hase: {
         name: "Hase (Der Diplomat)",
         icon: "🐇",
-        years: "1927, 1939, 1951, 1963, 1975, 1987, 1999, 2011, 2023, 2035",
-        text: "Der Hase ist das Zeichen für langes Leben, Frieden und Anmut. Hasen sind sanftmütig, elegant und meiden Konflikte um jeden Preis.\n\nSie besitzen einen exquisiten Geschmack und eine künstlerische Ader. Sie wirken zerbrechlich, sind aber innerlich zäh und klug.",
-        img: "imgs/hase.jpg"
+        text: `Charakter: Der Hase (oder Kaninchen) ist das Zeichen für langes Leben, Frieden und Anmut.
+
+Hasen sind sanftmütig, elegant und meiden Konflikte um jeden Preis. Sie besitzen einen exquisiten Geschmack und eine künstlerische Ader.
+
+Sie wirken zerbrechlich, sind aber innerlich zäh und klug. Sie hören das Gras wachsen und entkommen Gefahren durch Geschicklichkeit.`,
+        img: "imgs/hase.jpg",
+        table: [
+          ["1915, 1975, 2035", "Holz", "Der soziale Hase: Großzügig, verständnisvoll. Arbeitet gerne in Gruppen. Das 'Herz' einer Gemeinschaft."],
+          ["1927, 1987, 2047", "Feuer", "Der emotionale Hase: Mehr Temperament, intuitiv, charmant. Liebt Vergnügen, manchmal launisch."],
+          ["1939, 1999, 2059", "Erde", "Der beständige Hase: Realistisch und bodenständig. Plant sorgfältig. Verlässlicher Partner."],
+          ["1951, 2011, 2071", "Metall", "Der strategische Hase: Kühl und analytisch. Verfolgt Ziele mit stillem Ehrgeiz."],
+          ["1963, 2023, 2083", "Wasser", "Der empathische Hase: Sensibel und medial veranlagt. Spürt Schwingungen anderer. Guter Zuhörer."]
+        ]
       },
       drache: {
         name: "Drache (Der Kaiser)",
         icon: "🐉",
-        years: "1928, 1940, 1952, 1964, 1976, 1988, 2000, 2012, 2024, 2036",
-        text: "Das einzige mythische Wesen im Tierkreis. Der Drache steht für Glück, Macht und edlen Geist. Drachen sind charismatisch, voller Vitalität und geborene Visionäre.\n\nEr kann exzentrisch sein, aber sein Herz ist groß und mutig. Er symbolisiert das Erwachen des eigenen Potenzials.",
-        img: "imgs/drache.jpg"
+        text: `Charakter: Das einzige mythische Wesen im Tierkreis. Der Drache steht für Glück, Macht und edlen Geist.
+
+Drachen sind charismatisch, voller Vitalität und geborene Visionäre. Sie streben nach dem Höchsten.
+Auf Sternenpfade symbolisiert der Drache das Erwachen des eigenen Potenzials.
+
+Er kann exzentrisch sein, aber sein Herz ist groß und mutig.`,
+        img: "imgs/drache.jpg",
+        table: [
+          ["1904, 1964, 2024", "Holz", "Der kreative Drache: Offen für Zusammenarbeit. Sprudelt vor Ideen, um die Welt zu verbessern."],
+          ["1916, 1976, 2036", "Feuer", "Der dominante Drache: Will führen und bewundert werden. Explosive Energie. Ein Powerhouse."],
+          ["1928, 1988, 2048", "Erde", "Der logische Drache: Geerdet und kontrolliert. Baut Imperien auf solidem Fundament."],
+          ["1940, 2000, 2060", "Metall", "Der edle Drache: Willensstark, unbestechlich. Hohe moralische Ansprüche. Extrem resilient."],
+          ["1952, 2012, 2072", "Wasser", "Der weise Drache: Weiß, wann er warten muss. Flexibler, nutzt Intuition für Erfolg."]
+        ]
       },
       schlange: {
         name: "Schlange (Der Weise)",
         icon: "🐍",
-        years: "1929, 1941, 1953, 1965, 1977, 1989, 2001, 2013, 2025, 2037",
-        text: "Die Schlange ist das rätselhafteste Zeichen. Sie steht für Weisheit, Tiefgründigkeit und Intuition. Schlangen handeln nicht impulsiv; sie planen.\n\nSie sind elegant, materiell oft gesegnet und besitzen einen fast hypnotischen Charme. Spirituell ist sie eng mit Transformation verbunden.",
-        img: "imgs/schlange.jpg"
+        text: `Charakter: Die Schlange ist das rätselhafteste Zeichen. Sie steht für Weisheit, Tiefgründigkeit und Intuition. Schlangen handeln nicht impulsiv; sie planen.
+
+Sie sind elegant, materiell oft gesegnet und besitzen einen fast hypnotischen Charme.
+
+Spirituell gesehen ist die Schlange eng mit Transformation und Heilung verbunden (Kundalini).`,
+        img: "imgs/schlange.jpg",
+        table: [
+          ["1905, 1965, 2025", "Holz", "Die kultivierte Schlange: Liebt Kunst und Schönheit. Freundlich, kreativ, sucht beständige Weisheit."],
+          ["1917, 1977, 2037", "Feuer", "Die aktive Schlange: Extrovertierter, liebt Rampenlicht. Leidenschaftlich, scharfer Geist."],
+          ["1929, 1989, 2049", "Erde", "Die ruhige Schlange: Langsam, beobachtet genau. Extrem zuverlässig, Finanztalent."],
+          ["1941, 2001, 2061", "Metall", "Die entschlossene Schlange: Willen aus Stahl. Plant im Verborgenen, schlägt blitzschnell zu."],
+          ["1953, 2013, 2073", "Wasser", "Die mystische Schlange: Starke mediale Fähigkeiten. Tiefgründig, introspektiv, undurchschaubar."]
+        ]
       },
       pferd: {
         name: "Pferd (Der Freigeist)",
         icon: "🐎",
-        years: "1930, 1942, 1954, 1966, 1978, 1990, 2002, 2014, 2026, 2038",
-        text: "Freiheit ist das höchste Gut des Pferdes. Es ist optimistisch, gesellig, redegewandt und liebt das Abenteuer.\n\nPferde sind oft der Mittelpunkt einer Party. Sie sind fleißig, aber unbeständig – wenn sie das Interesse verlieren, ziehen sie weiter.",
-        img: "imgs/pferd.jpg"
+        text: `Charakter: Freiheit ist das höchste Gut des Pferdes. Es ist optimistisch, gesellig, redegewandt und liebt das Abenteuer.
+
+Pferde sind oft der Mittelpunkt einer Party. Sie sind fleißig, aber unbeständig – wenn sie das Interesse verlieren, ziehen sie weiter.
+
+Auf Sternenpfade steht das Pferd für die ungebändigte Lebenskraft.`,
+        img: "imgs/pferd.jpg",
+        table: [
+          ["1954, 2014, 2074", "Holz", "Das teamfähige Pferd: Kooperativer, viel Fantasie. Lässt sich nicht zähmen, guter Freund."],
+          ["1906, 1966, 2026", "Feuer", "Das leidenschaftliche Pferd: Sprüht vor Energie. Liebt Risiko, handelt impulsiv."],
+          ["1918, 1978, 2038", "Erde", "Das vernünftige Pferd: Logischer und bedachter. Kann Projekte abschließen, sucht Harmonie."],
+          ["1930, 1990, 2050", "Metall", "Das ungestüme Pferd: Liebt Unabhängigkeit über alles. Mutig, direkt, braucht Freiraum."],
+          ["1942, 2002, 2062", "Wasser", "Das anpassungsfähige Pferd: Flexibler, Sinn für Humor. Kann sich einfühlen, oft innerlich unruhig."]
+        ]
       },
       ziege: {
         name: "Ziege (Der Künstler)",
         icon: "🐐",
-        years: "1931, 1943, 1955, 1967, 1979, 1991, 2003, 2015, 2027, 2039",
-        text: "Die Ziege ist das sanfteste und kreativste Zeichen. Sie liebt Schönheit, Harmonie und Frieden.\n\nZiegen sind empathisch, fürsorglich, aber auch etwas pessimistisch und unsicher. Sie brauchen Schutz und Verständnis. Spirituell sind sie oft sehr begabt.",
-        img: "imgs/ziege.jpg"
+        text: `Charakter: Die Ziege ist das sanfteste und kreativste Zeichen. Sie liebt Schönheit, Harmonie und Frieden.
+
+Ziegen sind empathisch, fürsorglich, aber auch etwas pessimistisch und unsicher. Sie brauchen Schutz und Verständnis.
+
+Spirituell sind sie oft sehr begabt und haben eine Verbindung zu höheren Sphären (Engel, Träume).`,
+        img: "imgs/ziege.jpg",
+        table: [
+          ["1955, 2015, 2075", "Holz", "Die fürsorgliche Ziege: Großzügig und hilfsbereit. Braucht Zuneigung. Blüht in Gemeinschaft auf."],
+          ["1907, 1967, 2027", "Feuer", "Die theatralische Ziege: Mutiger, steht gerne im Mittelpunkt. Charismatisch, aber launisch."],
+          ["1919, 1979, 2039", "Erde", "Die stabile Ziege: Pragmatischer und verlässlicher. Treu, häuslich, arbeitet hart."],
+          ["1931, 1991, 2051", "Metall", "Die selbstbewusste Ziege: Äußerlich zart, innerlich zäh. Starker Sinn für Ästhetik."],
+          ["1943, 2003, 2063", "Wasser", "Die emotionale Ziege: Sehr sensibel, nimmt sich Dinge zu Herzen. Gibt unendlich viel Liebe zurück."]
+        ]
       },
       affe: {
         name: "Affe (Der Gaukler)",
         icon: "🐒",
-        years: "1932, 1944, 1956, 1968, 1980, 1992, 2004, 2016, 2028, 2040",
-        text: "Der Affe ist der Problemlöser und Spaßvogel. Er ist extrem intelligent, erfinderisch und vielseitig. Für den Affen ist das Leben ein Spiel, das es zu gewinnen gilt.\n\nManchmal wirkt er arrogant oder trickreich, aber sein Charme macht alles wett. Er steht für geistige Agilität.",
-        img: "imgs/affe.jpg"
+        text: `Charakter: Der Affe ist der Problemlöser und Spaßvogel. Er ist extrem intelligent, erfinderisch und vielseitig.
+
+Für den Affen ist das Leben ein Spiel, das es zu gewinnen gilt. Er ist neugierig und lernt schnell.
+
+Manchmal wirkt er arrogant oder trickreich, aber sein Charme macht alles wett. Er steht für geistige Agilität.`,
+        img: "imgs/affe.jpg",
+        table: [
+          ["1944, 2004, 2064", "Holz", "Der ordentliche Affe: Methodischer und praktischer. Nutzt Intelligenz zur Verbesserung."],
+          ["1956, 2016, 2076", "Feuer", "Der ehrgeizige Affe: Will nach oben. Dominant, wettbewerbsorientiert. Übernimmt Führung."],
+          ["1908, 1968, 2028", "Erde", "Der ernsthafte Affe: Ruhiger und konzentrierter. Plant langfristig. Wert auf Bildung."],
+          ["1920, 1980, 2040", "Metall", "Der kämpferische Affe: Brillant aber riskant. Unkonventionell, unabhängig und selbstsicher."],
+          ["1932, 1992, 2052", "Wasser", "Der flexible Affe: Diplomatisch. Versteht es, sich aus jeder Situation herauszuwinden."]
+        ]
       },
       hahn: {
         name: "Hahn (Der Wächter)",
         icon: "🐓",
-        years: "1933, 1945, 1957, 1969, 1981, 1993, 2005, 2017, 2029, 2041",
-        text: "Der Hahn ist der stolze Beobachter. Er ist pünktlich, ehrlich, direkt und liebt es, sich zu präsentieren. Hähne sind Perfektionisten und oft sehr kritisch.\n\nAber sie sind auch loyal und mutig. Symbolisch steht der Hahn für das Erwachen und die Klarheit des Geistes.",
-        img: "imgs/hahn.jpg"
+        text: `Charakter: Der Hahn ist der stolze Beobachter. Er ist pünktlich, ehrlich, direkt und liebt es, sich zu präsentieren.
+
+Hähne sind Perfektionisten und oft sehr kritisch. Aber sie sind auch loyal und mutig.
+
+Auf Sternenpfade symbolisiert der Hahn das Erwachen (Krähen am Morgen) und die Klarheit des Geistes.`,
+        img: "imgs/hahn.jpg",
+        table: [
+          ["1945, 2005, 2065", "Holz", "Der teamorientierte Hahn: Weniger stur, arbeitet gut mit anderen. Hohe Ziele, aber fair."],
+          ["1957, 2017, 2077", "Feuer", "Der schillernde Hahn: Liebt großen Auftritt. Dramatisch, charismatisch. Achtet auf Image."],
+          ["1909, 1969, 2029", "Erde", "Der analytische Hahn: Genau, fleißig, liebt Fakten. Geborener Organisator. Sucht Sicherheit."],
+          ["1921, 1981, 2041", "Metall", "Der stolze Hahn: Von sich überzeugt. Erwartet Perfektion. Brillant in seinem Fach."],
+          ["1933, 1993, 2053", "Wasser", "Der intellektuelle Hahn: Flexibler und kommunikativer. Überzeugt durch Logik und Charme."]
+        ]
       },
       hund: {
         name: "Hund (Der Beschützer)",
         icon: "🐕",
-        years: "1934, 1946, 1958, 1970, 1982, 1994, 2006, 2018, 2030, 2042",
-        text: "Der Hund ist das Symbol für Treue, Gerechtigkeit und Ehrlichkeit. Hunde sind loyal bis in den Tod, aber oft pessimistisch und sorgenvolle Denker.\n\nSie haben einen feinen Riecher für Gefahr und Falschheit. Sie sind wunderbare Zuhörer und Freunde.",
-        img: "imgs/hund.jpg"
+        text: `Charakter: Der Hund ist das Symbol für Treue, Gerechtigkeit und Ehrlichkeit.
+
+Hunde sind loyal bis in den Tod, aber oft pessimistisch und sorgenvolle Denker.
+
+Sie haben einen feinen Riecher für Gefahr und Falschheit. Sie sind wunderbare Zuhörer und Freunde.
+Spirituell sind sie die Wächter der Seele.`,
+        img: "imgs/hund.jpg",
+        table: [
+          ["1934, 1994, 2054", "Holz", "Der verlässliche Hund: Warmherzig, Teamplayer. Sucht Stabilität, wächst durch Vertrauen."],
+          ["1946, 2006, 2066", "Feuer", "Der idealistische Hund: Kämpft für Überzeugungen. Mutig, führt andere an."],
+          ["1958, 2018, 2078", "Erde", "Der realistische Hund: Bodenständig und gerecht. Lässt sich von Fakten leiten. Guter Ratgeber."],
+          ["1910, 1970, 2030", "Metall", "Der strenge Hund: Hohe Prinzipien. Loyal aber unnachgiebig. Schützt was ihm heilig ist."],
+          ["1922, 1982, 2042", "Wasser", "Der intuitive Hund: Weicher und flexibler. Guter Seelsorger, neigt zum Grübeln."]
+        ]
       },
       schwein: {
         name: "Schwein (Der Genießer)",
         icon: "🐖",
-        years: "1935, 1947, 1959, 1971, 1983, 1995, 2007, 2019, 2031, 2043",
-        text: "Das Schwein rundet den Zyklus ab. Es steht für Ehrlichkeit, Genuss und Hilfsbereitschaft. Schweine sind galant, friedliebend und glauben an das Gute im Menschen.\n\nSie sind kulinarische Genießer und Freunde des Lebens. Ein Glücksbringer, der inneren wie äußeren Reichtum anzieht.",
-        img: "imgs/schwein.jpg"
+        text: `Charakter: Das Schwein rundet den Zyklus ab. Es steht für Ehrlichkeit, Genuss und Hilfsbereitschaft.
+
+Schweine sind galant, friedliebend und naiv im besten Sinne – sie glauben an das Gute im Menschen.
+
+Sie sind kulinarische Genießer und Freunde des Lebens. Auf Sternenpfade ist das Schwein der Glücksbringer, der Reichtum (inneren wie äußeren) anzieht.`,
+        img: "imgs/schwein.jpg",
+        table: [
+          ["1935, 1995, 2055", "Holz", "Das gesellige Schwein: Hilfsbereit, optimistisch. Das Herz jeder Party."],
+          ["1947, 2007, 2067", "Feuer", "Das mutige Schwein: Energisch und risikofreudig. Kann stur sein, aber Herz voll Wärme."],
+          ["1959, 2019, 2079", "Erde", "Das vernünftige Schwein: Organisiert, plant Zukunft. Genießer mit Realitätssinn."],
+          ["1911, 1971, 2031", "Metall", "Das stolze Schwein: Stil und Geschmack. Ehrgeiziger, liebt Luxus. Arbeitet hart."],
+          ["1923, 1983, 2043", "Wasser", "Das diplomatische Schwein: Sensibel und intuitiv. Friedliebend, findet Kompromisse."]
+        ]
       }
     };
 
-    // --- LOGIK: URL AUSLESEN UND INHALT FÜLLEN (VERBESSERT) ---
+    // --- LOGIK: INHALT UND TABELLEN GENERIEREN ---
     
-    // 1. Hole den Parameter "tier" aus der URL
+    // 1. URL Parameter holen
     const urlParams = new URLSearchParams(window.location.search);
     let tierKey = urlParams.get('tier');
 
-    // FIX: Wenn kein Tier in der URL steht (z.B. Test-Modus), nimm einfach 'ratte' als Standard
-    if (!tierKey) {
-      console.log("Kein Tier in URL gefunden, zeige Ratte als Standard.");
-      tierKey = 'ratte';
+    // Fallback: Wenn leer, nimm Ratte
+    if (!tierKey) { 
+      console.log("Kein Tier in URL, zeige Ratte");
+      tierKey = 'ratte'; 
     }
-
-    // Alles in Kleinbuchstaben umwandeln, um Fehler zu vermeiden
     tierKey = tierKey.toLowerCase();
 
-    // MAPPING: Falls englische Namen kommen (z.B. ?tier=rat), übersetze sie ins Deutsche
+    // Mapping Englisch -> Deutsch
     const englishMap = {
       rat: 'ratte', ox: 'bueffel', tiger: 'tiger', rabbit: 'hase',
       dragon: 'drache', snake: 'schlange', horse: 'pferd', goat: 'ziege', sheep: 'ziege',
       monkey: 'affe', rooster: 'hahn', dog: 'hund', pig: 'schwein'
     };
-    if (englishMap[tierKey]) {
-      tierKey = englishMap[tierKey];
-    }
+    if (englishMap[tierKey]) { tierKey = englishMap[tierKey]; }
 
-    // 2. Elemente im HTML finden
+    // Elemente finden
     const nameEl = document.getElementById('z-name');
     const iconEl = document.getElementById('z-icon');
-    const yearsEl = document.getElementById('z-years');
     const textEl = document.getElementById('z-text');
     const imgEl = document.getElementById('z-img');
+    const tableArea = document.getElementById('z-table-area');
 
-    // 3. Inhalt füllen
+    // 2. Daten rendern
     if (zodiacData[tierKey]) {
       const data = zodiacData[tierKey];
       
+      // Basis Infos
       nameEl.innerText = data.name;
       iconEl.innerText = data.icon;
-      yearsEl.innerText = "Jahrgänge: " + data.years;
       textEl.innerText = data.text;
       
+      // Bild
       if(data.img) {
         imgEl.src = data.img;
         imgEl.style.display = "inline-block";
         imgEl.alt = data.name;
       }
+
+      // --- TABELLE GENERIEREN ---
+      let tableHTML = `
+        <table class="elements-table">
+          <thead>
+            <tr>
+              <th>Zeitraum</th>
+              <th>Element</th>
+              <th>Bedeutung & Nuance</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+      
+      // Zeilen hinzufügen
+      data.table.forEach(row => {
+        tableHTML += `
+          <tr>
+            <td style="font-weight:bold; color:#d4af37;">${row[0]}</td>
+            <td>${row[1]}</td>
+            <td>${row[2]}</td>
+          </tr>
+        `;
+      });
+
+      tableHTML += `</tbody></table>`;
+      tableArea.innerHTML = tableHTML;
+
     } else {
-      // Nur wenn wirklich gar nichts gefunden wurde (falscher Name)
       nameEl.innerText = "Tier nicht gefunden!";
-      textEl.innerText = "Das gesuchte Tier '" + tierKey + "' existiert nicht in der Datenbank.";
+      textEl.innerText = "Das gesuchte Tier existiert nicht in der Datenbank.";
       iconEl.innerText = "❌";
     }
   </script>
