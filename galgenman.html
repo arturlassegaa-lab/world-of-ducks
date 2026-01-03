@@ -7,24 +7,26 @@
   <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
   <style>
-    /* --- DESIGN & VARIABLEN --- */
+    /* --- S&F DUNGEON STYLE --- */
     :root {
-      --bg-dark: #1a0e05;
-      --bg-wood: url('https://www.transparenttextures.com/patterns/wood-pattern.png');
-      --frame-border: #d4af37;
-      --frame-bg: #f4e4bc;
-      --text-dark: #3e2a14;
-      --accent: #c0392b;
-      --btn-hover: #e6d8a7;
+      --dungeon-bg: #212121;
+      --stone-light: #757575;
+      --stone-dark: #424242;
+      --accent-red: #d32f2f;
+      --accent-green: #388e3c;
+      --wood-frame: #3e2723;
     }
 
     body {
       margin: 0;
       padding: 20px;
-      background-color: var(--bg-dark);
-      background-image: var(--bg-wood);
+      /* Hintergrund: Steinwand-Optik (simuliert) */
+      background-color: #121212;
+      background-image: radial-gradient(#333 15%, transparent 16%), radial-gradient(#333 15%, transparent 16%);
+      background-size: 20px 20px;
+      background-position: 0 0, 10px 10px;
       font-family: 'MedievalSharp', cursive;
-      color: var(--text-dark);
+      color: #fff;
       min-height: 100vh;
       display: flex;
       justify-content: center;
@@ -34,144 +36,148 @@
     }
 
     .main-frame {
-      background: var(--frame-bg);
-      background-image: url('https://www.transparenttextures.com/patterns/old-paper.png');
+      background-color: var(--dungeon-bg);
       max-width: 900px;
       width: 100%;
-      border: 4px double var(--frame-border);
-      border-radius: 20px;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+      border: 10px solid var(--stone-dark);
+      border-radius: 5px;
+      box-shadow: 0 0 0 2px #000, 0 15px 40px #000;
       position: relative;
       display: flex;
       flex-direction: column;
       overflow: hidden;
     }
 
-    /* --- DER NEUE HEADER (Royal Look) --- */
+    /* Header wie ein Banner */
     .header {
       text-align: center;
-      padding: 25px 0;
-      /* Dunkler Verlauf für maximalen Kontrast */
-      background: linear-gradient(180deg, #3e2a14 0%, #1a0e05 100%);
-      /* Goldene Kanten oben und unten */
-      border-bottom: 4px solid #d4af37;
-      border-top: 4px solid #d4af37;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-      margin-bottom: 20px;
+      padding: 20px 0;
+      background: #b71c1c; /* Dunkles Rot */
+      border-bottom: 5px solid #000;
+      box-shadow: inset 0 -5px 10px rgba(0,0,0,0.5);
     }
 
     .header h1 { 
       margin: 0; 
-      font-size: 2.5rem; 
-      /* Helles, leuchtendes Gold */
-      color: #ffd700; 
+      font-size: 2.8rem; 
+      color: #ffeb3b; 
       text-transform: uppercase;
-      letter-spacing: 2px;
-      /* Kräftiger Schatten für 3D-Effekt */
-      text-shadow: 2px 2px 0 #000, 0 0 20px rgba(255, 215, 0, 0.4);
+      /* Comic Outline */
+      text-shadow: 3px 3px 0 #000;
     }
 
-    /* Navi */
+    /* Navi Buttons (Stein-Look) */
     .menu-container {
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
       gap: 10px;
-      padding: 10px 15px 25px 15px; /* Etwas Platz nach unten */
-      background: transparent;
+      padding: 15px;
+      background: #1a1a1a;
+      border-bottom: 2px solid #000;
     }
     .nav-btn {
       text-decoration: none;
-      color: var(--text-dark);
+      color: #fff;
       font-weight: bold;
       padding: 8px 16px;
-      border: 2px solid var(--frame-border);
-      border-radius: 10px;
-      background: #fff;
-      transition: all 0.2s;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      background: var(--stone-dark);
+      border: 2px solid #000;
+      border-radius: 4px;
+      box-shadow: inset 0 2px 0 rgba(255,255,255,0.2);
+      transition: all 0.1s;
     }
-    .nav-btn:hover { background: var(--btn-hover); transform: translateY(-2px); }
+    .nav-btn:hover { background: var(--stone-light); transform: translateY(-2px); }
 
-    /* --- GAME BEREICH --- */
+    /* --- GAME AREA --- */
     .game-area {
-      padding: 0 20px 40px 20px;
+      padding: 30px 20px;
       text-align: center;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 20px;
+      background: url('https://www.transparenttextures.com/patterns/dark-matter.png');
     }
 
     .duck-portrait {
-      width: 180px;
-      height: 180px;
+      width: 200px;
+      height: 200px;
       object-fit: cover;
-      border-radius: 50%;
-      border: 5px solid var(--frame-border);
-      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-      background: #fff;
+      /* Massiver Holzrahmen */
+      border: 8px solid var(--wood-frame);
+      border-radius: 10px;
+      box-shadow: 0 0 0 2px #000, 0 10px 20px rgba(0,0,0,0.8);
     }
 
-    .bomb-container { font-size: 4rem; margin: 10px 0; transition: transform 0.2s; cursor: default; }
+    .bomb-container { font-size: 4rem; margin: 10px 0; text-shadow: 2px 2px 0 #000; cursor: default; }
 
     #wordDisplay {
-      font-size: 2.5rem;
-      letter-spacing: 8px;
+      font-size: 3rem;
+      letter-spacing: 10px;
       font-weight: bold;
-      color: var(--accent);
+      color: #ffb74d;
       min-height: 50px;
-      text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
+      text-shadow: 3px 3px 0 #000;
     }
 
+    /* Tastatur: Rune Stones */
     #letters {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 6px;
-      max-width: 650px;
+      gap: 8px;
+      max-width: 700px;
     }
     .letter-btn {
-      width: 42px; height: 42px;
-      border: 2px solid var(--frame-border);
-      background: #fff;
+      width: 45px; height: 45px;
+      border: 2px solid #000;
+      background: #e0e0e0;
       border-radius: 6px;
       font-family: inherit;
-      font-size: 1.2rem;
+      font-size: 1.4rem;
       font-weight: bold;
       cursor: pointer;
+      color: #000;
+      /* 3D Stone Look */
+      border-bottom-width: 5px;
+      border-color: #616161;
       transition: all 0.1s;
-      color: var(--text-dark);
-      box-shadow: 0 2px 0 rgba(0,0,0,0.2);
     }
-    .letter-btn:hover:not(:disabled) { background: var(--btn-hover); transform: translateY(-2px); }
-    .letter-btn:active:not(:disabled) { transform: translateY(0); box-shadow: none; }
-    .letter-btn:disabled { background: rgba(0,0,0,0.05); color: #bbb; border-color: #ddd; cursor: default; box-shadow: none; transform: none; }
+    .letter-btn:hover:not(:disabled) { 
+      transform: translateY(2px); 
+      border-bottom-width: 3px;
+      background: #fff;
+    }
+    .letter-btn:active:not(:disabled) {
+      transform: translateY(4px);
+      border-bottom-width: 1px;
+    }
+    .letter-btn:disabled { 
+      background: #424242; 
+      color: #757575; 
+      border-color: #212121; 
+      border-bottom-width: 2px;
+      cursor: default; 
+      transform: translateY(4px);
+    }
 
     /* Nachrichten */
     #message {
-      font-size: 1.3rem;
+      font-size: 1.5rem;
       min-height: 1.4em;
       font-weight: bold;
-      padding: 10px;
-      border-radius: 8px;
-    }
-    .win-msg { color: #27ae60; background: rgba(39, 174, 96, 0.1); border: 1px solid #27ae60; }
-    .lose-msg { color: #c0392b; background: rgba(192, 57, 43, 0.1); border: 1px solid #c0392b; }
-    
-    .translation-hint { font-size: 1rem; color: #555; margin-top: -10px; line-height: 1.5; }
-
-    .footer {
-      text-align: center;
       padding: 15px;
-      font-size: 0.8rem;
-      color: rgba(62, 42, 20, 0.6);
-      border-top: 1px solid rgba(0,0,0,0.1);
-      background: rgba(0,0,0,0.03);
-      margin-top: auto;
+      border-radius: 8px;
+      text-shadow: 1px 1px 0 #000;
+      margin-top: 10px;
     }
+    .win-msg { color: #fff; background: var(--accent-green); border: 2px solid #000; box-shadow: 0 5px 0 #1b5e20; }
+    .lose-msg { color: #fff; background: var(--accent-red); border: 2px solid #000; box-shadow: 0 5px 0 #b71c1c; }
+    
+    .translation-hint { font-size: 1.1rem; color: #bbb; margin-top: 5px; line-height: 1.6; max-width: 80%; }
 
-    /* --- EXPLOSION EFFEKTE --- */
+    /* --- EXPLOSION --- */
     @keyframes shake {
       0% { transform: translate(1px, 1px) rotate(0deg); }
       10% { transform: translate(-1px, -2px) rotate(-1deg); }
@@ -187,9 +193,8 @@
     }
 
     .explode-anim {
-      animation: shake 0.5s;
-      animation-iteration-count: infinite;
-      background-color: rgba(255, 0, 0, 0.2); 
+      animation: shake 0.5s infinite;
+      border-color: red !important;
     }
 
     .bomb-explode {
@@ -199,22 +204,31 @@
     }
 
     .restart-btn {
-      padding: 12px 24px;
-      background: var(--text-dark);
-      color: #ffd700;
-      border: 2px solid #ffd700;
+      padding: 15px 30px;
+      background: #ff9800;
+      color: #000;
+      border: 3px solid #000;
       border-radius: 8px;
       cursor: pointer;
       font-family: inherit;
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       font-weight: bold;
-      margin-top: 15px;
+      margin-top: 20px;
       display: none; 
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-      transition: transform 0.2s;
+      box-shadow: 0 5px 0 #e65100;
+      text-transform: uppercase;
     }
-    .restart-btn:hover { transform: scale(1.05); background: #000; }
+    .restart-btn:hover { background: #ffb74d; transform: translateY(2px); box-shadow: 0 3px 0 #e65100; }
+    .restart-btn:active { transform: translateY(5px); box-shadow: none; }
 
+    .footer {
+      text-align: center;
+      padding: 15px;
+      font-size: 0.8rem;
+      color: #666;
+      background: #000;
+      border-top: 2px solid #333;
+    }
   </style>
 </head>
 <body>
@@ -225,11 +239,11 @@
     </header>
 
     <nav class="menu-container">
-      <a href="blogs.html" class="nav-btn">📜 Blogs</a>
-      <a href="memory.html" class="nav-btn">🧠 Memory</a>
-      <a href="chat.html" class="nav-btn">💬 Chat</a>
-      <a href="galgenman.html" class="nav-btn">😵 Galgenman</a>
-      <a href="inspo.html" class="nav-btn">✨ Inspo</a>
+      <a href="blogs.html" class="nav-btn">Blogs</a>
+      <a href="memory.html" class="nav-btn">Memory</a>
+      <a href="chat.html" class="nav-btn">Chat</a>
+      <a href="galgenman.html" class="nav-btn">Galgenman</a>
+      <a href="inspo.html" class="nav-btn">Inspo</a>
     </nav>
 
     <div class="game-area">
@@ -252,83 +266,22 @@
   </div>
 
 <script>
-  // Die schlaue Liste: Wort + Sprache + Etymologie
   const duckWords = [
-    { 
-      w: "DUCK", 
-      l: "Englisch 🇬🇧", 
-      info: "Kommt vom alten Verb 'to duck' (sich ducken/abtauchen). Die Ente wurde also nach ihrer Bewegung benannt: 'Der Taucher'." 
-    },
-    { 
-      w: "CANARD", 
-      l: "Französisch 🇫🇷", 
-      info: "Leitet sich wohl von 'caner' (schnattern) ab. Fun Fact: Eine 'Zeitungsente' (Falschmeldung) heißt deshalb so, weil man früher sagte 'eine Ente an jemanden verkaufen' (lügen)." 
-    },
-    { 
-      w: "PATO", 
-      l: "Spanisch 🇪🇸", 
-      info: "Die Herkunft ist unklar, aber wahrscheinlich ist es lautmalerisch (Onomatopoesie). Es klingt wie das Watscheln der Füße: Patsche-Patsche -> Pato." 
-    },
-    { 
-      w: "ANATRA", 
-      l: "Italienisch 🇮🇹", 
-      info: "Kommt vom lateinischen 'Anas' (Ente) kombiniert mit 'trinatrix' (Schwimmerin). Also quasi: Die schwimmende Ente." 
-    },
-    { 
-      w: "EEND", 
-      l: "Niederländisch 🇳🇱", 
-      info: "Verwandt mit dem lateinischen 'Anas'. Ein sehr altes germanisches Wort, das einfach den Wasservogel bezeichnet." 
-    },
-    { 
-      w: "AND", 
-      l: "Dänisch 🇩🇰", 
-      info: "Ur-Germanisch. Kurz, knackig, nordisch. Verwandt mit dem deutschen 'Ente' (A und E wechseln oft in der Sprachgeschichte)." 
-    },
-    { 
-      w: "KACZKA", 
-      l: "Polnisch 🇵🇱", 
-      info: "Klingt fast wie das Geräusch, das sie macht. Viele slawische Wörter für Ente basieren auf dem Ruf 'kaka' oder 'kwa'." 
-    },
-    { 
-      w: "ORDEK", 
-      l: "Türkisch 🇹🇷", 
-      info: "Ein altes Turksprachen-Wort. Die Endung '-dek' findet sich oft bei Tiernamen, aber die genaue Wurzel liegt tief in der Geschichte Zentralasiens." 
-    },
-    { 
-      w: "BEBEK", 
-      l: "Indonesisch 🇮🇩", 
-      info: "Absolut lautmalerisch! Sprich es mal laut aus: 'Be-bek'. Das ist genau das Geräusch, das indonesische Enten machen." 
-    },
-    { 
-      w: "KACSA", 
-      l: "Ungarisch 🇭🇺", 
-      info: "Ähnlich wie im Slawischen (obwohl Ungarisch nicht slawisch ist!), wurde das Wort wahrscheinlich vom 'Quack'-Geräusch abgeleitet." 
-    },
-    { 
-      w: "ANAS", 
-      l: "Latein 🏛️", 
-      info: "Der OG-Name. Die wissenschaftliche Bezeichnung für Enten ist heute noch 'Anatidae'. Davon stammen fast alle europäischen Namen ab." 
-    },
-    { 
-      w: "AHIR", 
-      l: "Aserbaidschanisch 🇦🇿", 
-      info: "Verwandt mit dem Türkischen. Ein klassisches Wort aus der Turk-Sprachfamilie." 
-    },
-    { 
-      w: "PATA", 
-      l: "Tagalog (Philippinen) 🇵🇭", 
-      info: "Wurde wahrscheinlich durch die spanische Kolonialisierung vom spanischen Wort 'Pato' übernommen." 
-    },
-    { 
-      w: "LUIT", 
-      l: "Estnisch 🇪🇪", 
-      info: "In den finno-ugrischen Sprachen haben Wasservögel oft ganz eigene, uralte Namen, die mit dem Leben an der Ostsee zu tun haben." 
-    },
-    { 
-      w: "DRAKE", 
-      l: "Englisch (Erpel) 🇬🇧", 
-      info: "Spezial-Wissen: 'Drake' heißt eigentlich der männliche Erpel. Manche sagen, es hat die gleiche Wurzel wie 'Drache', aber das ist umstritten!" 
-    }
+    { w: "DUCK", l: "Englisch 🇬🇧", info: "Kommt vom alten Verb 'to duck' (sich ducken/abtauchen). Die Ente wurde also nach ihrer Bewegung benannt: 'Der Taucher'." },
+    { w: "CANARD", l: "Französisch 🇫🇷", info: "Leitet sich wohl von 'caner' (schnattern) ab. Fun Fact: Eine 'Zeitungsente' (Falschmeldung) heißt deshalb so, weil man früher sagte 'eine Ente an jemanden verkaufen' (lügen)." },
+    { w: "PATO", l: "Spanisch 🇪🇸", info: "Die Herkunft ist unklar, aber wahrscheinlich ist es lautmalerisch (Onomatopoesie). Es klingt wie das Watscheln der Füße: Patsche-Patsche -> Pato." },
+    { w: "ANATRA", l: "Italienisch 🇮🇹", info: "Kommt vom lateinischen 'Anas' (Ente) kombiniert mit 'trinatrix' (Schwimmerin). Also quasi: Die schwimmende Ente." },
+    { w: "EEND", l: "Niederländisch 🇳🇱", info: "Verwandt mit dem lateinischen 'Anas'. Ein sehr altes germanisches Wort, das einfach den Wasservogel bezeichnet." },
+    { w: "AND", l: "Dänisch 🇩🇰", info: "Ur-Germanisch. Kurz, knackig, nordisch. Verwandt mit dem deutschen 'Ente' (A und E wechseln oft in der Sprachgeschichte)." },
+    { w: "KACZKA", l: "Polnisch 🇵🇱", info: "Klingt fast wie das Geräusch, das sie macht. Viele slawische Wörter für Ente basieren auf dem Ruf 'kaka' oder 'kwa'." },
+    { w: "ORDEK", l: "Türkisch 🇹🇷", info: "Ein altes Turksprachen-Wort. Die Endung '-dek' findet sich oft bei Tiernamen, aber die genaue Wurzel liegt tief in der Geschichte Zentralasiens." },
+    { w: "BEBEK", l: "Indonesisch 🇮🇩", info: "Absolut lautmalerisch! Sprich es mal laut aus: 'Be-bek'. Das ist genau das Geräusch, das indonesische Enten machen." },
+    { w: "KACSA", l: "Ungarisch 🇭🇺", info: "Ähnlich wie im Slawischen (obwohl Ungarisch nicht slawisch ist!), wurde das Wort wahrscheinlich vom 'Quack'-Geräusch abgeleitet." },
+    { w: "ANAS", l: "Latein 🏛️", info: "Der OG-Name. Die wissenschaftliche Bezeichnung für Enten ist heute noch 'Anatidae'. Davon stammen fast alle europäischen Namen ab." },
+    { w: "AHIR", l: "Aserbaidschanisch 🇦🇿", info: "Verwandt mit dem Türkischen. Ein klassisches Wort aus der Turk-Sprachfamilie." },
+    { w: "PATA", l: "Tagalog (Philippinen) 🇵🇭", info: "Wurde wahrscheinlich durch die spanische Kolonialisierung vom spanischen Wort 'Pato' übernommen." },
+    { w: "LUIT", l: "Estnisch 🇪🇪", info: "In den finno-ugrischen Sprachen haben Wasservögel oft ganz eigene, uralte Namen, die mit dem Leben an der Ostsee zu tun haben." },
+    { w: "DRAKE", l: "Englisch (Erpel) 🇬🇧", info: "Spezial-Wissen: 'Drake' heißt eigentlich der männliche Erpel. Manche sagen, es hat die gleiche Wurzel wie 'Drache', aber das ist umstritten!" }
   ];
 
   let currentItem = {};
@@ -346,26 +299,19 @@
   const gameFrame = document.getElementById("gameFrame");
 
   function initGame(){
-    // Reset Alles
     guessed = [];
     fails = 0;
     message.textContent = "";
     message.className = "";
-    // Leerer Start-Text
     translationDiv.innerHTML = "Finde das Wort für 'Ente' in einer anderen Sprache!";
-    
     bomb.textContent = "💣";
     bomb.className = "bomb-container"; 
     gameFrame.classList.remove("explode-anim");
     document.body.style.backgroundColor = ""; 
     restartBtn.style.display = "none";
-
-    // Zufälliges Wort wählen
     currentItem = duckWords[Math.floor(Math.random() * duckWords.length)];
     chosenWord = currentItem.w;
-
     console.log("Pssst, Lösung: " + chosenWord);
-
     renderWord();
     createLetters();
   }
@@ -374,12 +320,8 @@
     let out = "";
     let won = true;
     for (let c of chosenWord){
-      if (guessed.includes(c)) {
-        out += c + " ";
-      } else {
-        out += "_ ";
-        won = false;
-      }
+      if (guessed.includes(c)) out += c + " ";
+      else { out += "_ "; won = false; }
     }
     wordDisplay.textContent = out.trim();
     if (won) endGame(true);
@@ -405,21 +347,14 @@
     } else {
       fails++;
       bomb.style.transform = `scale(${1 + fails * 0.2})`;
-      if (fails >= maxFails){
-        endGame(false);
-      }
+      if (fails >= maxFails) endGame(false);
     }
   }
 
   function endGame(win){
     document.querySelectorAll(".letter-btn").forEach(b => b.disabled = true);
     restartBtn.style.display = "inline-block";
-
-    const infoText = `
-      <br><br>
-      <span style="color:var(--text-dark); font-weight:bold; font-size:1.1em;">Sprache: ${currentItem.l}</span><br>
-      <span style="font-size: 0.95em; color: #444;">${currentItem.info}</span>
-    `;
+    const infoText = `<br><br><span style="color:#fff; font-weight:bold; font-size:1.1em;">Sprache: ${currentItem.l}</span><br><span style="font-size: 0.95em; color: #ccc;">${currentItem.info}</span>`;
 
     if (win) {
       message.textContent = "Yesssssss";
@@ -431,19 +366,14 @@
       message.textContent = "C'est comme ça, c'est la vie, tu peux rien y faire.";
       message.className = "lose-msg";
       translationDiv.innerHTML = `Leider falsch. Das Wort war <strong>${chosenWord}</strong>.${infoText}`;
-      
       bomb.classList.add("bomb-explode");
       bomb.textContent = "💥";
       gameFrame.classList.add("explode-anim");
-      
       document.body.style.transition = "background-color 0.1s";
       document.body.style.backgroundColor = "#500"; 
-      setTimeout(() => {
-        document.body.style.backgroundColor = "";
-      }, 300);
+      setTimeout(() => { document.body.style.backgroundColor = ""; }, 300);
     }
   }
-
   restartBtn.onclick = initGame;
   initGame();
 </script>
