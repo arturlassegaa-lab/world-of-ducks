@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Inspo — World of Ducks</title>
   <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,700&family=Poppins:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,700&family=Poppins:wght@700&family=Amiri&display=swap" rel="stylesheet">
   
   <style>
     /* --- RESET & BASIC --- */
@@ -13,7 +13,7 @@
       margin: 0;
       padding: 0;
       background-color: #000;
-      overflow: hidden; /* Damit keine Scrollbalken kommen */
+      overflow: hidden; 
       font-family: 'Poppins', sans-serif;
       height: 100vh;
       width: 100vw;
@@ -25,11 +25,11 @@
       position: absolute;
       top: 0;
       left: 0;
-      z-index: 1; /* Ganz unten */
-      pointer-events: none; /* Klicks gehen durch */
+      z-index: 1; 
+      pointer-events: none; 
     }
 
-    /* Container für den Inhalt (liegt über dem Feuerwerk) */
+    /* Container für den Inhalt */
     .content-layer {
       position: relative;
       z-index: 10;
@@ -37,116 +37,138 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: space-between; /* Header oben, Text mitte */
-      padding: 20px;
+      justify-content: space-between; 
       box-sizing: border-box;
     }
 
-    /* --- GLOSSY TEXT EFFEKT (Chrome Style) --- */
-    .glossy-text {
-      color: #fff;
-      text-transform: uppercase;
-      font-weight: 900;
-      /* Der Chrom-Effekt */
-      background: linear-gradient(to bottom, #dcdcdc 0%, #fff 50%, #686868 51%, #a8a8a8 100%);
+    /* --- DER NEUE RPG HEADER (Mix aus Dark Mode & Holz) --- */
+    .header {
+      width: 100%;
+      text-align: center;
+      padding: 20px 0;
+      
+      /* RPG Holz-Hintergrund, aber dunkel abgedunkelt */
+      background-color: #1a0e05; 
+      background-image: url('https://www.transparenttextures.com/patterns/wood-pattern.png');
+      
+      /* Goldene Kante unten */
+      border-bottom: 3px solid #d4af37;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8), 0 0 15px rgba(212, 175, 55, 0.3);
+      
+      position: relative;
+      z-index: 20;
+    }
+
+    /* Glossy Text im Header */
+    .header h1 {
+      font-size: 2.5rem;
+      margin: 0;
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      
+      /* Der Chrom/Silber Effekt */
+      background: linear-gradient(to bottom, #fff 0%, #e0e0e0 40%, #999 50%, #fff 100%);
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
-      /* Glanz-Schatten */
-      text-shadow: 0px 2px 4px rgba(255,255,255,0.3);
-      letter-spacing: 2px;
+      
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
+      letter-spacing: 1px;
     }
 
-    /* Header */
-    .header h1 {
-      font-size: 2.5rem;
-      margin: 10px 0;
-      font-family: 'Playfair Display', serif;
-      font-style: italic;
-    }
-
-    /* Navigation (angepasst an Dark Mode) */
+    /* Navigation */
     .menu-container {
       display: flex;
       gap: 15px;
       flex-wrap: wrap;
       justify-content: center;
-      margin-bottom: auto; /* Drückt den Rest nach unten */
+      padding: 15px;
+      width: 100%;
+      /* Hintergrund leicht abgedunkelt für Lesbarkeit */
+      background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
     }
 
     .nav-btn {
       text-decoration: none;
-      color: #ccc;
+      color: #d4af37; /* Goldene Schrift passend zum RPG Look */
       font-size: 0.9rem;
       padding: 8px 16px;
-      border: 1px solid #444;
-      border-radius: 20px;
-      background: rgba(0,0,0,0.5);
-      backdrop-filter: blur(5px);
+      border: 1px solid #d4af37;
+      border-radius: 12px;
+      background: rgba(26, 14, 5, 0.7); /* Dunkles Holz-Transparent */
       transition: all 0.3s ease;
+      font-family: 'MedievalSharp', cursive; /* Optional, falls geladen, sonst Standard */
     }
 
     .nav-btn:hover {
-      background: #fff;
-      color: #000;
-      box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
-      border-color: #fff;
+      background: #d4af37;
+      color: #1a0e05;
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
     }
 
     /* --- DER MITTEL-SATZ (LINK) --- */
     .center-piece {
-      flex-grow: 1; /* Nimmt den Platz in der Mitte ein */
+      flex-grow: 1; 
       display: flex;
       justify-content: center;
       align-items: center;
       width: 100%;
+      padding: 20px;
     }
 
     .vibe-link {
       text-decoration: none;
       font-family: 'Playfair Display', serif;
       font-style: italic;
-      font-size: 2.5rem; /* Groß! */
+      font-size: 2.8rem; 
       text-align: center;
       cursor: pointer;
-      position: relative;
+      line-height: 1.4;
       
-      /* Glossy Effekt für den Link */
-      background: linear-gradient(to bottom, #fff 0%, #e0e0e0 40%, #999 50%, #fff 100%);
+      /* Glossy Effekt */
+      background: linear-gradient(to bottom, #ffffff 0%, #dcdcdc 50%, #888888 51%, #ffffff 100%);
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
       
       transition: transform 0.2s;
+      filter: drop-shadow(0 0 15px rgba(255,255,255,0.4));
     }
 
     .vibe-link:hover {
       transform: scale(1.05);
-      filter: drop-shadow(0 0 10px rgba(255,255,255,0.5));
+      filter: drop-shadow(0 0 25px rgba(255,255,255,0.8));
     }
 
-    /* Cursor für den Typewriter */
+    /* Speziell für Arabisch */
+    .arabic-font {
+      font-family: 'Amiri', serif;
+      font-style: normal;
+    }
+
     .cursor {
       display: inline-block;
-      width: 2px;
+      width: 3px;
       height: 1em;
       background-color: #fff;
       margin-left: 5px;
       animation: blink 1s infinite;
       vertical-align: middle;
+      box-shadow: 0 0 10px #fff;
     }
     @keyframes blink { 50% { opacity: 0; } }
 
     /* Footer */
     .footer {
-      color: #444;
+      color: #666;
       font-size: 0.8rem;
-      margin-top: 20px;
+      padding: 15px;
+      text-align: center;
     }
 
     /* Responsive */
     @media (max-width: 600px) {
-      .header h1 { font-size: 1.8rem; }
+      .header h1 { font-size: 2rem; }
       .vibe-link { font-size: 1.8rem; }
     }
   </style>
@@ -181,10 +203,13 @@
   </div>
 
   <script>
-    /* --- TYPEWRITER EFFEKT (Deutsch / Englisch) --- */
+    /* --- TYPEWRITER 5 SPRACHEN --- */
     const phrases = [
-      "Pass auf wen du liebst",
-      "Watch who you love"
+      "Pass auf wen du liebst",       // Deutsch
+      "Watch who you love",           // Englisch
+      "Fais attention à qui tu aimes",// Französisch
+      "انتبه لمن تحب",                // Arabisch
+      "Kimi sevdiğine dikkat et"      // Türkisch
     ];
 
     const textElement = document.getElementById('typing-text');
@@ -195,6 +220,13 @@
 
     function typeWriter() {
       currentPhrase = phrases[phraseIndex];
+      
+      // Arabisch braucht spezielle Klasse für Schriftart
+      if (phraseIndex === 3) { 
+        textElement.classList.add('arabic-font');
+      } else {
+        textElement.classList.remove('arabic-font');
+      }
 
       if (!isDeleting) {
         textElement.textContent = currentPhrase.substring(0, charIndex + 1);
@@ -204,7 +236,7 @@
           isDeleting = true;
           setTimeout(typeWriter, 4000); // 4 Sekunden stehen lassen
         } else {
-          setTimeout(typeWriter, 100); // Tipp-Geschwindigkeit
+          setTimeout(typeWriter, 100); 
         }
       } else {
         textElement.textContent = currentPhrase.substring(0, charIndex - 1);
@@ -212,17 +244,17 @@
 
         if (charIndex === 0) {
           isDeleting = false;
-          phraseIndex = (phraseIndex + 1) % phrases.length; // Nächster Satz
+          phraseIndex = (phraseIndex + 1) % phrases.length;
           setTimeout(typeWriter, 500);
         } else {
-          setTimeout(typeWriter, 50); // Lösch-Geschwindigkeit
+          setTimeout(typeWriter, 50); 
         }
       }
     }
     document.addEventListener('DOMContentLoaded', typeWriter);
 
 
-    /* --- FEUERWERK ANIMATION (Canvas) --- */
+    /* --- FEUERWERK ANIMATION --- */
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
     let w, h;
@@ -235,7 +267,6 @@
     window.addEventListener("resize", resize);
     resize();
 
-    // Zufallsfunktionen
     function random(min, max) { return Math.random() * (max - min) + min; }
 
     class Particle {
@@ -243,20 +274,19 @@
         this.x = x;
         this.y = y;
         this.color = color;
-        // Explosion in alle Richtungen
         const angle = random(0, Math.PI * 2);
         const speed = random(1, 5);
         this.vx = Math.cos(angle) * speed;
         this.vy = Math.sin(angle) * speed;
-        this.alpha = 1; // Sichtbarkeit
-        this.decay = random(0.01, 0.03); // Wie schnell es verblasst
-        this.gravity = 0.05; // Leichte Schwerkraft
+        this.alpha = 1; 
+        this.decay = random(0.01, 0.03); 
+        this.gravity = 0.05; 
       }
 
       update() {
         this.x += this.vx;
         this.y += this.vy;
-        this.vy += this.gravity; // Fällt nach unten
+        this.vy += this.gravity; 
         this.alpha -= this.decay;
       }
 
@@ -271,25 +301,21 @@
       }
     }
 
-    // Automatische Feuerwerks-Starts
     function launchFirework() {
       const x = random(w * 0.1, w * 0.9);
       const y = random(h * 0.1, h * 0.5);
-      const colors = ["#ff0040", "#00ffff", "#ffff00", "#ff00ff", "#00ff00", "#ffffff"];
+      const colors = ["#ff0040", "#00ffff", "#ffff00", "#ff00ff", "#00ff00", "#ffffff", "#d4af37"];
       const color = colors[Math.floor(random(0, colors.length))];
       
-      // Erzeuge 50 Partikel pro Explosion
-      for (let i = 0; i < 50; i++) {
+      for (let i = 0; i < 60; i++) {
         particles.push(new Particle(x, y, color));
       }
     }
 
     function animate() {
-      // Leichter Schweif-Effekt (macht es smooth)
       ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
       ctx.fillRect(0, 0, w, h);
 
-      // Partikel updaten
       for (let i = particles.length - 1; i >= 0; i--) {
         particles[i].update();
         particles[i].draw();
@@ -298,14 +324,12 @@
         }
       }
 
-      // Zufällig neue Rakete zünden (ca. alle 40 Frames)
-      if (Math.random() < 0.03) {
+      if (Math.random() < 0.04) {
         launchFirework();
       }
 
       requestAnimationFrame(animate);
     }
-
     animate();
   </script>
 </body>
