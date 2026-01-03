@@ -14,44 +14,89 @@
       color: #ffd26a;
       text-align: center;
       height: 100vh;
-      overflow: hidden; /* Damit beim Klicken nichts scrollt */
+      overflow: hidden;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      user-select: none; /* Kein Text markieren beim wilden Klicken */
     }
 
-    h1 { font-size: 3em; color: #ffcc33; margin-bottom: 10px; text-shadow: 2px 2px 0 #000; }
-    p { font-size: 1.2em; color: #ccc; margin-bottom: 30px; }
+    h1 { font-size: 2.5em; color: #ffcc33; margin-bottom: 5px; text-shadow: 2px 2px 0 #000; }
+    p { font-size: 1.1em; color: #ccc; margin-bottom: 20px; }
 
     /* Das Spiel */
     .game-container {
-      background: rgba(0,0,0,0.6);
+      background: rgba(0,0,0,0.7);
       padding: 30px;
       border: 4px solid #5b3b1d;
       border-radius: 20px;
-      width: 300px;
+      width: 320px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.8);
+      position: relative;
     }
 
-    #duck-btn {
-      font-size: 5rem;
-      cursor: pointer;
-      user-select: none;
-      transition: transform 0.1s;
-      display: inline-block;
+    .timer {
+      font-size: 2.5rem;
+      color: #fff;
+      font-weight: bold;
+      font-family: monospace; /* Damit die Zahlen nicht wackeln */
+      margin-bottom: 10px;
+      text-shadow: 0 0 10px #ff0000;
     }
-    #duck-btn:active { transform: scale(0.9) rotate(-10deg); }
 
     .score-board {
       font-size: 1.5rem;
-      margin: 20px 0;
-      color: #fff;
+      margin-bottom: 10px;
+      color: #d4af37;
     }
 
-    .rank {
-      font-size: 1rem;
-      color: #d4af37;
-      min-height: 1.2em;
+    #duck-btn {
+      font-size: 6rem;
+      cursor: pointer;
+      transition: transform 0.05s;
+      display: inline-block;
+      filter: grayscale(100%); /* Grau wenn inaktiv */
+      opacity: 0.5;
+      pointer-events: none; /* Nicht klickbar wenn inaktiv */
+    }
+    
+    /* Wenn Spiel läuft */
+    #duck-btn.active {
+      filter: grayscale(0%);
+      opacity: 1;
+      pointer-events: auto;
+      cursor: crosshair;
+    }
+    #duck-btn.active:active { transform: scale(0.85); }
+
+    .start-btn {
+      background: #8b0000;
+      color: #fff;
+      border: 2px solid #d4af37;
+      padding: 10px 30px;
+      font-size: 1.5rem;
+      font-family: 'MedievalSharp', cursive;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: transform 0.1s;
+    }
+    .start-btn:hover { background: #a50000; transform: scale(1.05); }
+    .start-btn:active { transform: scale(0.95); }
+
+    .highscore {
+      margin-top: 15px;
+      font-size: 0.9rem;
+      color: #aaa;
+    }
+
+    .result-msg {
+      height: 1.5em;
+      font-size: 1.1rem;
+      color: #fff;
+      margin-top: 10px;
+      text-shadow: 0 0 5px #fff;
     }
 
     .back-btn {
@@ -59,70 +104,149 @@
       display: inline-block;
       text-decoration: none;
       padding: 10px 20px;
-      background: #8b0000;
-      color: white;
+      background: #5b3b1d;
+      color: #d4af37;
       border-radius: 5px;
-      border: 2px solid #fff;
+      border: 1px solid #d4af37;
     }
-    .back-btn:hover { background: #ff0000; }
+    .back-btn:hover { background: #7a5028; color: #fff; }
 
     /* Fliegende +1 Animation */
     .plus-one {
       position: absolute;
-      color: #fff;
+      color: #ffcc33;
       font-weight: bold;
+      font-size: 1.5rem;
       pointer-events: none;
-      animation: floatUp 1s ease-out forwards;
+      animation: floatUp 0.6s ease-out forwards;
+      z-index: 100;
+      text-shadow: 1px 1px 0 #000;
     }
     @keyframes floatUp {
-      0% { opacity: 1; transform: translateY(0); }
-      100% { opacity: 0; transform: translateY(-50px); }
+      0% { opacity: 1; transform: translateY(0) scale(1); }
+      100% { opacity: 0; transform: translateY(-80px) scale(1.5); }
     }
   </style>
 </head>
 <body>
 
-  <h1>🚧 Under Construction 🚧</h1>
-  <p>Hier wird noch gequackt! Diese Seite ist noch nicht fertig.<br>Sammle solange ein paar Brotkrumen:</p>
+  <h1>🚧 Work in Progress 🚧</h1>
+  <p>Hier wird noch gebaut! Hast du schnelle Finger?<br>Sammle so viel Brot wie möglich in 5 Sekunden!</p>
 
   <div class="game-container">
-    <div class="score-board">Brotkrumen: <span id="score">0</span> 🍞</div>
+    <div class="timer" id="timer">5.00</div>
+    <div class="score-board">Brot: <span id="score">0</span> 🍞</div>
     
     <div id="duck-btn" onclick="clickDuck(event)">🦆</div>
     
-    <div class="rank" id="rank-display">Rang: Anfänger-Ente</div>
+    <div class="result-msg" id="rank-display">Bereit?</div>
+
+    <button class="start-btn" id="start-btn" onclick="startGame()">START</button>
+
+    <div class="highscore">Dein Rekord: <span id="highscore">0</span></div>
   </div>
 
   <a href="blogs.html" class="back-btn">Zurück zur Übersicht</a>
 
   <script>
     let score = 0;
+    let timeLeft = 5.00;
+    let gameInterval;
+    let isPlaying = false;
+    
+    // Elemente holen
     const scoreEl = document.getElementById('score');
+    const timerEl = document.getElementById('timer');
+    const duckBtn = document.getElementById('duck-btn');
+    const startBtn = document.getElementById('start-btn');
     const rankEl = document.getElementById('rank-display');
+    const highscoreEl = document.getElementById('highscore');
+
+    // Highscore laden
+    let highscore = localStorage.getItem('duckHighscore') || 0;
+    highscoreEl.innerText = highscore;
+
+    function startGame() {
+      if(isPlaying) return;
+      
+      // Reset
+      score = 0;
+      timeLeft = 5.00;
+      scoreEl.innerText = "0";
+      timerEl.innerText = "5.00";
+      rankEl.innerText = "GIB ALLES!";
+      timerEl.style.color = "#fff";
+      
+      // UI Update
+      isPlaying = true;
+      duckBtn.classList.add('active'); // Ente wird bunt
+      startBtn.style.display = 'none'; // Button weg
+
+      // Timer starten
+      gameInterval = setInterval(() => {
+        timeLeft -= 0.01;
+        timerEl.innerText = timeLeft.toFixed(2);
+
+        if(timeLeft <= 1.0) timerEl.style.color = "#ff0000"; // Rot bei letzter Sekunde
+
+        if(timeLeft <= 0) {
+          endGame();
+        }
+      }, 10);
+    }
 
     function clickDuck(e) {
+      if(!isPlaying) return;
+
       score++;
       scoreEl.innerText = score;
-      updateRank();
+      
+      // Kleiner Wackel-Effekt bei der Ente
+      duckBtn.style.transform = `scale(0.9) rotate(${Math.random() * 20 - 10}deg)`;
+      setTimeout(() => duckBtn.style.transform = "scale(1) rotate(0deg)", 50);
+
       spawnParticle(e.clientX, e.clientY);
     }
 
-    function updateRank() {
-      if (score === 10) rankEl.innerText = "Rang: Hungrige Ente";
-      if (score === 50) rankEl.innerText = "Rang: Brot-Sommelier";
-      if (score === 100) rankEl.innerText = "Rang: Teich-Boss";
-      if (score === 250) rankEl.innerText = "Rang: King of Quack";
-      if (score === 500) rankEl.innerText = "Rang: Gottkaiser des Weizens";
+    function endGame() {
+      clearInterval(gameInterval);
+      isPlaying = false;
+      duckBtn.classList.remove('active'); // Ente wieder grau
+      startBtn.style.display = 'inline-block'; // Button wieder da
+      startBtn.innerText = "Nochmal?";
+      timerEl.innerText = "0.00";
+
+      // Highscore Check
+      if(score > highscore) {
+        highscore = score;
+        localStorage.setItem('duckHighscore', highscore);
+        highscoreEl.innerText = highscore;
+        rankEl.innerText = "🏆 NEUER REKORD! 🏆";
+        rankEl.style.color = "#ff0000";
+      } else {
+        evaluateRank();
+      }
+    }
+
+    function evaluateRank() {
+      rankEl.style.color = "#d4af37";
+      if (score < 10) rankEl.innerText = "Rang: Schlafende Ente 😴";
+      else if (score < 25) rankEl.innerText = "Rang: Hungriger Schnabel 🐤";
+      else if (score < 35) rankEl.innerText = "Rang: Turbo-Ente 🚀";
+      else if (score < 45) rankEl.innerText = "Rang: Maschinengewehr 🔫";
+      else rankEl.innerText = "Rang: GOTTKAISER DES BROTES 👑";
     }
 
     function spawnParticle(x, y) {
       const el = document.createElement('div');
-      el.innerText = "+1 🍞";
+      el.innerText = "+1";
       el.className = 'plus-one';
-      el.style.left = (x - 20) + 'px';
+      // Zufällige leichte Variation in der Position damit es natürlicher aussieht
+      const offsetX = (Math.random() - 0.5) * 40;
+      el.style.left = (x - 20 + offsetX) + 'px';
       el.style.top = (y - 40) + 'px';
       document.body.appendChild(el);
-      setTimeout(() => el.remove(), 1000);
+      setTimeout(() => el.remove(), 600);
     }
   </script>
 
