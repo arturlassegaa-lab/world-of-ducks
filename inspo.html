@@ -20,7 +20,7 @@
       position: relative;
     }
 
-    canvas {
+    canvas#fireworks-canvas {
       position: absolute;
       top: 0; left: 0;
       z-index: 1; 
@@ -38,7 +38,7 @@
       box-sizing: border-box;
     }
 
-    /* --- RPG HEADER MIT GLOSSY TEXT --- */
+    /* --- RPG HEADER --- */
     .header {
       width: 100%;
       text-align: center;
@@ -92,7 +92,7 @@
       box-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
     }
 
-    /* --- MITTEL-TEIL: ASCII ENTEN & TEXT --- */
+    /* --- MITTEL-TEIL (ASCII VERSION) --- */
     .center-piece {
       flex-grow: 1; 
       display: flex;
@@ -100,10 +100,9 @@
       align-items: center;     
       width: 100%;
       padding: 20px;
-      gap: 20px; /* Abstand */
+      gap: 20px; 
     }
 
-    /* Der Link in der Mitte */
     .vibe-link {
       text-decoration: none;
       font-family: 'Playfair Display', serif;
@@ -119,7 +118,7 @@
       transition: transform 0.2s;
       filter: drop-shadow(0 0 15px rgba(255,255,255,0.4));
       white-space: nowrap; 
-      z-index: 100; /* Text über den Enten */
+      z-index: 100;
     }
 
     .vibe-link:hover {
@@ -127,22 +126,17 @@
       filter: drop-shadow(0 0 25px rgba(255,255,255,0.8));
     }
 
-    /* --- DER DREHENDE ASCII-FRAME --- */
+    /* ASCII SPINNER STYLES */
     .duck-spinner {
-      width: 300px;  /* Genug Platz für die ASCII Zeichen */
+      width: 300px;
       height: 200px;
       border: none;
       background: transparent;
       overflow: hidden;
-      
-      /* Animation */
       animation: spinDuck 5s linear infinite;
-      
-      /* Skalierung, falls das ASCII zu groß ist */
       transform: scale(0.8); 
     }
 
-    /* 3D-Rotation um die Y-Achse */
     @keyframes spinDuck {
       0% { transform: perspective(1000px) rotateY(0deg) scale(0.8); }
       100% { transform: perspective(1000px) rotateY(360deg) scale(0.8); }
@@ -168,7 +162,98 @@
       text-align: center;
     }
 
-    /* Responsive: Auf Handys Enten untereinander oder ausblenden */
+    /* --- SNAKE SECRET STYLE --- */
+    #snake-trigger-area {
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2rem;
+      cursor: pointer;
+      z-index: 100;
+      transition: transform 0.3s;
+      filter: drop-shadow(0 0 5px #0f0);
+    }
+    #snake-trigger-area:hover {
+      transform: scale(1.2);
+    }
+
+    .loader-ring {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 3px solid transparent;
+      border-top-color: #0f0;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    #snake-trigger-area:hover .loader-ring {
+      opacity: 1;
+      animation: spinLoad 1s linear forwards;
+    }
+    @keyframes spinLoad { to { transform: rotate(360deg); } }
+
+    #snake-overlay {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 320px;
+      height: 420px;
+      background: rgba(0, 20, 0, 0.95);
+      border: 2px solid #0f0;
+      border-radius: 15px;
+      box-shadow: 0 0 30px rgba(0, 255, 0, 0.4);
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 10px;
+      transform: scale(0);
+      transform-origin: bottom right;
+      transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    #snake-overlay.open {
+      transform: scale(1);
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    #snake-canvas {
+      background: #000;
+      border: 1px solid #333;
+      box-shadow: inset 0 0 10px #0f0;
+    }
+
+    .snake-ui {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      color: #0f0;
+      font-family: 'Courier New', Courier, monospace;
+      font-weight: bold;
+      margin-bottom: 10px;
+      text-shadow: 0 0 5px #0f0;
+    }
+
+    .close-snake {
+      background: none;
+      border: 1px solid #0f0;
+      color: #0f0;
+      cursor: pointer;
+      font-family: inherit;
+      padding: 2px 8px;
+    }
+    .close-snake:hover { background: #0f0; color: #000; }
+
+    /* Responsive */
     @media (max-width: 1000px) {
       .center-piece { flex-direction: column; gap: 10px; }
       .header h1 { font-size: 2rem; }
@@ -183,7 +268,21 @@
 </head>
 <body>
 
-  <canvas id="canvas"></canvas>
+  <canvas id="fireworks-canvas"></canvas>
+
+  <div id="snake-trigger-area" title="Warte 1 Sekunde...">
+    <div class="loader-ring"></div>
+    🐍
+  </div>
+
+  <div id="snake-overlay">
+    <div class="snake-ui">
+      <span>SCORE: <span id="snake-score">0</span></span>
+      <button class="close-snake" onclick="closeSnakeGame()">X</button>
+    </div>
+    <canvas id="snake-canvas" width="300" height="300"></canvas>
+    <div style="color: #0f0; font-size: 0.7rem; margin-top: 5px; font-family: monospace;">Benutze Pfeiltasten</div>
+  </div>
 
   <div class="content-layer">
     
@@ -191,8 +290,9 @@
       <h1 class="glossy-text">World of Ducks</h1>
     </header>
 
-    <nav class="menu-container">
-      <a href="index.html" class="btn">Home</a> <a href="blogs.html" class="btn">Blogs</a>
+    <nav class="menu">
+      <a href="index.html" class="btn">Home</a>
+      <a href="blogs.html" class="btn">Blogs</a>
       <a href="memory.html" class="btn">Memory</a>
       <a href="chat.html" class="btn">Chat</a>
       <a href="galgenman.html" class="btn">Galgenman</a>
@@ -233,7 +333,6 @@
 
     function typeWriter() {
       currentPhrase = phrases[phraseIndex];
-      
       if (phraseIndex === 3) textElement.classList.add('arabic-font');
       else textElement.classList.remove('arabic-font');
 
@@ -257,14 +356,14 @@
     document.addEventListener('DOMContentLoaded', typeWriter);
 
     /* --- FEUERWERK --- */
-    const canvas = document.getElementById("canvas");
-    const ctx = canvas.getContext("2d");
+    const fCanvas = document.getElementById("fireworks-canvas");
+    const ctxF = fCanvas.getContext("2d");
     let w, h;
     let particles = [];
 
     function resize() {
-      w = canvas.width = window.innerWidth;
-      h = canvas.height = window.innerHeight;
+      w = fCanvas.width = window.innerWidth;
+      h = fCanvas.height = window.innerHeight;
     }
     window.addEventListener("resize", resize);
     resize();
@@ -284,8 +383,8 @@
         this.x += this.vx; this.y += this.vy; this.vy += this.gravity; this.alpha -= this.decay;
       }
       draw() {
-        ctx.save(); ctx.globalAlpha = this.alpha; ctx.fillStyle = this.color;
-        ctx.beginPath(); ctx.arc(this.x, this.y, 2, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+        ctxF.save(); ctxF.globalAlpha = this.alpha; ctxF.fillStyle = this.color;
+        ctxF.beginPath(); ctxF.arc(this.x, this.y, 2, 0, Math.PI * 2); ctxF.fill(); ctxF.restore();
       }
     }
 
@@ -297,17 +396,131 @@
       for (let i = 0; i < 60; i++) particles.push(new Particle(x, y, color));
     }
 
-    function animate() {
-      ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
-      ctx.fillRect(0, 0, w, h);
+    function animateFireworks() {
+      ctxF.fillStyle = "rgba(0, 0, 0, 0.2)";
+      ctxF.fillRect(0, 0, w, h);
       for (let i = particles.length - 1; i >= 0; i--) {
         particles[i].update(); particles[i].draw();
         if (particles[i].alpha <= 0) particles.splice(i, 1);
       }
       if (Math.random() < 0.04) launchFirework();
-      requestAnimationFrame(animate);
+      requestAnimationFrame(animateFireworks);
     }
-    animate();
+    animateFireworks();
+
+    /* --- SNAKE GAME LOGIC --- */
+    const snakeTrigger = document.getElementById('snake-trigger-area');
+    const snakeOverlay = document.getElementById('snake-overlay');
+    const sCanvas = document.getElementById('snake-canvas');
+    const sCtx = sCanvas.getContext('2d');
+    const scoreEl = document.getElementById('snake-score');
+    
+    let snakeTimer;
+    let gameInterval;
+    let snake = [];
+    let food = {};
+    let direction = 'RIGHT';
+    let score = 0;
+    const box = 15;
+
+    snakeTrigger.addEventListener('mouseenter', () => {
+      snakeTimer = setTimeout(openSnakeGame, 1000);
+    });
+    snakeTrigger.addEventListener('mouseleave', () => {
+      clearTimeout(snakeTimer);
+    });
+
+    function openSnakeGame() {
+      snakeOverlay.classList.add('open');
+      initSnake();
+    }
+
+    function closeSnakeGame() {
+      snakeOverlay.classList.remove('open');
+      clearInterval(gameInterval);
+    }
+
+    function initSnake() {
+      clearInterval(gameInterval);
+      snake = [{x: 9 * box, y: 10 * box}];
+      direction = 'RIGHT';
+      score = 0;
+      scoreEl.innerText = score;
+      generateFood();
+      document.addEventListener('keydown', directionControl);
+      gameInterval = setInterval(drawSnakeGame, 100);
+    }
+
+    function directionControl(event) {
+      if(event.keyCode == 37 && direction != 'RIGHT') direction = 'LEFT';
+      else if(event.keyCode == 38 && direction != 'DOWN') direction = 'UP';
+      else if(event.keyCode == 39 && direction != 'LEFT') direction = 'RIGHT';
+      else if(event.keyCode == 40 && direction != 'UP') direction = 'DOWN';
+    }
+
+    function generateFood() {
+      food = {
+        x: Math.floor(Math.random() * (sCanvas.width/box)) * box,
+        y: Math.floor(Math.random() * (sCanvas.height/box)) * box
+      }
+    }
+
+    function drawSnakeGame() {
+      sCtx.fillStyle = '#000';
+      sCtx.fillRect(0, 0, sCanvas.width, sCanvas.height);
+
+      sCtx.fillStyle = '#f00';
+      sCtx.shadowBlur = 10;
+      sCtx.shadowColor = "red";
+      sCtx.fillRect(food.x, food.y, box, box);
+      sCtx.shadowBlur = 0;
+
+      for(let i = 0; i < snake.length; i++) {
+        sCtx.fillStyle = (i == 0) ? '#0f0' : '#0a0';
+        sCtx.shadowBlur = (i == 0) ? 10 : 0;
+        sCtx.shadowColor = "#0f0";
+        sCtx.fillRect(snake[i].x, snake[i].y, box, box);
+        sCtx.strokeStyle = '#000';
+        sCtx.strokeRect(snake[i].x, snake[i].y, box, box);
+      }
+      sCtx.shadowBlur = 0;
+
+      let snakeX = snake[0].x;
+      let snakeY = snake[0].y;
+
+      if(direction == 'LEFT') snakeX -= box;
+      if(direction == 'UP') snakeY -= box;
+      if(direction == 'RIGHT') snakeX += box;
+      if(direction == 'DOWN') snakeY += box;
+
+      if(snakeX == food.x && snakeY == food.y) {
+        score++;
+        scoreEl.innerText = score;
+        generateFood();
+      } else {
+        snake.pop();
+      }
+
+      let newHead = {x: snakeX, y: snakeY};
+
+      if(snakeX < 0 || snakeX >= sCanvas.width || 
+         snakeY < 0 || snakeY >= sCanvas.height || 
+         collision(newHead, snake)) {
+        clearInterval(gameInterval);
+        sCtx.fillStyle = 'rgba(255,0,0,0.5)';
+        sCtx.fillRect(0,0,sCanvas.width, sCanvas.height);
+        setTimeout(initSnake, 1000); 
+      }
+
+      snake.unshift(newHead);
+    }
+
+    function collision(head, array) {
+      for(let i = 0; i < array.length; i++) {
+        if(head.x == array[i].x && head.y == array[i].y) return true;
+      }
+      return false;
+    }
   </script>
 </body>
 </html>
