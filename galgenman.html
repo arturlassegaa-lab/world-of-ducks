@@ -7,26 +7,24 @@
   <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
   <style>
-    /* --- S&F DUNGEON STYLE --- */
+    /* --- MEMORY STYLE --- */
     :root {
-      --dungeon-bg: #212121;
-      --stone-light: #757575;
-      --stone-dark: #424242;
-      --accent-red: #d32f2f;
-      --accent-green: #388e3c;
-      --wood-frame: #3e2723;
+      --panel-bg: #2e1e11; 
+      --border-gold: #d4af37;
+      --text-gold: #ffcc33;
+      --btn-bg: #3e2723;
+      --btn-hover: #5d4037;
+      --card-bg: #4e342e; /* Hintergrund für Tasten */
     }
 
     body {
       margin: 0;
       padding: 20px;
-      /* Hintergrund: Steinwand-Optik (simuliert) */
-      background-color: #121212;
-      background-image: radial-gradient(#333 15%, transparent 16%), radial-gradient(#333 15%, transparent 16%);
-      background-size: 20px 20px;
-      background-position: 0 0, 10px 10px;
+      /* Vertikaler Holz-Hintergrund */
+      background-color: #1a1a1a;
+      background-image: repeating-linear-gradient(90deg, #2e2e2e 0px, #2a2a2a 2px, #1a1a1a 40px);
       font-family: 'MedievalSharp', cursive;
-      color: #fff;
+      color: var(--text-gold);
       min-height: 100vh;
       display: flex;
       justify-content: center;
@@ -36,92 +34,95 @@
     }
 
     .main-frame {
-      background-color: var(--dungeon-bg);
+      background-color: var(--panel-bg);
       max-width: 900px;
       width: 100%;
-      border: 10px solid var(--stone-dark);
-      border-radius: 5px;
-      box-shadow: 0 0 0 2px #000, 0 15px 40px #000;
+      border: 3px solid #5d4037;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+      padding: 20px;
       position: relative;
       display: flex;
       flex-direction: column;
-      overflow: hidden;
+      align-items: center;
     }
 
-    /* Header wie ein Banner */
+    /* Header */
     .header {
+      width: 100%;
       text-align: center;
-      padding: 20px 0;
-      background: #b71c1c; /* Dunkles Rot */
-      border-bottom: 5px solid #000;
-      box-shadow: inset 0 -5px 10px rgba(0,0,0,0.5);
+      margin-bottom: 20px;
+      background: rgba(0,0,0,0.2);
+      border-radius: 10px;
+      padding: 15px 0;
+      border: 1px solid rgba(255, 204, 51, 0.1);
     }
 
-    .header h1 { 
-      margin: 0; 
-      font-size: 2.8rem; 
-      color: #ffeb3b; 
-      text-transform: uppercase;
-      /* Comic Outline */
-      text-shadow: 3px 3px 0 #000;
+    .header h1 {
+      margin: 0;
+      font-size: 2.5rem;
+      color: var(--text-gold);
+      text-shadow: 2px 2px 4px #000;
     }
 
-    /* Navi Buttons (Stein-Look) */
+    /* Navigation */
     .menu-container {
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
-      gap: 10px;
-      padding: 15px;
-      background: #1a1a1a;
-      border-bottom: 2px solid #000;
+      gap: 12px;
+      margin-bottom: 20px;
     }
+
     .nav-btn {
       text-decoration: none;
-      color: #fff;
-      font-weight: bold;
-      padding: 8px 16px;
-      background: var(--stone-dark);
-      border: 2px solid #000;
-      border-radius: 4px;
-      box-shadow: inset 0 2px 0 rgba(255,255,255,0.2);
-      transition: all 0.1s;
+      color: var(--text-gold);
+      font-size: 1.1rem;
+      padding: 8px 20px;
+      background: var(--btn-bg);
+      border: 2px solid var(--border-gold);
+      border-radius: 8px;
+      transition: all 0.2s;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
     }
-    .nav-btn:hover { background: var(--stone-light); transform: translateY(-2px); }
+    .nav-btn:hover { background: var(--btn-hover); transform: translateY(-2px); }
 
     /* --- GAME AREA --- */
     .game-area {
-      padding: 30px 20px;
-      text-align: center;
+      width: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 20px;
-      background: url('https://www.transparenttextures.com/patterns/dark-matter.png');
+      /* Box innen drin wie bei Memory Beschreibung */
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 12px;
+      padding: 20px;
+      box-sizing: border-box;
     }
 
     .duck-portrait {
       width: 200px;
       height: 200px;
       object-fit: cover;
-      /* Massiver Holzrahmen */
-      border: 8px solid var(--wood-frame);
+      /* Rahmen im Karten-Stil */
+      border: 3px solid var(--border-gold);
       border-radius: 10px;
-      box-shadow: 0 0 0 2px #000, 0 10px 20px rgba(0,0,0,0.8);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.5);
     }
 
     .bomb-container { font-size: 4rem; margin: 10px 0; text-shadow: 2px 2px 0 #000; cursor: default; }
 
     #wordDisplay {
-      font-size: 3rem;
+      font-size: 2.8rem;
       letter-spacing: 10px;
       font-weight: bold;
-      color: #ffb74d;
+      color: #fff; /* Weißer Kontrast für das Wort */
       min-height: 50px;
-      text-shadow: 3px 3px 0 #000;
+      text-shadow: 2px 2px 0 #000;
     }
 
-    /* Tastatur: Rune Stones */
+    /* Tastatur wie Memory Karten */
     #letters {
       display: flex;
       flex-wrap: wrap;
@@ -130,104 +131,79 @@
       max-width: 700px;
     }
     .letter-btn {
-      width: 45px; height: 45px;
-      border: 2px solid #000;
-      background: #e0e0e0;
+      width: 45px; height: 55px; /* Hochformat wie Karten */
+      border: 2px solid var(--border-gold);
+      background: var(--card-bg);
       border-radius: 6px;
       font-family: inherit;
       font-size: 1.4rem;
       font-weight: bold;
       cursor: pointer;
-      color: #000;
-      /* 3D Stone Look */
-      border-bottom-width: 5px;
-      border-color: #616161;
+      color: var(--text-gold);
+      box-shadow: 0 4px 0 rgba(0,0,0,0.4);
       transition: all 0.1s;
     }
     .letter-btn:hover:not(:disabled) { 
-      transform: translateY(2px); 
-      border-bottom-width: 3px;
-      background: #fff;
+      transform: translateY(-2px); 
+      background: var(--btn-hover);
+      box-shadow: 0 6px 0 rgba(0,0,0,0.4);
     }
     .letter-btn:active:not(:disabled) {
-      transform: translateY(4px);
-      border-bottom-width: 1px;
+      transform: translateY(2px);
+      box-shadow: 0 2px 0 rgba(0,0,0,0.4);
     }
     .letter-btn:disabled { 
-      background: #424242; 
-      color: #757575; 
-      border-color: #212121; 
-      border-bottom-width: 2px;
+      opacity: 0.3;
       cursor: default; 
-      transform: translateY(4px);
+      transform: none;
+      box-shadow: none;
+      border-color: #555;
     }
 
     /* Nachrichten */
     #message {
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       min-height: 1.4em;
       font-weight: bold;
-      padding: 15px;
-      border-radius: 8px;
+      padding: 10px;
       text-shadow: 1px 1px 0 #000;
       margin-top: 10px;
     }
-    .win-msg { color: #fff; background: var(--accent-green); border: 2px solid #000; box-shadow: 0 5px 0 #1b5e20; }
-    .lose-msg { color: #fff; background: var(--accent-red); border: 2px solid #000; box-shadow: 0 5px 0 #b71c1c; }
+    .win-msg { color: #4caf50; }
+    .lose-msg { color: #f44336; }
     
-    .translation-hint { font-size: 1.1rem; color: #bbb; margin-top: 5px; line-height: 1.6; max-width: 80%; }
+    .translation-hint { font-size: 1.1rem; color: rgba(255, 204, 51, 0.8); margin-top: 5px; line-height: 1.5; max-width: 80%; }
 
     /* --- EXPLOSION --- */
     @keyframes shake {
       0% { transform: translate(1px, 1px) rotate(0deg); }
       10% { transform: translate(-1px, -2px) rotate(-1deg); }
-      20% { transform: translate(-3px, 0px) rotate(1deg); }
-      30% { transform: translate(3px, 2px) rotate(0deg); }
-      40% { transform: translate(1px, -1px) rotate(1deg); }
       50% { transform: translate(-1px, 2px) rotate(-1deg); }
-      60% { transform: translate(-3px, 1px) rotate(0deg); }
-      70% { transform: translate(3px, 1px) rotate(-1deg); }
-      80% { transform: translate(-1px, -1px) rotate(1deg); }
-      90% { transform: translate(1px, 2px) rotate(0deg); }
       100% { transform: translate(1px, -2px) rotate(-1deg); }
     }
-
-    .explode-anim {
-      animation: shake 0.5s infinite;
-      border-color: red !important;
-    }
-
-    .bomb-explode {
-      transform: scale(3);
-      opacity: 0;
-      transition: all 0.5s ease-out;
-    }
+    .explode-anim { animation: shake 0.5s infinite; border-color: red !important; }
+    .bomb-explode { transform: scale(3); opacity: 0; transition: all 0.5s ease-out; }
 
     .restart-btn {
-      padding: 15px 30px;
-      background: #ff9800;
+      padding: 12px 24px;
+      background: var(--text-gold);
       color: #000;
-      border: 3px solid #000;
+      border: 2px solid #fff;
       border-radius: 8px;
       cursor: pointer;
       font-family: inherit;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       font-weight: bold;
       margin-top: 20px;
       display: none; 
-      box-shadow: 0 5px 0 #e65100;
-      text-transform: uppercase;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
     }
-    .restart-btn:hover { background: #ffb74d; transform: translateY(2px); box-shadow: 0 3px 0 #e65100; }
-    .restart-btn:active { transform: translateY(5px); box-shadow: none; }
+    .restart-btn:hover { transform: scale(1.05); }
 
     .footer {
-      text-align: center;
-      padding: 15px;
+      margin-top: 20px;
       font-size: 0.8rem;
-      color: #666;
-      background: #000;
-      border-top: 2px solid #333;
+      color: rgba(255, 204, 51, 0.5);
     }
   </style>
 </head>
@@ -281,7 +257,17 @@
     { w: "AHIR", l: "Aserbaidschanisch 🇦🇿", info: "Verwandt mit dem Türkischen. Ein klassisches Wort aus der Turk-Sprachfamilie." },
     { w: "PATA", l: "Tagalog (Philippinen) 🇵🇭", info: "Wurde wahrscheinlich durch die spanische Kolonialisierung vom spanischen Wort 'Pato' übernommen." },
     { w: "LUIT", l: "Estnisch 🇪🇪", info: "In den finno-ugrischen Sprachen haben Wasservögel oft ganz eigene, uralte Namen, die mit dem Leben an der Ostsee zu tun haben." },
-    { w: "DRAKE", l: "Englisch (Erpel) 🇬🇧", info: "Spezial-Wissen: 'Drake' heißt eigentlich der männliche Erpel. Manche sagen, es hat die gleiche Wurzel wie 'Drache', aber das ist umstritten!" }
+    { w: "DRAKE", l: "Englisch (Erpel) 🇬🇧", info: "Spezial-Wissen: 'Drake' heißt eigentlich der männliche Erpel. Manche sagen, es hat die gleiche Wurzel wie 'Drache', aber das ist umstritten!" },
+    { w: "KANA", l: "Haitianisch 🇭🇹", info: "Abgeleitet vom französischen 'Canard', aber kreolisiert." },
+    { w: "VITEK", l: "Albanisch 🇦🇱", info: "Ein sehr altes indogermanisches Wort." },
+    { w: "BATA", l: "Swahili 🇰🇪", info: "Kurz und bündig. In vielen Bantu-Sprachen ähnlich." },
+    { w: "ITIK", l: "Malaysisch 🇲🇾", info: "Bezeichnet meistens Hausenten, während 'Belibis' Wildenten sind." },
+    { w: "HASE", l: "Hausa 🇳🇬", info: "Nicht zu verwechseln mit dem deutschen Hasen! (Eigentlich 'Agwagwa' in manchen Dialekten, aber Hase wird oft verkürzt verstanden)." },
+    { w: "MOKO", l: "Maori 🇳🇿", info: "Die Maori haben viele Namen für spezifische Entenarten, oft nach ihrem Ruf benannt." },
+    { w: "DOK", l: "Hmong", info: "Monosyllabische Sprache - kurz und prägnant." },
+    { w: "PENGUIN", l: "Falsch! 🐧", info: "Das war ein Scherz. Pinguine sind keine Enten. Aber wusstest du, dass 'Penguin' früher der Riesenalk war?" },
+    { w: "ENTE", l: "Deutsch 🇩🇪", info: "Unser Wort! Mittelhochdeutsch 'ant'. Verwandt mit dem lateinischen 'anas'." },
+    { w: "AND", l: "Norwegisch 🇳🇴", info: "Gleich wie im Dänischen. Skandinavische Effizienz." }
   ];
 
   let currentItem = {};
@@ -354,7 +340,7 @@
   function endGame(win){
     document.querySelectorAll(".letter-btn").forEach(b => b.disabled = true);
     restartBtn.style.display = "inline-block";
-    const infoText = `<br><br><span style="color:#fff; font-weight:bold; font-size:1.1em;">Sprache: ${currentItem.l}</span><br><span style="font-size: 0.95em; color: #ccc;">${currentItem.info}</span>`;
+    const infoText = `<br><br><span style="color:#fff; font-weight:bold; font-size:1.1em;">Sprache: ${currentItem.l}</span><br><span style="font-size: 0.95em; color: rgba(255,255,255,0.8);">${currentItem.info}</span>`;
 
     if (win) {
       message.textContent = "Yesssssss";
@@ -370,7 +356,7 @@
       bomb.textContent = "💥";
       gameFrame.classList.add("explode-anim");
       document.body.style.transition = "background-color 0.1s";
-      document.body.style.backgroundColor = "#500"; 
+      document.body.style.backgroundColor = "#5d4037"; // Blitz in Braun-Rot
       setTimeout(() => { document.body.style.backgroundColor = ""; }, 300);
     }
   }
