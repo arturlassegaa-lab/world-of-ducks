@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Zodiac Details — World of Ducks</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+  <style>
+    /* --- STYLES (Identisch zum Haupt-Layout) --- */
+    body {
+      margin: 0;
+      background-color: #000;
+      font-family: 'MedievalSharp', cursive;
+      color: #fff;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .dragon-bg-layer {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      pointer-events: none;
+    }
+
+    .dragon-frame {
+      width: 140vmax; height: 140vmax;
+      border: none;
+      animation: dragonDance 240s linear infinite;
+      opacity: 0.3; /* Etwas dezenter für Text-Lesbarkeit */
+    }
+    @keyframes dragonDance { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+    .content-layer {
+      position: relative;
+      z-index: 10;
+      padding: 20px;
+      max-width: 900px; /* Schmaler für Lesbarkeit */
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    /* Navigation */
+    .menu-container {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 40px;
+      padding-top: 20px;
+    }
+    .btn {
+      text-decoration: none; padding: 10px 22px;
+      background: rgba(20, 20, 20, 0.8); color: #d4af37; 
+      border: 2px solid #d4af37; border-radius: 8px;
+      transition: all .2s ease; backdrop-filter: blur(5px);
+    }
+    .btn:hover { background: #d4af37; color: #000; box-shadow: 0 0 15px rgba(212, 175, 55, 0.8); }
+
+    /* --- DETAIL CARD --- */
+    .detail-card {
+      background: rgba(10, 10, 10, 0.75);
+      backdrop-filter: blur(15px);
+      border: 2px solid #d4af37;
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 0 50px rgba(0,0,0,0.8), inset 0 0 20px rgba(212, 175, 55, 0.1);
+      text-align: left;
+      margin-top: 20px;
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+    .detail-header {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+      padding-bottom: 20px;
+      margin-bottom: 20px;
+    }
+
+    .zodiac-big-icon { font-size: 5rem; filter: drop-shadow(0 0 10px rgba(255,215,0,0.5)); }
+
+    .detail-title h1 {
+      margin: 0;
+      font-family: 'Ma Shan Zheng', cursive;
+      font-size: 3em;
+      color: #ffd700;
+      text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+    }
+
+    .detail-years { color: #aaa; font-style: italic; font-size: 1.1em; }
+
+    .detail-content { font-size: 1.2em; line-height: 1.8; color: #eee; }
+    
+    .detail-image-container {
+      margin-top: 30px;
+      text-align: center;
+    }
+    .detail-img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 10px;
+      border: 3px double #d4af37;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+    }
+
+    .back-btn {
+      display: inline-block; margin-top: 30px; 
+      font-size: 1.2rem; background: #d4af37; color: #000;
+    }
+
+    /* Responsive */
+    @media (max-width: 700px) {
+      .detail-header { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="dragon-bg-layer">
+    <iframe src="ascii-art-2.html" class="dragon-frame"></iframe>
+  </div>
+
+  <div class="content-layer">
+    <nav class="menu-container">
+      <a href="index.html" class="btn">Home</a>
+      <a href="chinese-zodiac.html" class="btn">Zurück zur Auswahl</a>
+    </nav>
+
+    <div class="detail-card">
+      <div class="detail-header">
+        <span class="zodiac-big-icon" id="z-icon">❓</span>
+        <div class="detail-title">
+          <h1 id="z-name">Lädt...</h1>
+          <span class="detail-years" id="z-years"></span>
+        </div>
+      </div>
+
+      <div class="detail-content" id="z-text">
+        Wähle ein Tierzeichen aus der Übersicht.
+      </div>
+
+      <div class="detail-image-container">
+        <img id="z-img" src="" alt="" style="display:none;" class="detail-img">
+      </div>
+      
+      <div style="text-align: center;">
+        <a href="chinese-zodiac.html" class="btn back-btn">← Zurück zur Übersicht</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // --- DIE GROSSE DATENBANK DER ENTE ---
+    // Hier stehen alle Texte. Du kannst sie einfach ändern!
+    const zodiacData = {
+      ratte: {
+        name: "Ratte (Shǔ)",
+        icon: "🐀",
+        years: "1996, 2008, 2020, 2032",
+        text: "Die Ratte ist der Stratege im Ententeich. Während andere noch quaken, hat die Ratte schon das beste Futter gefunden. Sie ist charmant, aber mit Vorsicht zu genießen – ihre Intelligenz ist messerscharf. In der World of Ducks wäre sie der Schatzmeister oder der Spion.",
+        img: "imgs/ente1.webp" // Beispielbild
+      },
+      bueffel: {
+        name: "Büffel (Niú)",
+        icon: "🐂",
+        years: "1997, 2009, 2021, 2033",
+        text: "Der Büffel ist der Fels in der Brandung. Er arbeitet hart, beschwert sich nie und zieht den Karren auch durch den tiefsten Schlamm. Er quakt nicht viel, aber wenn er es tut, hören alle zu. Ein absolut verlässlicher Partner.",
+        img: "imgs/ente4.jpg" 
+      },
+      tiger: {
+        name: "Tiger (Hǔ)",
+        icon: "🐅",
+        years: "1998, 2010, 2022, 2034",
+        text: "Achtung, hier kommt der Boss! Der Tiger ist mutig, unberechenbar und voller Energie. Er liebt das Risiko und beschützt seine Enten-Gang mit Leidenschaft. Niemand legt sich freiwillig mit einer Tiger-Ente an.",
+        img: "imgs/ente7.jpg"
+      },
+      hase: {
+        name: "Hase (Tù)",
+        icon: "🐇",
+        years: "1999, 2011, 2023, 2035",
+        text: "Der Hase ist die eleganteste aller Enten-Seelen. Er hasst Streit und hoppelt lieber diplomatisch davon, als Federn zu lassen. Er hat einen exzellenten Geschmack und liebt das schöne Leben am sauberen Teich.",
+        img: "imgs/ente3.jpg"
+      },
+      drache: {
+        name: "Drache (Lóng)",
+        icon: "🐉",
+        years: "2000, 2012, 2024, 2036",
+        text: "Das mächtigste aller Zeichen! Die Drachen-Ente schwimmt nicht einfach, sie gleitet majestätisch über das Wasser. Sie ist charismatisch, manchmal etwas arrogant, aber immer der Mittelpunkt jeder Party. Ein geborener Anführer.",
+        img: "imgs/ente2.jpg"
+      },
+      schlange: {
+        name: "Schlange (Shé)",
+        icon: "🐍",
+        years: "2001, 2013, 2025, 2037",
+        text: "Die Schlange ist das mysteriöseste Wesen im Teich. Sie beobachtet alles still aus dem Schilf und plant ihre Züge weit im Voraus. Sie ist extrem weise und lässt sich nicht in die Karten schauen. Materialistisch? Ein bisschen. Klug? Absolut.",
+        img: "imgs/ente1.webp"
+      },
+      pferd: {
+        name: "Pferd (Mǎ)",
+        icon: "🐎",
+        years: "2002, 2014, 2026, 2038",
+        text: "Freiheit über alles! Die Pferde-Ente kann nicht stillsitzen. Sie muss reisen, rennen und neue Ufer entdecken. Sie ist beliebt, witzig, aber manchmal etwas ungestüm. Ein wahrer Abenteurer.",
+        img: "imgs/enten6.jpg"
+      },
+      ziege: {
+        name: "Ziege (Yáng)",
+        icon: "🐐",
+        years: "2003, 2015, 2027, 2039",
+        text: "Die Künstler unter uns. Die Ziegen-Ente ist sanftmütig, kreativ und träumt von einer perfekten Welt ohne Jäger. Sie braucht viel Liebe und Unterstützung, gibt diese aber auch tausendfach zurück.",
+        img: "imgs/ente7.jpg"
+      },
+      affe: {
+        name: "Affe (Hóu)",
+        icon: "🐒",
+        years: "2004, 2016, 2028, 2040",
+        text: "Der Clown und das Genie zugleich. Die Affen-Ente löst Probleme, die andere gar nicht erst verstehen – meistens mit einem Streich. Sie ist neugierig, frech und bringt jeden zum Lachen.",
+        img: "imgs/ente2.jpg"
+      },
+      hahn: {
+        name: "Hahn (Jī)",
+        icon: "🐓",
+        years: "2005, 2017, 2029, 2041",
+        text: "Kikiriki... äh, Quack! Der Hahn steht gerne im Mittelpunkt. Er ist stolz, immer top gepflegt und extrem pünktlich. Er sagt dir unverblümt die Wahrheit, ob du sie hören willst oder nicht. Ein bunter Vogel.",
+        img: "imgs/ente3.jpg"
+      },
+      hund: {
+        name: "Hund (Gǒu)",
+        icon: "🐕",
+        years: "2006, 2018, 2030, 2042",
+        text: "Loyal bis in die letzte Feder. Die Hunde-Ente würde alles für ihre Freunde tun. Sie ist ehrlich, gerecht und hat eine feine Nase für Gefahr. Der beste Freund, den man im Teich haben kann.",
+        img: "imgs/ente4.jpg"
+      },
+      schwein: {
+        name: "Schwein (Zhū)",
+        icon: "🐖",
+        years: "2007, 2019, 2031, 2043",
+        text: "Ein wahrer Genießer. Die Schweine-Ente liebt gutes Essen, Faulenzen und Luxus. Sie ist unglaublich großzügig und naiv, weil sie immer an das Gute im Tier glaubt. Mit ihr wird das Leben nie langweilig.",
+        img: "imgs/entedollar.avif"
+      }
+    };
+
+    // --- LOGIK: URL AUSLESEN UND INHALT FÜLLEN ---
+    
+    // 1. Hole den Parameter "tier" aus der URL (z.B. ?tier=ratte)
+    const urlParams = new URLSearchParams(window.location.search);
+    const tierKey = urlParams.get('tier');
+
+    // 2. Elemente im HTML finden
+    const nameEl = document.getElementById('z-name');
+    const iconEl = document.getElementById('z-icon');
+    const yearsEl = document.getElementById('z-years');
+    const textEl = document.getElementById('z-text');
+    const imgEl = document.getElementById('z-img');
+
+    // 3. Prüfen, ob das Tier in unserer Datenbank ist
+    if (tierKey && zodiacData[tierKey]) {
+      const data = zodiacData[tierKey];
+      
+      // Texte setzen
+      nameEl.innerText = data.name;
+      iconEl.innerText = data.icon;
+      yearsEl.innerText = "Jahrgänge: " + data.years;
+      textEl.innerText = data.text;
+      
+      // Bild setzen (nur wenn ein Pfad da ist)
+      if(data.img) {
+        imgEl.src = data.img;
+        imgEl.style.display = "inline-block";
+        imgEl.alt = data.name;
+      }
+    } else {
+      // Falls Quatsch in der URL steht
+      nameEl.innerText = "Tier nicht gefunden!";
+      textEl.innerText = "Es scheint, als hätte sich dieses Sternzeichen im Nebel versteckt. Gehe zurück und wähle erneut.";
+      iconEl.innerText = "❌";
+    }
+  </script>
+</body>
+</html>
