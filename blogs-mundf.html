@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Karl Marx & Friends — Übersicht</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0; padding: 20px;
+      background-color: #1a0e05;
+      background-image: url('https://www.transparenttextures.com/patterns/wood-pattern.png');
+      font-family: 'MedievalSharp', cursive;
+      color: #d4af37;
+      text-align: center;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .container {
+      max-width: 800px;
+      width: 100%;
+      margin-top: 40px;
+    }
+
+    h1 {
+      font-size: 3em;
+      color: #8b0000; /* Marx Rot */
+      text-shadow: 2px 2px 0 #000;
+      margin-bottom: 10px;
+      border-bottom: 2px solid #5b3b1d;
+      display: inline-block;
+      padding-bottom: 10px;
+    }
+
+    p.intro { 
+      color: #ccc; 
+      margin-bottom: 40px; 
+      font-style: italic; 
+      font-size: 1.2em;
+    }
+
+    /* Artikel Liste Styles */
+    .article-list {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+
+    .article-item {
+      background: linear-gradient(to right, rgba(40, 25, 10, 0.95), rgba(60, 35, 15, 0.9));
+      border: 2px solid #d4af37;
+      border-radius: 12px;
+      padding: 25px;
+      text-align: left;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    }
+
+    .article-item:hover {
+      transform: translateY(-5px);
+      border-color: #ffcc33;
+      box-shadow: 0 10px 25px rgba(212, 175, 55, 0.2);
+    }
+
+    /* Gesperrter Artikel Style */
+    .article-item.locked {
+      opacity: 0.5;
+      filter: grayscale(0.8);
+      border-color: #555;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    .item-left { display: flex; align-items: center; gap: 20px; }
+    .item-icon { font-size: 3rem; }
+    
+    .item-content h2 { margin: 0 0 5px 0; color: #ffcc33; font-size: 1.5rem; }
+    .item-content span { font-size: 1rem; color: #bbb; display: block; }
+
+    .status-badge {
+      background: #8b0000;
+      color: #fff;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      border: 1px solid #d4af37;
+      white-space: nowrap;
+    }
+    .status-badge.wip { background: #333; border-color: #555; color: #aaa; }
+
+    .back-btn {
+      display: inline-block; margin-top: 50px; padding: 12px 30px;
+      background: #d4af37; color: #1a0e05; text-decoration: none; border-radius: 8px;
+      font-weight: bold; border: 2px solid #5b3b1d;
+      transition: transform 0.2s;
+    }
+    .back-btn:hover { transform: scale(1.05); background: #fff; }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .article-item { flex-direction: column; text-align: center; gap: 15px; }
+      .item-left { flex-direction: column; }
+      .status-badge { align-self: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Karl Marx & Friends</h1>
+    <p class="intro">Die Bibliothek der kritischen Theorie. Wähle ein Manuskript.</p>
+
+    <div class="article-list">
+      
+      <a href="blog-marx.html" class="article-item">
+        <div class="item-left">
+          <div class="item-icon">📜</div>
+          <div class="item-content">
+            <h2>Visionen von Globalität</h2>
+            <span>Dialektik des Fortschritts & globale Ungleichheit.</span>
+          </div>
+        </div>
+        <div class="status-badge">🔒 Passwort</div>
+      </a>
+
+      <a href="#" class="article-item locked">
+        <div class="item-left">
+          <div class="item-icon">⚒️</div>
+          <div class="item-content">
+            <h2>Das Kapital der Ente</h2>
+            <span>Band 1: Die Akkumulation von Brotkrumen.</span>
+          </div>
+        </div>
+        <div class="status-badge wip">In Arbeit...</div>
+      </a>
+
+      <a href="#" class="article-item locked">
+        <div class="item-left">
+          <div class="item-icon">🚩</div>
+          <div class="item-content">
+            <h2>Manifest der Federn</h2>
+            <span>Proletarier aller Teiche, vereinigt euch!</span>
+          </div>
+        </div>
+        <div class="status-badge wip">In Arbeit...</div>
+      </a>
+
+    </div>
+
+    <a href="blogs.html" class="back-btn">⬅ Zurück zur Blog-Auswahl</a>
+  </div>
+
+</body>
+</html>
