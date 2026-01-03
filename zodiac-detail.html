@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="style.css">
   <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
   <style>
-    /* --- STYLES (Identisch zum Haupt-Layout) --- */
+    /* --- STYLES --- */
     body {
       margin: 0;
       background-color: #000;
@@ -17,6 +17,7 @@
       overflow-x: hidden;
     }
 
+    /* Drachen-Hintergrund Animation */
     .dragon-bg-layer {
       position: fixed;
       top: 0; left: 0;
@@ -33,15 +34,16 @@
       width: 140vmax; height: 140vmax;
       border: none;
       animation: dragonDance 240s linear infinite;
-      opacity: 0.3; /* Etwas dezenter für Text-Lesbarkeit */
+      opacity: 0.3; 
     }
     @keyframes dragonDance { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
+    /* Content Wrapper */
     .content-layer {
       position: relative;
       z-index: 10;
       padding: 20px;
-      max-width: 900px; /* Schmaler für Lesbarkeit */
+      max-width: 900px;
       margin: 0 auto;
       text-align: center;
     }
@@ -97,9 +99,9 @@
       text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
     }
 
-    .detail-years { color: #aaa; font-style: italic; font-size: 1.1em; }
+    .detail-years { color: #aaa; font-style: italic; font-size: 1.1em; display: block; margin-top: 5px; }
 
-    .detail-content { font-size: 1.2em; line-height: 1.8; color: #eee; }
+    .detail-content { font-size: 1.2em; line-height: 1.8; color: #eee; white-space: pre-wrap; }
     
     .detail-image-container {
       margin-top: 30px;
@@ -108,6 +110,7 @@
     .detail-img {
       max-width: 100%;
       height: auto;
+      max-height: 500px;
       border-radius: 10px;
       border: 3px double #d4af37;
       box-shadow: 0 10px 30px rgba(0,0,0,0.7);
@@ -160,100 +163,118 @@
   </div>
 
   <script>
-    // --- DIE GROSSE DATENBANK DER ENTE ---
-    // Hier stehen alle Texte. Du kannst sie einfach ändern!
+    [cite_start]// --- DATENBANK DER ENTE [cite: 1-86] ---
     const zodiacData = {
       ratte: {
-        name: "Ratte (Shǔ)",
+        name: "Ratte (Der Visionär)",
         icon: "🐀",
-        years: "1996, 2008, 2020, 2032",
-        text: "Die Ratte ist der Stratege im Ententeich. Während andere noch quaken, hat die Ratte schon das beste Futter gefunden. Sie ist charmant, aber mit Vorsicht zu genießen – ihre Intelligenz ist messerscharf. In der World of Ducks wäre sie der Schatzmeister oder der Spion.",
-        img: "imgs/ente1.webp" // Beispielbild
+        years: "1924, 1936, 1948, 1960, 1972, 1984, 1996, 2008, 2020, 2032",
+        text: "Die Ratte ist der charmante Eroberer des Tierkreises. Sie ist intelligent, schnell im Denken und besitzt eine fast magische Intuition, wenn es um Gelegenheiten geht.\n\nSie ist gesellig, ehrgeizig, manchmal aber auch kritisch. In der Liebe leidenschaftlich, aber sie braucht einen Partner, der ihre geistige Flinkheit teilt.",
+        img: "imgs/ratte.jpg" 
       },
       bueffel: {
-        name: "Büffel (Niú)",
+        name: "Büffel (Der Fels)",
         icon: "🐂",
-        years: "1997, 2009, 2021, 2033",
-        text: "Der Büffel ist der Fels in der Brandung. Er arbeitet hart, beschwert sich nie und zieht den Karren auch durch den tiefsten Schlamm. Er quakt nicht viel, aber wenn er es tut, hören alle zu. Ein absolut verlässlicher Partner.",
-        img: "imgs/ente4.jpg" 
+        years: "1925, 1937, 1949, 1961, 1973, 1985, 1997, 2009, 2021, 2033",
+        text: "Der Büffel (oder Ochse) symbolisiert Sanftmut, verhüllt in unerschütterlicher Stärke. Er ist der geduldige Arbeiter, der Traditionen wahrt.\n\nWo andere aufgeben, fängt der Büffel erst an. Er ist loyal, ehrlich und ein Beschützer der Familie. Seine Seele ruht in sich selbst.",
+        img: "imgs/bueffel.jpg"
       },
       tiger: {
-        name: "Tiger (Hǔ)",
+        name: "Tiger (Der Rebell)",
         icon: "🐅",
-        years: "1998, 2010, 2022, 2034",
-        text: "Achtung, hier kommt der Boss! Der Tiger ist mutig, unberechenbar und voller Energie. Er liebt das Risiko und beschützt seine Enten-Gang mit Leidenschaft. Niemand legt sich freiwillig mit einer Tiger-Ente an.",
-        img: "imgs/ente7.jpg"
+        years: "1926, 1938, 1950, 1962, 1974, 1986, 1998, 2010, 2022, 2034",
+        text: "Der Tiger ist pure Energie, Mut und Leidenschaft. Ein magnetisches Zeichen, das geboren wurde, um zu führen und zu inspirieren. Er steht für den Mut, dem eigenen Herzen zu folgen.\n\nEr ist unberechenbar, charmant und ein ewiger Optimist. In der Liebe ist er stürmisch und intensiv.",
+        img: "imgs/tiger.jpg"
       },
       hase: {
-        name: "Hase (Tù)",
+        name: "Hase (Der Diplomat)",
         icon: "🐇",
-        years: "1999, 2011, 2023, 2035",
-        text: "Der Hase ist die eleganteste aller Enten-Seelen. Er hasst Streit und hoppelt lieber diplomatisch davon, als Federn zu lassen. Er hat einen exzellenten Geschmack und liebt das schöne Leben am sauberen Teich.",
-        img: "imgs/ente3.jpg"
+        years: "1927, 1939, 1951, 1963, 1975, 1987, 1999, 2011, 2023, 2035",
+        text: "Der Hase ist das Zeichen für langes Leben, Frieden und Anmut. Hasen sind sanftmütig, elegant und meiden Konflikte um jeden Preis.\n\nSie besitzen einen exquisiten Geschmack und eine künstlerische Ader. Sie wirken zerbrechlich, sind aber innerlich zäh und klug.",
+        img: "imgs/hase.jpg"
       },
       drache: {
-        name: "Drache (Lóng)",
+        name: "Drache (Der Kaiser)",
         icon: "🐉",
-        years: "2000, 2012, 2024, 2036",
-        text: "Das mächtigste aller Zeichen! Die Drachen-Ente schwimmt nicht einfach, sie gleitet majestätisch über das Wasser. Sie ist charismatisch, manchmal etwas arrogant, aber immer der Mittelpunkt jeder Party. Ein geborener Anführer.",
-        img: "imgs/ente2.jpg"
+        years: "1928, 1940, 1952, 1964, 1976, 1988, 2000, 2012, 2024, 2036",
+        text: "Das einzige mythische Wesen im Tierkreis. Der Drache steht für Glück, Macht und edlen Geist. Drachen sind charismatisch, voller Vitalität und geborene Visionäre.\n\nEr kann exzentrisch sein, aber sein Herz ist groß und mutig. Er symbolisiert das Erwachen des eigenen Potenzials.",
+        img: "imgs/drache.jpg"
       },
       schlange: {
-        name: "Schlange (Shé)",
+        name: "Schlange (Der Weise)",
         icon: "🐍",
-        years: "2001, 2013, 2025, 2037",
-        text: "Die Schlange ist das mysteriöseste Wesen im Teich. Sie beobachtet alles still aus dem Schilf und plant ihre Züge weit im Voraus. Sie ist extrem weise und lässt sich nicht in die Karten schauen. Materialistisch? Ein bisschen. Klug? Absolut.",
-        img: "imgs/ente1.webp"
+        years: "1929, 1941, 1953, 1965, 1977, 1989, 2001, 2013, 2025, 2037",
+        text: "Die Schlange ist das rätselhafteste Zeichen. Sie steht für Weisheit, Tiefgründigkeit und Intuition. Schlangen handeln nicht impulsiv; sie planen.\n\nSie sind elegant, materiell oft gesegnet und besitzen einen fast hypnotischen Charme. Spirituell ist sie eng mit Transformation verbunden.",
+        img: "imgs/schlange.jpg"
       },
       pferd: {
-        name: "Pferd (Mǎ)",
+        name: "Pferd (Der Freigeist)",
         icon: "🐎",
-        years: "2002, 2014, 2026, 2038",
-        text: "Freiheit über alles! Die Pferde-Ente kann nicht stillsitzen. Sie muss reisen, rennen und neue Ufer entdecken. Sie ist beliebt, witzig, aber manchmal etwas ungestüm. Ein wahrer Abenteurer.",
-        img: "imgs/enten6.jpg"
+        years: "1930, 1942, 1954, 1966, 1978, 1990, 2002, 2014, 2026, 2038",
+        text: "Freiheit ist das höchste Gut des Pferdes. Es ist optimistisch, gesellig, redegewandt und liebt das Abenteuer.\n\nPferde sind oft der Mittelpunkt einer Party. Sie sind fleißig, aber unbeständig – wenn sie das Interesse verlieren, ziehen sie weiter.",
+        img: "imgs/pferd.jpg"
       },
       ziege: {
-        name: "Ziege (Yáng)",
+        name: "Ziege (Der Künstler)",
         icon: "🐐",
-        years: "2003, 2015, 2027, 2039",
-        text: "Die Künstler unter uns. Die Ziegen-Ente ist sanftmütig, kreativ und träumt von einer perfekten Welt ohne Jäger. Sie braucht viel Liebe und Unterstützung, gibt diese aber auch tausendfach zurück.",
-        img: "imgs/ente7.jpg"
+        years: "1931, 1943, 1955, 1967, 1979, 1991, 2003, 2015, 2027, 2039",
+        text: "Die Ziege ist das sanfteste und kreativste Zeichen. Sie liebt Schönheit, Harmonie und Frieden.\n\nZiegen sind empathisch, fürsorglich, aber auch etwas pessimistisch und unsicher. Sie brauchen Schutz und Verständnis. Spirituell sind sie oft sehr begabt.",
+        img: "imgs/ziege.jpg"
       },
       affe: {
-        name: "Affe (Hóu)",
+        name: "Affe (Der Gaukler)",
         icon: "🐒",
-        years: "2004, 2016, 2028, 2040",
-        text: "Der Clown und das Genie zugleich. Die Affen-Ente löst Probleme, die andere gar nicht erst verstehen – meistens mit einem Streich. Sie ist neugierig, frech und bringt jeden zum Lachen.",
-        img: "imgs/ente2.jpg"
+        years: "1932, 1944, 1956, 1968, 1980, 1992, 2004, 2016, 2028, 2040",
+        text: "Der Affe ist der Problemlöser und Spaßvogel. Er ist extrem intelligent, erfinderisch und vielseitig. Für den Affen ist das Leben ein Spiel, das es zu gewinnen gilt.\n\nManchmal wirkt er arrogant oder trickreich, aber sein Charme macht alles wett. Er steht für geistige Agilität.",
+        img: "imgs/affe.jpg"
       },
       hahn: {
-        name: "Hahn (Jī)",
+        name: "Hahn (Der Wächter)",
         icon: "🐓",
-        years: "2005, 2017, 2029, 2041",
-        text: "Kikiriki... äh, Quack! Der Hahn steht gerne im Mittelpunkt. Er ist stolz, immer top gepflegt und extrem pünktlich. Er sagt dir unverblümt die Wahrheit, ob du sie hören willst oder nicht. Ein bunter Vogel.",
-        img: "imgs/ente3.jpg"
+        years: "1933, 1945, 1957, 1969, 1981, 1993, 2005, 2017, 2029, 2041",
+        text: "Der Hahn ist der stolze Beobachter. Er ist pünktlich, ehrlich, direkt und liebt es, sich zu präsentieren. Hähne sind Perfektionisten und oft sehr kritisch.\n\nAber sie sind auch loyal und mutig. Symbolisch steht der Hahn für das Erwachen und die Klarheit des Geistes.",
+        img: "imgs/hahn.jpg"
       },
       hund: {
-        name: "Hund (Gǒu)",
+        name: "Hund (Der Beschützer)",
         icon: "🐕",
-        years: "2006, 2018, 2030, 2042",
-        text: "Loyal bis in die letzte Feder. Die Hunde-Ente würde alles für ihre Freunde tun. Sie ist ehrlich, gerecht und hat eine feine Nase für Gefahr. Der beste Freund, den man im Teich haben kann.",
-        img: "imgs/ente4.jpg"
+        years: "1934, 1946, 1958, 1970, 1982, 1994, 2006, 2018, 2030, 2042",
+        text: "Der Hund ist das Symbol für Treue, Gerechtigkeit und Ehrlichkeit. Hunde sind loyal bis in den Tod, aber oft pessimistisch und sorgenvolle Denker.\n\nSie haben einen feinen Riecher für Gefahr und Falschheit. Sie sind wunderbare Zuhörer und Freunde.",
+        img: "imgs/hund.jpg"
       },
       schwein: {
-        name: "Schwein (Zhū)",
+        name: "Schwein (Der Genießer)",
         icon: "🐖",
-        years: "2007, 2019, 2031, 2043",
-        text: "Ein wahrer Genießer. Die Schweine-Ente liebt gutes Essen, Faulenzen und Luxus. Sie ist unglaublich großzügig und naiv, weil sie immer an das Gute im Tier glaubt. Mit ihr wird das Leben nie langweilig.",
-        img: "imgs/entedollar.avif"
+        years: "1935, 1947, 1959, 1971, 1983, 1995, 2007, 2019, 2031, 2043",
+        text: "Das Schwein rundet den Zyklus ab. Es steht für Ehrlichkeit, Genuss und Hilfsbereitschaft. Schweine sind galant, friedliebend und glauben an das Gute im Menschen.\n\nSie sind kulinarische Genießer und Freunde des Lebens. Ein Glücksbringer, der inneren wie äußeren Reichtum anzieht.",
+        img: "imgs/schwein.jpg"
       }
     };
 
-    // --- LOGIK: URL AUSLESEN UND INHALT FÜLLEN ---
+    // --- LOGIK: URL AUSLESEN UND INHALT FÜLLEN (VERBESSERT) ---
     
-    // 1. Hole den Parameter "tier" aus der URL (z.B. ?tier=ratte)
+    // 1. Hole den Parameter "tier" aus der URL
     const urlParams = new URLSearchParams(window.location.search);
-    const tierKey = urlParams.get('tier');
+    let tierKey = urlParams.get('tier');
+
+    // FIX: Wenn kein Tier in der URL steht (z.B. Test-Modus), nimm einfach 'ratte' als Standard
+    if (!tierKey) {
+      console.log("Kein Tier in URL gefunden, zeige Ratte als Standard.");
+      tierKey = 'ratte';
+    }
+
+    // Alles in Kleinbuchstaben umwandeln, um Fehler zu vermeiden
+    tierKey = tierKey.toLowerCase();
+
+    // MAPPING: Falls englische Namen kommen (z.B. ?tier=rat), übersetze sie ins Deutsche
+    const englishMap = {
+      rat: 'ratte', ox: 'bueffel', tiger: 'tiger', rabbit: 'hase',
+      dragon: 'drache', snake: 'schlange', horse: 'pferd', goat: 'ziege', sheep: 'ziege',
+      monkey: 'affe', rooster: 'hahn', dog: 'hund', pig: 'schwein'
+    };
+    if (englishMap[tierKey]) {
+      tierKey = englishMap[tierKey];
+    }
 
     // 2. Elemente im HTML finden
     const nameEl = document.getElementById('z-name');
@@ -262,26 +283,24 @@
     const textEl = document.getElementById('z-text');
     const imgEl = document.getElementById('z-img');
 
-    // 3. Prüfen, ob das Tier in unserer Datenbank ist
-    if (tierKey && zodiacData[tierKey]) {
+    // 3. Inhalt füllen
+    if (zodiacData[tierKey]) {
       const data = zodiacData[tierKey];
       
-      // Texte setzen
       nameEl.innerText = data.name;
       iconEl.innerText = data.icon;
       yearsEl.innerText = "Jahrgänge: " + data.years;
       textEl.innerText = data.text;
       
-      // Bild setzen (nur wenn ein Pfad da ist)
       if(data.img) {
         imgEl.src = data.img;
         imgEl.style.display = "inline-block";
         imgEl.alt = data.name;
       }
     } else {
-      // Falls Quatsch in der URL steht
+      // Nur wenn wirklich gar nichts gefunden wurde (falscher Name)
       nameEl.innerText = "Tier nicht gefunden!";
-      textEl.innerText = "Es scheint, als hätte sich dieses Sternzeichen im Nebel versteckt. Gehe zurück und wähle erneut.";
+      textEl.innerText = "Das gesuchte Tier '" + tierKey + "' existiert nicht in der Datenbank.";
       iconEl.innerText = "❌";
     }
   </script>
