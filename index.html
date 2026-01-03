@@ -7,24 +7,24 @@
   <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
   <style>
-    /* --- SHAKES & FIDGET STYLE --- */
+    /* --- MEMORY STYLE --- */
     :root {
-      --wood-dark: #3e2723;
-      --wood-light: #8d6e63;
-      --wood-face: #6d4c41;
-      --ui-bg: #2b1d16; /* Dunkler Hintergrund für Container */
-      --text-color: #ffe0b2;
-      --accent-gold: #ffb300;
-      --outline: #1a0e05;
+      --bg-wood: url('https://www.transparenttextures.com/patterns/wood-pattern.png'); /* Fallback */
+      --panel-bg: #2e1e11; /* Das dunkle Schokoladen-Braun vom Memory */
+      --border-gold: #d4af37; /* Der Gold-Ton der Rahmen */
+      --text-gold: #ffcc33;
+      --btn-bg: #3e2723;
+      --btn-hover: #5d4037;
     }
 
     body {
       margin: 0;
       padding: 20px;
-      /* Ein dunkler, comicartiger Hintergrund (simuliert Kerker/Taverne) */
-      background: radial-gradient(circle at center, #5d4037 0%, #1a0e05 100%);
+      /* Versucht, den vertikalen Holz-Hintergrund zu simulieren */
+      background-color: #1a1a1a;
+      background-image: repeating-linear-gradient(90deg, #2e2e2e 0px, #2a2a2a 2px, #1a1a1a 40px);
       font-family: 'MedievalSharp', cursive;
-      color: var(--text-color);
+      color: var(--text-gold);
       min-height: 100vh;
       display: flex;
       justify-content: center;
@@ -33,162 +33,137 @@
     }
 
     .main-frame {
-      /* Sieht aus wie ein Spielfenster */
-      background-color: var(--ui-bg);
-      /* Holzmuster Simulation */
-      background-image: repeating-linear-gradient(45deg, rgba(0,0,0,0.1) 0px, rgba(0,0,0,0.1) 10px, transparent 10px, transparent 20px);
+      /* Der Kasten aus der Memory-Seite */
+      background-color: var(--panel-bg);
       max-width: 900px;
       width: 100%;
-      /* Dicker Comic-Rahmen */
-      border: 8px solid var(--wood-dark);
+      border: 3px solid #5d4037; /* Dezentere Kante außen */
       border-radius: 15px;
-      box-shadow: 0 0 0 4px #000, 0 20px 50px rgba(0,0,0,0.8);
-      overflow: hidden;
-      position: relative;
-    }
-
-    /* Schrauben in den Ecken */
-    .main-frame::after {
-      content: '';
-      position: absolute;
-      top: 10px; right: 10px;
-      width: 15px; height: 15px;
-      background: #795548;
-      border-radius: 50%;
-      box-shadow: inset 2px 2px 5px rgba(0,0,0,0.5), 0 0 2px #000;
-      z-index: 5;
-    }
-
-    .header {
-      text-align: center;
-      padding: 25px 0;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.6), transparent);
-      border-bottom: 4px solid var(--wood-dark);
-      box-shadow: 0 5px 10px rgba(0,0,0,0.5);
-    }
-
-    .header h1 {
-      margin: 0;
-      font-size: 3rem;
-      color: var(--accent-gold);
-      /* Die typische schwarze Comic-Umrandung */
-      text-shadow: 3px 3px 0 #000, -1px -1px 0 #000;
-      letter-spacing: 2px;
-    }
-
-    /* --- COMIC BUTTONS (Holz-Look) --- */
-    .menu-container {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
       padding: 20px;
-    }
-
-    .nav-btn {
-      text-decoration: none;
-      color: #fff;
-      font-weight: bold;
-      font-size: 1.1rem;
-      padding: 10px 20px;
-      
-      /* Holz-Optik */
-      background: var(--wood-face);
-      border: 3px solid #2e1e18;
-      border-radius: 8px;
-      /* 3D Effekt unten */
-      border-bottom-width: 6px;
-      
-      text-shadow: 2px 2px 0 #000;
-      box-shadow: 0 5px 10px rgba(0,0,0,0.4);
-      transition: transform 0.1s, border-bottom-width 0.1s, margin-top 0.1s;
-    }
-
-    .nav-btn:hover {
-      background: var(--wood-light);
-      filter: brightness(1.1);
-    }
-
-    /* Klick-Effekt: Button wird "eingedrückt" */
-    .nav-btn:active {
-      transform: translateY(3px);
-      border-bottom-width: 3px;
-      margin-top: 3px; /* Ausgleich damit er nicht springt */
-      box-shadow: 0 2px 5px rgba(0,0,0,0.4);
-    }
-
-    /* --- HERO BEREICH --- */
-    .hero-section {
-      text-align: center;
-      padding: 40px 20px;
+      position: relative;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
 
+    /* Header im Memory-Stil */
+    .header {
+      width: 100%;
+      text-align: center;
+      margin-bottom: 20px;
+      background: rgba(0,0,0,0.2);
+      border-radius: 10px;
+      padding: 15px 0;
+      border: 1px solid rgba(255, 204, 51, 0.1);
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 2.5rem;
+      color: var(--text-gold);
+      text-shadow: 2px 2px 4px #000;
+    }
+
+    /* Navigation - Exakt wie Memory */
+    .menu-container {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 30px;
+    }
+
+    .nav-btn {
+      text-decoration: none;
+      color: var(--text-gold);
+      font-size: 1.1rem;
+      padding: 8px 20px;
+      background: var(--btn-bg);
+      border: 2px solid var(--border-gold);
+      border-radius: 8px; /* Leicht abgerundet wie auf dem Bild */
+      transition: all 0.2s;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    }
+
+    .nav-btn:hover {
+      background: var(--btn-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 10px rgba(0,0,0,0.4);
+    }
+
+    /* --- HERO CONTENT --- */
+    .hero-section {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+
     .hero-image-wrapper {
       position: relative;
-      width: 300px;
-      height: 300px;
+      width: 250px;
+      height: 250px;
       margin-bottom: 30px;
+      padding: 10px;
+      /* Weißer Rahmen-Effekt wie bei den Memory Karten oder dem linken Bild */
+      background: #fff; 
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.5);
     }
 
     .hero-img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      /* Rahmen wie ein Avatar-Slot */
-      border-radius: 20px; /* Weniger rund, mehr "Slot" */
-      border: 8px solid var(--accent-gold);
-      box-shadow: 
-        0 0 0 4px #000, /* Schwarze Außenlinie */
-        inset 0 0 20px rgba(0,0,0,0.7); /* Schatten innen */
-      background: #000;
+      border-radius: 8px;
     }
 
-    /* Spruch-Box: Sieht aus wie ein Quest-Text */
+    /* Spruch-Box: Angelehnt an die "Spielbeschreibung" Box rechts */
     .quote-container {
-      max-width: 85%;
-      min-height: 80px;
+      max-width: 600px;
+      min-height: 100px;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 20px;
-      background: rgba(0, 0, 0, 0.4);
-      border: 3px solid rgba(255, 255, 255, 0.2);
-      border-radius: 10px;
-      box-shadow: inset 0 0 10px #000;
-      position: relative;
+      padding: 25px;
+      
+      /* Der Look der Infobox */
+      background: rgba(62, 39, 35, 0.6); /* Dunkleres Braun innen */
+      border: 2px solid var(--border-gold);
+      border-radius: 12px;
+      box-shadow: inset 0 0 15px rgba(0,0,0,0.6);
+      
+      margin-top: 10px;
     }
 
     #quote-text {
-      font-size: 1.6rem;
+      font-size: 1.4rem;
       margin: 0;
-      color: #fff;
-      text-shadow: 2px 2px 0 #000;
-      font-weight: normal;
-      line-height: 1.4;
+      color: var(--text-gold);
+      line-height: 1.5;
+      text-shadow: 1px 1px 2px #000;
     }
 
     .cursor {
       display: inline-block;
-      width: 8px;
-      height: 20px;
-      background-color: var(--accent-gold);
+      width: 2px;
+      height: 1.2em;
+      background-color: var(--text-gold);
       animation: blink 1s infinite;
-      vertical-align: bottom;
+      vertical-align: middle;
       margin-left: 5px;
     }
 
     @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
     .footer {
+      margin-top: 30px;
+      font-size: 0.8rem;
+      color: rgba(255, 204, 51, 0.6);
       text-align: center;
-      padding: 15px;
-      font-size: 0.9rem;
-      color: #888;
-      background: rgba(0,0,0,0.5);
-      border-top: 2px solid var(--wood-dark);
+      width: 100%;
     }
   </style>
 </head>
@@ -196,7 +171,7 @@
 
   <div class="main-frame">
     <header class="header">
-      <h1>🗡️ World of Ducks 🛡️</h1>
+      <h1>🦆 World of Ducks</h1>
     </header>
 
     <nav class="menu-container">
@@ -218,12 +193,12 @@
     </main>
 
     <footer class="footer">
-      © 2025 World of Ducks – Level 1 Web-Abenteuer
+      © 2025 World of Ducks – Ein Projekt im Retro-RPG Stil
     </footer>
   </div>
 
   <script>
-    /* --- TYPEWRITER EFFEKT & GEN Z TEXTE --- */
+    /* --- TYPEWRITER EFFEKT --- */
     const quotes = [
       "Main Character Energy geladen. Dein Abenteuer beginnt jetzt. 🚀",
       "Vibe check: bestanden. Zeit, Geschichte zu schreiben, Bestie.",
@@ -251,23 +226,17 @@
       if (!isDeleting) {
         textElement.textContent = currentQuote.substring(0, charIndex + 1);
         charIndex++;
-
         if (charIndex === currentQuote.length) {
           isDeleting = true;
           setTimeout(typeWriter, 3000); 
-        } else {
-          setTimeout(typeWriter, 50); 
-        }
+        } else { setTimeout(typeWriter, 50); }
       } else {
         textElement.textContent = currentQuote.substring(0, charIndex - 1);
         charIndex--;
-
         if (charIndex === 0) {
           isDeleting = false;
           setTimeout(typeWriter, 500); 
-        } else {
-          setTimeout(typeWriter, 20);
-        }
+        } else { setTimeout(typeWriter, 20); }
       }
     }
     document.addEventListener('DOMContentLoaded', typeWriter);
