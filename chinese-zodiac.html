@@ -52,6 +52,23 @@
       max-width: 1200px;
       margin: 0 auto;
       text-align: center;
+
+      /* --- NEU: VERZÖGERUNGS-EFFEKT --- */
+      opacity: 0; /* Startet unsichtbar */
+      animation: revealContent 2s ease-out forwards; /* 2 Sekunden sanftes Einblenden */
+      animation-delay: 3s; /* WARTET 3 Sekunden bevor es losgeht */
+    }
+
+    /* Die Animation für das Einblenden nach 3 Sekunden */
+    @keyframes revealContent {
+      from { 
+        opacity: 0; 
+        transform: translateY(30px); /* Kommt leicht von unten */
+      }
+      to { 
+        opacity: 1; 
+        transform: translateY(0); 
+      }
     }
 
     header.header {
