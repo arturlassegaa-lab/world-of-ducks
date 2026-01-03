@@ -5,181 +5,308 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Inspo — World of Ducks</title>
   <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,700&family=Poppins:wght@700&display=swap" rel="stylesheet">
+  
   <style>
-    :root{
-      --accent-blue:#0b3d91;
-      --gold:#d4af37;
-      --bg:#faf7f2;
-      --panel-brown-start:#6b4f2b;
-      --panel-brown-end:#5b3d1a;
+    /* --- RESET & BASIC --- */
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #000;
+      overflow: hidden; /* Damit keine Scrollbalken kommen */
+      font-family: 'Poppins', sans-serif;
+      height: 100vh;
+      width: 100vw;
+      position: relative;
     }
 
-    /* Gleiche Basis wie index.html / chat.html */
-    body{font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; margin:0; background:var(--bg); color:#111;}
-    .frame{position:relative; min-height:100vh; padding:18px; box-sizing:border-box;}
-    header.header{display:flex;align-items:center;gap:14px}
-    h1.site-title{margin:0; font-size:1.25rem; display:flex; align-items:center; gap:8px;}
-    nav.menu{display:flex;gap:10px;padding:12px 0;flex-wrap:wrap}
-    .btn{padding:8px 12px;border-radius:8px;background:#fff;border:1px solid rgba(0,0,0,0.06);text-decoration:none;color:inherit;display:inline-block}
-
-    /* Hauptbereich */
-    .container{display:flex;gap:20px;align-items:flex-start}
-    .hero{flex:1;min-height:60vh;padding:12px}
-    .panel{
-      max-width:980px;
-      margin:0 auto;
-      padding:22px;
-      border-radius:12px;
-      background: linear-gradient(180deg,var(--panel-brown-start),var(--panel-brown-end));
-      color:var(--gold);
-      border: 3px solid var(--accent-blue);
-      box-shadow: 0 8px 24px rgba(6,43,107,0.12), 0 0 0 6px rgba(212,175,55,0.06);
+    /* Das Feuerwerk Canvas liegt ganz hinten */
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1; /* Ganz unten */
+      pointer-events: none; /* Klicks gehen durch */
     }
 
-    .announce{
-      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(0,0,0,0.04));
-      border-radius:10px;
-      padding:18px;
-      color:#fff;
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-      align-items:flex-start;
+    /* Container für den Inhalt (liegt über dem Feuerwerk) */
+    .content-layer {
+      position: relative;
+      z-index: 10;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between; /* Header oben, Text mitte */
+      padding: 20px;
+      box-sizing: border-box;
     }
-    .announce h2{margin:0;font-size:1.6rem;color:#ffd87a}
-    .announce p{margin:0;color:#fffde6}
-    .to-be{font-weight:800;font-size:2.4rem;color:#ffd87a;letter-spacing:2px}
 
-    .small-note{margin-top:12px;font-size:.95rem;color:#f3e0b3}
+    /* --- GLOSSY TEXT EFFEKT (Chrome Style) --- */
+    .glossy-text {
+      color: #fff;
+      text-transform: uppercase;
+      font-weight: 900;
+      /* Der Chrom-Effekt */
+      background: linear-gradient(to bottom, #dcdcdc 0%, #fff 50%, #686868 51%, #a8a8a8 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      /* Glanz-Schatten */
+      text-shadow: 0px 2px 4px rgba(255,255,255,0.3);
+      letter-spacing: 2px;
+    }
 
-    footer.footer{margin-top:18px;color:#666;font-size:.9rem}
-    @media(max-width:800px){
-      .panel{padding:16px}
-      .to-be{font-size:1.8rem}
+    /* Header */
+    .header h1 {
+      font-size: 2.5rem;
+      margin: 10px 0;
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+    }
+
+    /* Navigation (angepasst an Dark Mode) */
+    .menu-container {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: auto; /* Drückt den Rest nach unten */
+    }
+
+    .nav-btn {
+      text-decoration: none;
+      color: #ccc;
+      font-size: 0.9rem;
+      padding: 8px 16px;
+      border: 1px solid #444;
+      border-radius: 20px;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(5px);
+      transition: all 0.3s ease;
+    }
+
+    .nav-btn:hover {
+      background: #fff;
+      color: #000;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+      border-color: #fff;
+    }
+
+    /* --- DER MITTEL-SATZ (LINK) --- */
+    .center-piece {
+      flex-grow: 1; /* Nimmt den Platz in der Mitte ein */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+    }
+
+    .vibe-link {
+      text-decoration: none;
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 2.5rem; /* Groß! */
+      text-align: center;
+      cursor: pointer;
+      position: relative;
+      
+      /* Glossy Effekt für den Link */
+      background: linear-gradient(to bottom, #fff 0%, #e0e0e0 40%, #999 50%, #fff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      
+      transition: transform 0.2s;
+    }
+
+    .vibe-link:hover {
+      transform: scale(1.05);
+      filter: drop-shadow(0 0 10px rgba(255,255,255,0.5));
+    }
+
+    /* Cursor für den Typewriter */
+    .cursor {
+      display: inline-block;
+      width: 2px;
+      height: 1em;
+      background-color: #fff;
+      margin-left: 5px;
+      animation: blink 1s infinite;
+      vertical-align: middle;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* Footer */
+    .footer {
+      color: #444;
+      font-size: 0.8rem;
+      margin-top: 20px;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .header h1 { font-size: 1.8rem; }
+      .vibe-link { font-size: 1.8rem; }
     }
   </style>
 </head>
 <body>
-  <div class="frame">
+
+  <canvas id="canvas"></canvas>
+
+  <div class="content-layer">
+    
     <header class="header">
-      <h1 class="site-title">🦆 World of Ducks</h1>
+      <h1 class="glossy-text">World of Ducks</h1>
     </header>
 
-    <!-- Reiter / Menü exakt wie auf den anderen Seiten -->
-    <nav class="menu" aria-label="Hauptnavigation">
-      <a href="index.html" class="btn">Home</a>
-      <a href="blogs.html" class="btn">Blogs</a>
-      <a href="memory.html" class="btn">Memory</a>
-      <a href="chat.html" class="btn">Chat</a>
-      <a href="galgenman.html" class="btn">Galgenman</a>
-      <a href="inspo.html" class="btn" aria-current="page">Inspo</a>
+    <nav class="menu-container">
+      <a href="index.html" class="nav-btn">Home</a>
+      <a href="blogs.html" class="nav-btn">Blogs</a>
+      <a href="memory.html" class="nav-btn">Memory</a>
+      <a href="chat.html" class="nav-btn">Chat</a>
+      <a href="galgenman.html" class="nav-btn">Game</a>
     </nav>
 
-    <main class="hero">
-      <section class="panel" role="main" aria-labelledby="inspoTitle">
-        <div class="announce" id="inspoTitle">
-          <div class="to-be">TO BE CONTINUED</div>
-          <h2>Komm bald wieder — mehr Inspiration ist in Arbeit</h2>
-          <p>Wir basteln gerade an neuen Inhalten, Artwork und Ideen für World of Ducks. Bald gibt es neue Artikel, Bilder und Überraschungen.</p>
-          <p class="small-note">Tipp: Schau dir die anderen Bereiche an — vielleicht findest du dort schon Inspiration.</p>
-        </div>
-      </section>
-    </main>
+    <div class="center-piece">
+      <a href="https://www.youtube.com/watch?v=MfTRf__R8-s&list=RDMfTRf__R8-s&start_radio=1" target="_blank" class="vibe-link">
+        <span id="typing-text"></span><span class="cursor"></span>
+      </a>
+    </div>
 
-    <footer class="footer">© 2025 World of Ducks</footer>
+    <footer class="footer">
+      © 2025 World of Ducks – Inspo Mode
+    </footer>
   </div>
-</body>
-</html>
-```<!-- filepath: /Users/lassesczepan/Desktop/WoD/inspo.html -->
-<!DOCTYPE html>
-<html lang="de">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Inspo — World of Ducks</title>
-  <link rel="stylesheet" href="style.css" />
-  <style>
-    :root{
-      --accent-blue:#0b3d91;
-      --gold:#d4af37;
-      --bg:#faf7f2;
-      --panel-brown-start:#6b4f2b;
-      --panel-brown-end:#5b3d1a;
+
+  <script>
+    /* --- TYPEWRITER EFFEKT (Deutsch / Englisch) --- */
+    const phrases = [
+      "Pass auf wen du liebst",
+      "Watch who you love"
+    ];
+
+    const textElement = document.getElementById('typing-text');
+    let phraseIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+    let currentPhrase = "";
+
+    function typeWriter() {
+      currentPhrase = phrases[phraseIndex];
+
+      if (!isDeleting) {
+        textElement.textContent = currentPhrase.substring(0, charIndex + 1);
+        charIndex++;
+
+        if (charIndex === currentPhrase.length) {
+          isDeleting = true;
+          setTimeout(typeWriter, 4000); // 4 Sekunden stehen lassen
+        } else {
+          setTimeout(typeWriter, 100); // Tipp-Geschwindigkeit
+        }
+      } else {
+        textElement.textContent = currentPhrase.substring(0, charIndex - 1);
+        charIndex--;
+
+        if (charIndex === 0) {
+          isDeleting = false;
+          phraseIndex = (phraseIndex + 1) % phrases.length; // Nächster Satz
+          setTimeout(typeWriter, 500);
+        } else {
+          setTimeout(typeWriter, 50); // Lösch-Geschwindigkeit
+        }
+      }
+    }
+    document.addEventListener('DOMContentLoaded', typeWriter);
+
+
+    /* --- FEUERWERK ANIMATION (Canvas) --- */
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+    let w, h;
+    let particles = [];
+
+    function resize() {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+    }
+    window.addEventListener("resize", resize);
+    resize();
+
+    // Zufallsfunktionen
+    function random(min, max) { return Math.random() * (max - min) + min; }
+
+    class Particle {
+      constructor(x, y, color) {
+        this.x = x;
+        this.y = y;
+        this.color = color;
+        // Explosion in alle Richtungen
+        const angle = random(0, Math.PI * 2);
+        const speed = random(1, 5);
+        this.vx = Math.cos(angle) * speed;
+        this.vy = Math.sin(angle) * speed;
+        this.alpha = 1; // Sichtbarkeit
+        this.decay = random(0.01, 0.03); // Wie schnell es verblasst
+        this.gravity = 0.05; // Leichte Schwerkraft
+      }
+
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        this.vy += this.gravity; // Fällt nach unten
+        this.alpha -= this.decay;
+      }
+
+      draw() {
+        ctx.save();
+        ctx.globalAlpha = this.alpha;
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
     }
 
-    /* Gleiche Basis wie index.html / chat.html */
-    body{font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; margin:0; background:var(--bg); color:#111;}
-    .frame{position:relative; min-height:100vh; padding:18px; box-sizing:border-box;}
-    header.header{display:flex;align-items:center;gap:14px}
-    h1.site-title{margin:0; font-size:1.25rem; display:flex; align-items:center; gap:8px;}
-    nav.menu{display:flex;gap:10px;padding:12px 0;flex-wrap:wrap}
-    .btn{padding:8px 12px;border-radius:8px;background:#fff;border:1px solid rgba(0,0,0,0.06);text-decoration:none;color:inherit;display:inline-block}
-
-    /* Hauptbereich */
-    .container{display:flex;gap:20px;align-items:flex-start}
-    .hero{flex:1;min-height:60vh;padding:12px}
-    .panel{
-      max-width:980px;
-      margin:0 auto;
-      padding:22px;
-      border-radius:12px;
-      background: linear-gradient(180deg,var(--panel-brown-start),var(--panel-brown-end));
-      color:var(--gold);
-      border: 3px solid var(--accent-blue);
-      box-shadow: 0 8px 24px rgba(6,43,107,0.12), 0 0 0 6px rgba(212,175,55,0.06);
+    // Automatische Feuerwerks-Starts
+    function launchFirework() {
+      const x = random(w * 0.1, w * 0.9);
+      const y = random(h * 0.1, h * 0.5);
+      const colors = ["#ff0040", "#00ffff", "#ffff00", "#ff00ff", "#00ff00", "#ffffff"];
+      const color = colors[Math.floor(random(0, colors.length))];
+      
+      // Erzeuge 50 Partikel pro Explosion
+      for (let i = 0; i < 50; i++) {
+        particles.push(new Particle(x, y, color));
+      }
     }
 
-    .announce{
-      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(0,0,0,0.04));
-      border-radius:10px;
-      padding:18px;
-      color:#fff;
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-      align-items:flex-start;
+    function animate() {
+      // Leichter Schweif-Effekt (macht es smooth)
+      ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
+      ctx.fillRect(0, 0, w, h);
+
+      // Partikel updaten
+      for (let i = particles.length - 1; i >= 0; i--) {
+        particles[i].update();
+        particles[i].draw();
+        if (particles[i].alpha <= 0) {
+          particles.splice(i, 1);
+        }
+      }
+
+      // Zufällig neue Rakete zünden (ca. alle 40 Frames)
+      if (Math.random() < 0.03) {
+        launchFirework();
+      }
+
+      requestAnimationFrame(animate);
     }
-    .announce h2{margin:0;font-size:1.6rem;color:#ffd87a}
-    .announce p{margin:0;color:#fffde6}
-    .to-be{font-weight:800;font-size:2.4rem;color:#ffd87a;letter-spacing:2px}
 
-    .small-note{margin-top:12px;font-size:.95rem;color:#f3e0b3}
-
-    footer.footer{margin-top:18px;color:#666;font-size:.9rem}
-    @media(max-width:800px){
-      .panel{padding:16px}
-      .to-be{font-size:1.8rem}
-    }
-  </style>
-</head>
-<body>
-  <div class="frame">
-    <header class="header">
-      <h1 class="site-title">🦆 World of Ducks</h1>
-    </header>
-
-    <!-- Reiter / Menü exakt wie auf den anderen Seiten -->
-    <nav class="menu" aria-label="Hauptnavigation">
-      <a href="index.html" class="btn">Home</a>
-      <a href="blogs.html" class="btn">Blogs</a>
-      <a href="memory.html" class="btn">Memory</a>
-      <a href="chat.html" class="btn">Chat</a>
-      <a href="galgenman.html" class="btn">Galgenman</a>
-      <a href="inspo.html" class="btn" aria-current="page">Inspo</a>
-    </nav>
-
-    <main class="hero">
-      <section class="panel" role="main" aria-labelledby="inspoTitle">
-        <div class="announce" id="inspoTitle">
-          <div class="to-be">TO BE CONTINUED</div>
-          <h2>Komm bald wieder — mehr Inspiration ist in Arbeit</h2>
-          <p>Wir basteln gerade an neuen Inhalten, Artwork und Ideen für World of Ducks. Bald gibt es neue Artikel, Bilder und Überraschungen.</p>
-          <p class="small-note">Tipp: Schau dir die anderen Bereiche an — vielleicht findest du dort schon Inspiration.</p>
-        </div>
-      </section>
-    </main>
-
-    <footer class="footer">© 2025 World of Ducks</footer>
-  </div>
+    animate();
+  </script>
 </body>
 </html>
