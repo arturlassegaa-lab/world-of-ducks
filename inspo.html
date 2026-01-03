@@ -10,260 +10,207 @@
   <style>
     /* --- BASIC SETUP --- */
     body {
-      margin: 0;
-      padding: 0;
-      background-color: #000;
-      overflow: hidden; 
-      font-family: 'Poppins', sans-serif;
-      height: 100vh;
-      width: 100vw;
-      position: relative;
+      margin: 0; padding: 0; background-color: #000;
+      overflow: hidden; font-family: 'Poppins', sans-serif;
+      height: 100vh; width: 100vw; position: relative;
     }
 
     canvas#fireworks-canvas {
-      position: absolute;
-      top: 0; left: 0;
-      z-index: 1; 
-      pointer-events: none; 
+      position: absolute; top: 0; left: 0; z-index: 1; pointer-events: none; 
     }
 
     .content-layer {
-      position: relative;
-      z-index: 10;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-between; 
-      box-sizing: border-box;
+      position: relative; z-index: 10; height: 100%;
+      display: flex; flex-direction: column; align-items: center; justify-content: space-between; 
+      box-sizing: border-box; pointer-events: none; 
     }
+    
+    .header, .menu, .center-piece, .footer { pointer-events: auto; }
 
-    /* --- UNIFIED RPG HEADER & MENU (1:1 Kopie vom Standard-Design) --- */
+    /* --- HEADER & MENU --- */
     .header {
-      width: 100%;
-      text-align: center;
-      padding: 20px 0;
+      width: 100%; text-align: center; padding: 20px 0;
       background: linear-gradient(to bottom, #3c2b15, #1a0e05);
-      border-bottom: 3px solid #5b3b1d;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.8);
-      position: relative;
-      z-index: 20;
+      border-bottom: 3px solid #5b3b1d; box-shadow: 0 5px 15px rgba(0,0,0,0.8);
+      position: relative; z-index: 20;
     }
-
     .header h1 {
-      font-size: 2.5rem;
-      margin: 0;
-      font-family: 'MedievalSharp', cursive;
-      color: #ffcc33;
-      text-shadow: 2px 2px 4px #000;
-      letter-spacing: 1px;
-      /* Entfernt den alten Glossy-Effekt für den Titel */
-      background: none; 
-      -webkit-text-fill-color: initial; 
+      font-size: 2.5rem; margin: 0; font-family: 'MedievalSharp', cursive;
+      color: #ffcc33; text-shadow: 2px 2px 4px #000; letter-spacing: 1px;
     }
 
-    /* Menü Container */
     .menu {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 10px;
-      padding: 15px;
-      width: 100%;
-      /* Leicht transparent, damit man das Feuerwerk sieht */
-      background: rgba(26, 14, 5, 0.8); 
+      display: flex; justify-content: center; flex-wrap: wrap; gap: 10px;
+      padding: 15px; width: 100%; background: rgba(26, 14, 5, 0.8); 
       border-bottom: 1px solid rgba(91, 59, 29, 0.5);
     }
 
-    /* Die Standard-Buttons */
     .btn {
-      display: inline-block;
-      text-decoration: none;
-      font-size: 1rem;
-      padding: 10px 22px;
-      background: #5b3b1d;
-      color: #ffcc33;
-      border: 2px solid #d6a85b;
-      border-radius: 8px;
-      text-shadow: 1px 1px 3px #000;
-      box-shadow: inset 0 0 10px #000;
-      transition: all 0.2s ease;
-      font-family: 'MedievalSharp', cursive;
+      display: inline-block; text-decoration: none; font-size: 1rem;
+      padding: 10px 22px; background: #5b3b1d; color: #ffcc33;
+      border: 2px solid #d6a85b; border-radius: 8px;
+      text-shadow: 1px 1px 3px #000; box-shadow: inset 0 0 10px #000;
+      transition: all 0.2s ease; font-family: 'MedievalSharp', cursive;
     }
-
     .btn:hover {
-      background: #7a5028;
-      transform: scale(1.05);
-      color: #fff;
+      background: #7a5028; transform: scale(1.05); color: #fff;
       box-shadow: 0 0 10px rgba(255, 204, 51, 0.4);
     }
 
-    /* --- INHALT (Inspo Spezifisch) --- */
+    /* --- CENTER PIECE --- */
     .center-piece {
-      flex-grow: 1; 
-      display: flex;
-      justify-content: center; 
-      align-items: center;     
-      width: 100%;
-      padding: 20px;
-      gap: 20px; 
+      flex-grow: 1; display: flex; justify-content: center; align-items: center;     
+      width: 100%; padding: 20px; gap: 20px; 
     }
 
     .vibe-link {
-      text-decoration: none;
-      font-family: 'Playfair Display', serif;
-      font-style: italic;
-      font-size: 2.5rem; 
-      text-align: center;
-      cursor: pointer;
-      line-height: 1.4;
+      text-decoration: none; font-family: 'Playfair Display', serif; font-style: italic;
+      font-size: 2.5rem; text-align: center; cursor: pointer; line-height: 1.4;
       background: linear-gradient(to bottom, #ffffff 0%, #dcdcdc 50%, #888888 51%, #ffffff 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      transition: transform 0.2s;
-      filter: drop-shadow(0 0 15px rgba(255,255,255,0.4));
-      white-space: nowrap; 
-      z-index: 100;
+      -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+      transition: transform 0.2s; filter: drop-shadow(0 0 15px rgba(255,255,255,0.4));
+      white-space: nowrap; z-index: 100;
     }
-
-    .vibe-link:hover {
-      transform: scale(1.05);
-      filter: drop-shadow(0 0 25px rgba(255,255,255,0.8));
-    }
+    .vibe-link:hover { transform: scale(1.05); filter: drop-shadow(0 0 25px rgba(255,255,255,0.8)); }
 
     .duck-spinner {
-      width: 300px;
-      height: 200px;
-      border: none;
-      background: transparent;
-      overflow: hidden;
-      animation: spinDuck 5s linear infinite;
-      transform: scale(0.8); 
+      width: 300px; height: 200px; border: none; background: transparent;
+      overflow: hidden; animation: spinDuck 5s linear infinite; transform: scale(0.8); 
     }
-
     @keyframes spinDuck {
       0% { transform: perspective(1000px) rotateY(0deg) scale(0.8); }
       100% { transform: perspective(1000px) rotateY(360deg) scale(0.8); }
     }
 
     .arabic-font { font-family: 'Amiri', serif; }
-
     .cursor {
-      display: inline-block;
-      width: 3px; height: 1em;
-      background-color: #fff;
-      margin-left: 5px;
-      animation: blink 1s infinite;
-      vertical-align: middle;
+      display: inline-block; width: 3px; height: 1em; background-color: #fff;
+      margin-left: 5px; animation: blink 1s infinite; vertical-align: middle;
       box-shadow: 0 0 10px #fff;
     }
     @keyframes blink { 50% { opacity: 0; } }
 
     .footer {
-      color: #666;
-      font-size: 0.8rem;
-      padding: 15px;
-      text-align: center;
-      border-top: 1px solid #333;
-      background: #000;
+      color: #666; font-size: 0.8rem; padding: 15px;
+      text-align: center; border-top: 1px solid #333; background: #000;
     }
 
     /* --- SNAKE SECRET STYLE --- */
     #snake-trigger-area {
-      position: fixed;
-      bottom: 10px;
-      right: 10px;
-      width: 50px;
-      height: 50px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 2rem;
-      cursor: pointer;
-      z-index: 100;
-      transition: transform 0.3s;
-      filter: drop-shadow(0 0 5px #0f0);
+      position: fixed; bottom: 10px; right: 10px; width: 50px; height: 50px;
+      display: flex; justify-content: center; align-items: center; font-size: 2rem;
+      cursor: pointer; z-index: 100; transition: transform 0.3s;
+      filter: drop-shadow(0 0 5px #0f0); pointer-events: auto;
     }
     #snake-trigger-area:hover { transform: scale(1.2); }
 
     .loader-ring {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      border: 3px solid transparent;
-      border-top-color: #0f0;
-      opacity: 0;
-      transition: opacity 0.2s;
+      position: absolute; width: 100%; height: 100%; border-radius: 50%;
+      border: 3px solid transparent; border-top-color: #0f0; opacity: 0; transition: opacity 0.2s;
     }
-    #snake-trigger-area:hover .loader-ring {
-      opacity: 1;
-      animation: spinLoad 1s linear forwards;
-    }
-    @keyframes spinLoad { to { transform: rotate(360deg); } }
+    #snake-trigger-area:hover .loader-ring { opacity: 1; animation: spinLoad 1s linear forwards; }
 
     #snake-overlay {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      width: 320px;
-      height: 420px;
-      background: rgba(0, 20, 0, 0.95);
-      border: 2px solid #0f0;
-      border-radius: 15px;
-      box-shadow: 0 0 30px rgba(0, 255, 0, 0.4);
-      z-index: 200;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 10px;
-      transform: scale(0);
-      transform-origin: bottom right;
-      transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      opacity: 0;
-      pointer-events: none;
+      position: fixed; bottom: 20px; right: 20px; width: 320px; height: 420px;
+      background: rgba(0, 20, 0, 0.95); border: 2px solid #0f0; border-radius: 15px;
+      box-shadow: 0 0 30px rgba(0, 255, 0, 0.4); z-index: 200;
+      display: flex; flex-direction: column; align-items: center; padding: 10px;
+      transform: scale(0); transform-origin: bottom right;
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      opacity: 0; pointer-events: none;
     }
-
     #snake-overlay.open { transform: scale(1); opacity: 1; pointer-events: all; }
-
-    #snake-canvas {
-      background: #000;
-      border: 1px solid #333;
-      box-shadow: inset 0 0 10px #0f0;
-    }
+    
+    #snake-canvas { background: #000; border: 1px solid #333; box-shadow: inset 0 0 10px #0f0; }
 
     .snake-ui {
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      color: #0f0;
-      font-family: 'Courier New', Courier, monospace;
-      font-weight: bold;
-      margin-bottom: 10px;
-      text-shadow: 0 0 5px #0f0;
+      width: 100%; display: flex; justify-content: space-between;
+      color: #0f0; font-family: 'Courier New', Courier, monospace;
+      font-weight: bold; margin-bottom: 10px; text-shadow: 0 0 5px #0f0;
     }
-
     .close-snake {
-      background: none;
-      border: 1px solid #0f0;
-      color: #0f0;
-      cursor: pointer;
-      font-family: inherit;
-      padding: 2px 8px;
+      background: none; border: 1px solid #0f0; color: #0f0; cursor: pointer;
+      font-family: inherit; padding: 2px 8px;
     }
     .close-snake:hover { background: #0f0; color: #000; }
 
-    /* Responsive */
+    /* --- HXH HUNTER EXAM SECRET STYLE (FULLSCREEN FISHING) --- */
+    #hxh-trigger-area {
+      position: fixed; bottom: 10px; left: 10px; width: 50px; height: 50px;
+      display: flex; justify-content: center; align-items: center; font-size: 2rem;
+      cursor: pointer; z-index: 100; transition: transform 0.3s;
+      filter: drop-shadow(0 0 5px #00aaff); pointer-events: auto;
+    }
+    #hxh-trigger-area:hover { transform: scale(1.2); }
+    
+    .hxh-loader-ring {
+      position: absolute; width: 100%; height: 100%; border-radius: 50%;
+      border: 3px solid transparent; border-top-color: #00aaff; opacity: 0; transition: opacity 0.2s;
+    }
+    #hxh-trigger-area:hover .hxh-loader-ring { opacity: 1; animation: spinLoad 1s linear forwards; }
+
+    #hxh-overlay {
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(0, 0, 0, 0.9);
+      z-index: 500; 
+      display: none; flex-direction: column; align-items: center; justify-content: center;
+      opacity: 0; transition: opacity 0.5s ease;
+      font-family: 'Poppins', sans-serif;
+    }
+    #hxh-overlay.open { display: flex; opacity: 1; pointer-events: all; }
+
+    #hxh-fishing {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%; cursor: crosshair;
+    }
+    
+    #hxh-quiz-container {
+      background: rgba(10, 20, 40, 0.95);
+      border: 2px solid #00aaff; border-radius: 15px;
+      box-shadow: 0 0 30px rgba(0, 170, 255, 0.4);
+      width: 400px; max-width: 90vw; padding: 20px;
+      text-align: center; display: none; position: relative;
+    }
+    #hxh-quiz-container.active { display: block; animation: popIn 0.3s ease-out; }
+    @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+    #fishing-canvas { width: 100%; height: 100%; display: block; }
+
+    .quiz-title { font-size: 1.5rem; color: #00aaff; text-shadow: 0 0 10px #00aaff; margin-bottom: 20px; }
+    .quiz-question { font-size: 1.1rem; margin-bottom: 20px; line-height: 1.4; color: #fff; }
+    .quiz-options { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+    .quiz-btn {
+      background: rgba(255,255,255,0.1); border: 1px solid #00aaff;
+      color: #fff; padding: 12px; cursor: pointer; transition: all 0.2s; border-radius: 5px; text-align: left;
+    }
+    .quiz-btn:hover { background: #00aaff; color: #000; }
+    
+    .nen-type-reveal { font-size: 2.5rem; font-weight: bold; margin: 20px 0; animation: glow 2s infinite alternate; }
+    @keyframes glow { from {text-shadow: 0 0 10px currentColor;} to {text-shadow: 0 0 30px currentColor;} }
+    .nen-desc { font-size: 1rem; color: #ccc; margin-bottom: 20px; line-height: 1.5; }
+
+    .close-hxh {
+      position: absolute; top: 20px; right: 20px;
+      background: rgba(0,0,0,0.5); border: 2px solid #fff; color: #fff;
+      cursor: pointer; padding: 10px 15px; z-index: 600; font-weight: bold; font-size: 1.2rem;
+      border-radius: 50%; width: 50px; height: 50px;
+    }
+    .close-hxh:hover { background: #fff; color: #000; }
+
+    .instruction-text {
+      position: absolute; top: 10%; width: 100%; text-align: center;
+      color: rgba(255,255,255,0.7); font-size: 1.2rem; pointer-events: none;
+      text-shadow: 0 0 5px #000;
+    }
+
+    @keyframes spinLoad { to { transform: rotate(360deg); } }
+
     @media (max-width: 1000px) {
       .center-piece { flex-direction: column; gap: 10px; }
       .header h1 { font-size: 2rem; }
       .vibe-link { font-size: 1.5rem; white-space: normal; }
       .duck-spinner { width: 250px; height: 150px; transform: scale(0.6); }
-      @keyframes spinDuck {
-        0% { transform: perspective(1000px) rotateY(0deg) scale(0.6); }
-        100% { transform: perspective(1000px) rotateY(360deg) scale(0.6); }
-      }
+      #snake-overlay { width: 90vw; height: 60vh; bottom: 50%; right: 5vw; left: 5vw; transform-origin: center; transform: translateY(50%) scale(0); }
+      #snake-overlay.open { transform: translateY(50%) scale(1); }
     }
   </style>
 </head>
@@ -271,9 +218,14 @@
 
   <canvas id="fireworks-canvas"></canvas>
 
-  <div id="snake-trigger-area" title="Warte 1 Sekunde...">
+  <div id="snake-trigger-area" title="Start Snake">
     <div class="loader-ring"></div>
     🐍
+  </div>
+
+  <div id="hxh-trigger-area" title="Hunter Prüfung">
+    <div class="hxh-loader-ring"></div>
+    🎣
   </div>
 
   <div id="snake-overlay">
@@ -285,11 +237,35 @@
     <div style="color: #0f0; font-size: 0.7rem; margin-top: 5px; font-family: monospace;">Benutze Pfeiltasten</div>
   </div>
 
-  <div class="content-layer">
+  <div id="hxh-overlay">
+    <button class="close-hxh" onclick="closeHxHGame()">X</button>
     
-    <header class="header">
-      <h1>World of Ducks</h1>
-    </header>
+    <div id="hxh-fishing">
+      <div class="instruction-text">Halte die linke Maustaste und kreise den Fisch ein!</div>
+      <canvas id="fishing-canvas"></canvas>
+    </div>
+
+    <div id="hxh-quiz-container">
+      <div id="quiz-content">
+        <div class="quiz-title">Nen Wasserorakel</div>
+        <div style="width:100%;">
+          <div class="quiz-question" id="q-text">Frage lädt...</div>
+          <div class="quiz-options" id="q-options"></div>
+        </div>
+        <div style="margin-top: 15px; font-size: 0.8rem; color: #666;">Frage <span id="q-current">1</span> / 10</div>
+      </div>
+
+      <div id="result-content" style="display:none;">
+        <div class="quiz-title">Dein Hatsu ist...</div>
+        <div class="nen-type-reveal" id="nen-result-title">...</div>
+        <div class="nen-desc" id="nen-result-desc">...</div>
+        <button class="quiz-btn" onclick="resetHxH()" style="text-align:center;">Nochmal Angeln</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-layer">
+    <header class="header"><h1>World of Ducks</h1></header>
 
     <nav class="menu">
       <a href="index.html" class="btn">Home</a>
@@ -303,34 +279,20 @@
 
     <div class="center-piece">
       <iframe src="ascii-art.html" class="duck-spinner" scrolling="no"></iframe>
-
       <a href="https://www.youtube.com/watch?v=MfTRf__R8-s&list=RDMfTRf__R8-s&start_radio=1" target="_blank" class="vibe-link">
         <span id="typing-text"></span><span class="cursor"></span>
       </a>
-
       <iframe src="ascii-art.html" class="duck-spinner" scrolling="no"></iframe>
     </div>
 
-    <footer class="footer">
-      © 2025 World of Ducks – Inspo Mode
-    </footer>
+    <footer class="footer">© 2025 World of Ducks – Inspo Mode</footer>
   </div>
 
   <script>
     /* --- TEXT ANIMATION --- */
-    const phrases = [
-      "Pass auf wen du liebst",
-      "Watch who you love",
-      "Fais attention à qui tu aimes",
-      "انتبه لمن تحب",
-      "Kimi sevdiğine dikkat et"
-    ];
-
+    const phrases = ["Pass auf wen du liebst", "Watch who you love", "Fais attention à qui tu aimes", "انتبه لمن تحب", "Kimi sevdiğine dikkat et"];
     const textElement = document.getElementById('typing-text');
-    let phraseIndex = 0;
-    let charIndex = 0;
-    let isDeleting = false;
-    let currentPhrase = "";
+    let phraseIndex = 0; let charIndex = 0; let isDeleting = false; let currentPhrase = "";
 
     function typeWriter() {
       currentPhrase = phrases[phraseIndex];
@@ -338,20 +300,13 @@
       else textElement.classList.remove('arabic-font');
 
       if (!isDeleting) {
-        textElement.textContent = currentPhrase.substring(0, charIndex + 1);
-        charIndex++;
-        if (charIndex === currentPhrase.length) {
-          isDeleting = true;
-          setTimeout(typeWriter, 4000); 
-        } else { setTimeout(typeWriter, 100); }
+        textElement.textContent = currentPhrase.substring(0, charIndex + 1); charIndex++;
+        if (charIndex === currentPhrase.length) { isDeleting = true; setTimeout(typeWriter, 4000); } 
+        else { setTimeout(typeWriter, 100); }
       } else {
-        textElement.textContent = currentPhrase.substring(0, charIndex - 1);
-        charIndex--;
-        if (charIndex === 0) {
-          isDeleting = false;
-          phraseIndex = (phraseIndex + 1) % phrases.length;
-          setTimeout(typeWriter, 500);
-        } else { setTimeout(typeWriter, 50); }
+        textElement.textContent = currentPhrase.substring(0, charIndex - 1); charIndex--;
+        if (charIndex === 0) { isDeleting = false; phraseIndex = (phraseIndex + 1) % phrases.length; setTimeout(typeWriter, 500); } 
+        else { setTimeout(typeWriter, 50); }
       }
     }
     document.addEventListener('DOMContentLoaded', typeWriter);
@@ -359,47 +314,29 @@
     /* --- FEUERWERK --- */
     const fCanvas = document.getElementById("fireworks-canvas");
     const ctxF = fCanvas.getContext("2d");
-    let w, h;
-    let particles = [];
-
-    function resize() {
-      w = fCanvas.width = window.innerWidth;
-      h = fCanvas.height = window.innerHeight;
-    }
-    window.addEventListener("resize", resize);
-    resize();
-
+    let w, h; let particles = [];
+    function resize() { w = fCanvas.width = window.innerWidth; h = fCanvas.height = window.innerHeight; }
+    window.addEventListener("resize", resize); resize();
     function random(min, max) { return Math.random() * (max - min) + min; }
 
     class Particle {
       constructor(x, y, color) {
         this.x = x; this.y = y; this.color = color;
-        const angle = random(0, Math.PI * 2);
-        const speed = random(1, 5);
-        this.vx = Math.cos(angle) * speed;
-        this.vy = Math.sin(angle) * speed;
+        const angle = random(0, Math.PI * 2); const speed = random(1, 5);
+        this.vx = Math.cos(angle) * speed; this.vy = Math.sin(angle) * speed;
         this.alpha = 1; this.decay = random(0.01, 0.03); this.gravity = 0.05; 
       }
-      update() {
-        this.x += this.vx; this.y += this.vy; this.vy += this.gravity; this.alpha -= this.decay;
-      }
-      draw() {
-        ctxF.save(); ctxF.globalAlpha = this.alpha; ctxF.fillStyle = this.color;
-        ctxF.beginPath(); ctxF.arc(this.x, this.y, 2, 0, Math.PI * 2); ctxF.fill(); ctxF.restore();
-      }
+      update() { this.x += this.vx; this.y += this.vy; this.vy += this.gravity; this.alpha -= this.decay; }
+      draw() { ctxF.save(); ctxF.globalAlpha = this.alpha; ctxF.fillStyle = this.color; ctxF.beginPath(); ctxF.arc(this.x, this.y, 2, 0, Math.PI * 2); ctxF.fill(); ctxF.restore(); }
     }
-
     function launchFirework() {
-      const x = random(w * 0.1, w * 0.9);
-      const y = random(h * 0.1, h * 0.5);
+      const x = random(w * 0.1, w * 0.9); const y = random(h * 0.1, h * 0.5);
       const colors = ["#ff0040", "#00ffff", "#ffff00", "#ff00ff", "#00ff00", "#ffffff", "#d4af37"];
       const color = colors[Math.floor(random(0, colors.length))];
       for (let i = 0; i < 60; i++) particles.push(new Particle(x, y, color));
     }
-
     function animateFireworks() {
-      ctxF.fillStyle = "rgba(0, 0, 0, 0.2)";
-      ctxF.fillRect(0, 0, w, h);
+      ctxF.fillStyle = "rgba(0, 0, 0, 0.2)"; ctxF.fillRect(0, 0, w, h);
       for (let i = particles.length - 1; i >= 0; i--) {
         particles[i].update(); particles[i].draw();
         if (particles[i].alpha <= 0) particles.splice(i, 1);
@@ -415,112 +352,203 @@
     const sCanvas = document.getElementById('snake-canvas');
     const sCtx = sCanvas.getContext('2d');
     const scoreEl = document.getElementById('snake-score');
-    
-    let snakeTimer;
-    let gameInterval;
-    let snake = [];
-    let food = {};
-    let direction = 'RIGHT';
-    let score = 0;
-    const box = 15;
+    let snakeTimer; let gameInterval; 
+    let snake = []; let food = {}; 
+    let direction = 'RIGHT'; 
+    let nextDirection = 'RIGHT'; 
+    let score = 0; const box = 15;
 
-    snakeTrigger.addEventListener('mouseenter', () => {
-      snakeTimer = setTimeout(openSnakeGame, 1000);
-    });
-    snakeTrigger.addEventListener('mouseleave', () => {
-      clearTimeout(snakeTimer);
-    });
+    snakeTrigger.addEventListener('mouseenter', () => { snakeTimer = setTimeout(openSnakeGame, 1000); });
+    snakeTrigger.addEventListener('mouseleave', () => { clearTimeout(snakeTimer); });
 
-    function openSnakeGame() {
-      snakeOverlay.classList.add('open');
-      initSnake();
-    }
-
-    function closeSnakeGame() {
-      snakeOverlay.classList.remove('open');
-      clearInterval(gameInterval);
-    }
+    function openSnakeGame() { snakeOverlay.classList.add('open'); initSnake(); }
+    function closeSnakeGame() { snakeOverlay.classList.remove('open'); clearInterval(gameInterval); }
 
     function initSnake() {
-      clearInterval(gameInterval);
-      snake = [{x: 9 * box, y: 10 * box}];
-      direction = 'RIGHT';
-      score = 0;
-      scoreEl.innerText = score;
-      generateFood();
-      document.addEventListener('keydown', directionControl);
-      gameInterval = setInterval(drawSnakeGame, 100);
+      clearInterval(gameInterval); snake = [{x: 9 * box, y: 10 * box}, {x: 8 * box, y: 10 * box}]; 
+      direction = 'RIGHT'; nextDirection = 'RIGHT';
+      score = 0; scoreEl.innerText = score;
+      generateFood(); document.addEventListener('keydown', directionControl); gameInterval = setInterval(drawSnakeGame, 100);
     }
 
     function directionControl(event) {
-      if(event.keyCode == 37 && direction != 'RIGHT') direction = 'LEFT';
-      else if(event.keyCode == 38 && direction != 'DOWN') direction = 'UP';
-      else if(event.keyCode == 39 && direction != 'LEFT') direction = 'RIGHT';
-      else if(event.keyCode == 40 && direction != 'UP') direction = 'DOWN';
+      if(event.keyCode == 37 && direction != 'RIGHT') nextDirection = 'LEFT';
+      else if(event.keyCode == 38 && direction != 'DOWN') nextDirection = 'UP';
+      else if(event.keyCode == 39 && direction != 'LEFT') nextDirection = 'RIGHT';
+      else if(event.keyCode == 40 && direction != 'UP') nextDirection = 'DOWN';
     }
 
-    function generateFood() {
-      food = {
-        x: Math.floor(Math.random() * (sCanvas.width/box)) * box,
-        y: Math.floor(Math.random() * (sCanvas.height/box)) * box
-      }
-    }
+    function generateFood() { food = { x: Math.floor(Math.random() * (sCanvas.width/box)) * box, y: Math.floor(Math.random() * (sCanvas.height/box)) * box } }
 
     function drawSnakeGame() {
-      sCtx.fillStyle = '#000';
-      sCtx.fillRect(0, 0, sCanvas.width, sCanvas.height);
-
-      sCtx.fillStyle = '#f00';
-      sCtx.shadowBlur = 10;
-      sCtx.shadowColor = "red";
-      sCtx.fillRect(food.x, food.y, box, box);
-      sCtx.shadowBlur = 0;
+      direction = nextDirection;
+      sCtx.fillStyle = '#000'; sCtx.fillRect(0, 0, sCanvas.width, sCanvas.height);
+      sCtx.fillStyle = '#f00'; sCtx.shadowBlur = 10; sCtx.shadowColor = "red"; sCtx.fillRect(food.x, food.y, box, box); sCtx.shadowBlur = 0;
 
       for(let i = 0; i < snake.length; i++) {
         sCtx.fillStyle = (i == 0) ? '#0f0' : '#0a0';
-        sCtx.shadowBlur = (i == 0) ? 10 : 0;
-        sCtx.shadowColor = "#0f0";
         sCtx.fillRect(snake[i].x, snake[i].y, box, box);
-        sCtx.strokeStyle = '#000';
-        sCtx.strokeRect(snake[i].x, snake[i].y, box, box);
+        sCtx.strokeStyle = '#000'; sCtx.strokeRect(snake[i].x, snake[i].y, box, box);
       }
-      sCtx.shadowBlur = 0;
+      
+      let snakeX = snake[0].x; let snakeY = snake[0].y;
+      if(direction == 'LEFT') snakeX -= box; if(direction == 'UP') snakeY -= box;
+      if(direction == 'RIGHT') snakeX += box; if(direction == 'DOWN') snakeY += box;
 
-      let snakeX = snake[0].x;
-      let snakeY = snake[0].y;
-
-      if(direction == 'LEFT') snakeX -= box;
-      if(direction == 'UP') snakeY -= box;
-      if(direction == 'RIGHT') snakeX += box;
-      if(direction == 'DOWN') snakeY += box;
-
-      if(snakeX == food.x && snakeY == food.y) {
-        score++;
-        scoreEl.innerText = score;
-        generateFood();
-      } else {
-        snake.pop();
-      }
+      if(snakeX == food.x && snakeY == food.y) { score++; scoreEl.innerText = score; generateFood(); } else { snake.pop(); }
 
       let newHead = {x: snakeX, y: snakeY};
-
-      if(snakeX < 0 || snakeX >= sCanvas.width || 
-         snakeY < 0 || snakeY >= sCanvas.height || 
-         collision(newHead, snake)) {
-        clearInterval(gameInterval);
-        sCtx.fillStyle = 'rgba(255,0,0,0.5)';
-        sCtx.fillRect(0,0,sCanvas.width, sCanvas.height);
-        setTimeout(initSnake, 1000); 
-      }
-
-      snake.unshift(newHead);
+      if(snakeX < 0 || snakeX >= sCanvas.width || snakeY < 0 || snakeY >= sCanvas.height || collision(newHead, snake)) {
+        clearInterval(gameInterval); sCtx.fillStyle = 'rgba(255,0,0,0.5)'; sCtx.fillRect(0,0,sCanvas.width, sCanvas.height); 
+        sCtx.fillStyle = '#fff'; sCtx.font = "20px monospace"; sCtx.fillText("GAME OVER", 100, 150);
+        setTimeout(initSnake, 1500); 
+      } else { snake.unshift(newHead); }
+    }
+    function collision(head, array) {
+      for(let i = 0; i < array.length; i++) { if(head.x == array[i].x && head.y == array[i].y) return true; }
+      return false;
     }
 
-    function collision(head, array) {
-      for(let i = 0; i < array.length; i++) {
-        if(head.x == array[i].x && head.y == array[i].y) return true;
+    /* --- HXH GAME LOGIC (HARD MODE) --- */
+    const hxhTrigger = document.getElementById('hxh-trigger-area');
+    const hxhOverlay = document.getElementById('hxh-overlay');
+    const fishCanvas = document.getElementById('fishing-canvas');
+    const fishCtx = fishCanvas.getContext('2d');
+    
+    let hxhTimer;
+    let fishAnimFrame;
+    let fish = {x: 0, y: 0, vx: 4, vy: 3, radius: 20};
+    let isFishing = false;
+    let isDrawing = false;
+    let drawPath = []; 
+
+    // Quiz vars
+    let nenScores = {}; let questionIndex = 0;
+    const questions = [
+      { q: "Jemand beleidigt dich. Was tust du?", a: [ {t: "Ich schlage sofort zurück!", types: ["Enhancer"]}, {t: "Ich plane Rache.", types: ["Conjurer", "Manipulator"]}, {t: "Ich lache darüber.", types: ["Transmuter"]}, {t: "Ich werde emotional.", types: ["Emitter"]} ] },
+      { q: "Was ist deine größte Stärke?", a: [ {t: "Ehrlichkeit & Wille", types: ["Enhancer"]}, {t: "Logik & Planung", types: ["Manipulator"]}, {t: "Anpassungsfähigkeit", types: ["Transmuter"]}, {t: "Charisma", types: ["Specialist"]} ] },
+      { q: "Wie löst du Probleme?", a: [ {t: "Mit Gewalt/Kraft", types: ["Enhancer", "Emitter"]}, {t: "Analytisch", types: ["Conjurer", "Manipulator"]}, {t: "Trickreich", types: ["Transmuter", "Specialist"]} ] },
+      { q: "Deine Freunde beschreiben dich als...", a: [ {t: "Stur aber treu", types: ["Enhancer"]}, {t: "Launisch", types: ["Transmuter", "Emitter"]}, {t: "Ruhig & Klug", types: ["Manipulator", "Conjurer"]}, {t: "Einzigartig", types: ["Specialist"]} ] },
+      { q: "Was ist dir wichtiger?", a: [ {t: "Das Ziel", types: ["Enhancer", "Specialist"]}, {t: "Der Plan", types: ["Conjurer", "Manipulator"]}, {t: "Der Spaß", types: ["Transmuter"]}, {t: "Die Gruppe", types: ["Emitter"]} ] },
+      { q: "Du findest eine Geldbörse...", a: [ {t: "Gebe sie zurück.", types: ["Enhancer", "Emitter"]}, {t: "Behalte das Geld.", types: ["Transmuter"]}, {t: "Untersuche den Inhalt.", types: ["Conjurer", "Manipulator"]} ] },
+      { q: "Deine ideale Waffe?", a: [ {t: "Fäuste / Schwert", types: ["Enhancer"]}, {t: "Pistole / Fernkampf", types: ["Emitter"]}, {t: "Fallen / Magie", types: ["Conjurer", "Transmuter"]}, {t: "Andere Menschen", types: ["Manipulator", "Specialist"]} ] },
+      { q: "Bist du ein guter Lügner?", a: [ {t: "Nein, überhaupt nicht.", types: ["Enhancer"]}, {t: "Ja, extrem gut.", types: ["Transmuter", "Specialist"]}, {t: "Wenn es sein muss.", types: ["Manipulator", "Conjurer"]} ] },
+      { q: "Was machst du am Wochenende?", a: [ {t: "Sport / Action", types: ["Enhancer"]}, {t: "Zocken / Lesen", types: ["Conjurer", "Transmuter"]}, {t: "Party", types: ["Emitter", "Specialist"]} ] },
+      { q: "Wähle eine Aura-Farbe:", a: [ {t: "Rot / Orange", types: ["Enhancer", "Emitter"]}, {t: "Blau / Violett", types: ["Conjurer", "Transmuter"]}, {t: "Grün / Weiß", types: ["Manipulator", "Specialist"]} ] }
+    ];
+
+    hxhTrigger.addEventListener('mouseenter', () => { hxhTimer = setTimeout(openHxHGame, 1000); });
+    hxhTrigger.addEventListener('mouseleave', () => { clearTimeout(hxhTimer); });
+    window.addEventListener('resize', () => { if(isFishing) { fishCanvas.width = window.innerWidth; fishCanvas.height = window.innerHeight; } });
+
+    function openHxHGame() { hxhOverlay.classList.add('open'); startFishing(); }
+    function closeHxHGame() { hxhOverlay.classList.remove('open'); isFishing = false; cancelAnimationFrame(fishAnimFrame); }
+    function resetHxH() {
+      document.getElementById('result-content').style.display = 'none';
+      document.getElementById('quiz-content').style.display = 'block';
+      document.getElementById('hxh-quiz-container').classList.remove('active');
+      startFishing();
+    }
+
+    function startFishing() {
+      document.getElementById('hxh-fishing').style.display = 'block';
+      document.getElementById('hxh-quiz-container').classList.remove('active');
+      fishCanvas.width = window.innerWidth; fishCanvas.height = window.innerHeight;
+      
+      // HARD MODE VALUES
+      fish = {
+        x: fishCanvas.width/2, y: fishCanvas.height/2, 
+        vx: (Math.random()-0.5)*16, vy: (Math.random()-0.5)*16, 
+        radius: 20
+      };
+      
+      isFishing = true; isDrawing = false; drawPath = [];
+      animateFishing();
+    }
+
+    fishCanvas.onmousedown = (e) => { isDrawing = true; drawPath = [{x: e.clientX, y: e.clientY}]; };
+    fishCanvas.onmousemove = (e) => { if(isDrawing) { drawPath.push({x: e.clientX, y: e.clientY}); } };
+    fishCanvas.onmouseup = (e) => { isDrawing = false; checkCapture(); drawPath = []; };
+
+    function checkCapture() {
+      if(drawPath.length < 20) return;
+      let inside = false; const x = fish.x, y = fish.y;
+      for (let i = 0, j = drawPath.length - 1; i < drawPath.length; j = i++) {
+        const xi = drawPath[i].x, yi = drawPath[i].y;
+        const xj = drawPath[j].x, yj = drawPath[j].y;
+        const intersect = ((yi > y) != (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+        if (intersect) inside = !inside;
       }
-      return false;
+      if(inside) { isFishing = false; startQuiz(); }
+    }
+
+    function animateFishing() {
+      if(!isFishing) return;
+      fishCtx.clearRect(0, 0, fishCanvas.width, fishCanvas.height);
+      fish.x += fish.vx; fish.y += fish.vy;
+      
+      if(fish.x < 0 || fish.x > fishCanvas.width) fish.vx *= -1;
+      if(fish.y < 0 || fish.y > fishCanvas.height) fish.vy *= -1;
+      
+      // ERRATIC MOVEMENT
+      if(Math.random() < 0.1) {
+        fish.vx += (Math.random()-0.5)*4;
+        fish.vy += (Math.random()-0.5)*4;
+        fish.vx = Math.max(-14, Math.min(14, fish.vx));
+        fish.vy = Math.max(-14, Math.min(14, fish.vy));
+      }
+
+      fishCtx.beginPath(); fishCtx.arc(fish.x, fish.y, fish.radius, 0, Math.PI*2);
+      fishCtx.fillStyle = '#0f0'; fishCtx.shadowBlur = 20; fishCtx.shadowColor = '#0f0';
+      fishCtx.fill(); fishCtx.shadowBlur = 0;
+
+      if(drawPath.length > 0) {
+        fishCtx.beginPath(); fishCtx.moveTo(drawPath[0].x, drawPath[0].y);
+        for(let i = 1; i < drawPath.length; i++) fishCtx.lineTo(drawPath[i].x, drawPath[i].y);
+        fishCtx.strokeStyle = '#00aaff'; fishCtx.lineWidth = 3;
+        fishCtx.shadowBlur = 10; fishCtx.shadowColor = '#00aaff'; fishCtx.stroke(); fishCtx.shadowBlur = 0;
+      }
+      fishAnimFrame = requestAnimationFrame(animateFishing);
+    }
+
+    function startQuiz() {
+      document.getElementById('hxh-fishing').style.display = 'none';
+      document.getElementById('hxh-quiz-container').classList.add('active');
+      document.getElementById('quiz-content').style.display = 'block';
+      nenScores = { Enhancer: 0, Transmuter: 0, Emitter: 0, Conjurer: 0, Manipulator: 0, Specialist: 0 };
+      questionIndex = 0; loadQuestion();
+    }
+
+    function loadQuestion() {
+      if(questionIndex >= questions.length) { showResult(); return; }
+      const qData = questions[questionIndex];
+      document.getElementById('q-text').innerText = qData.q;
+      document.getElementById('q-current').innerText = questionIndex + 1;
+      const optionsDiv = document.getElementById('q-options'); optionsDiv.innerHTML = '';
+      qData.a.forEach(ans => {
+        const btn = document.createElement('button'); btn.className = 'quiz-btn'; btn.innerText = ans.t;
+        btn.onclick = () => { ans.types.forEach(t => nenScores[t]++); questionIndex++; loadQuestion(); };
+        optionsDiv.appendChild(btn);
+      });
+    }
+
+    function showResult() {
+      document.getElementById('quiz-content').style.display = 'none';
+      document.getElementById('result-content').style.display = 'block';
+      let max = 0; let resultType = "Enhancer";
+      for(let type in nenScores) { if(nenScores[type] > max) { max = nenScores[type]; resultType = type; } }
+      const typeData = {
+        "Enhancer": { de: "Verstärker (Enhancer)", color: "#28a745", desc: "Du bist einfach gestrickt, entschlossen und ehrlich. Du lügst selten und handelst nach Gefühl." },
+        "Transmuter": { de: "Wandler (Transmuter)", color: "#6f42c1", desc: "Du bist launisch und ein Schwindler. Du verheimlichst deine wahre Natur und bist unberechenbar." },
+        "Emitter": { de: "Emittent (Emitter)", color: "#ffc107", desc: "Du bist ungeduldig und emotional, aber extrem loyal. Ähnlich wie Verstärker, aber volatiler." },
+        "Conjurer": { de: "Beschwörer (Conjurer)", color: "#dc3545", desc: "Du bist sensibel und analytisch. Du machst dir oft zu viele Sorgen und bist sehr logisch." },
+        "Manipulator": { de: "Manipulator", color: "#17a2b8", desc: "Du willst alles kontrollieren und gehst logisch vor. Du streitest gerne, um deine Meinung durchzusetzen." },
+        "Specialist": { de: "Spezialist (Specialist)", color: "#e83e8c", desc: "Du bist unabhängig und charismatisch. Du ziehst andere an, sagst ihnen aber nichts Wichtiges über dich." }
+      };
+      const res = typeData[resultType];
+      const titleEl = document.getElementById('nen-result-title');
+      titleEl.innerText = res.de; titleEl.style.color = res.color; titleEl.style.textShadow = `0 0 20px ${res.color}`;
+      document.getElementById('nen-result-desc').innerText = res.desc;
     }
   </script>
 </body>
