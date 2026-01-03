@@ -7,24 +7,24 @@
   <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
   <style>
-    /* --- DESIGN & VARIABLEN --- */
+    /* --- SHAKES & FIDGET STYLE --- */
     :root {
-      --bg-dark: #1a0e05;
-      --bg-wood: url('https://www.transparenttextures.com/patterns/wood-pattern.png');
-      --frame-border: #d4af37; /* Gold */
-      --frame-bg: #f4e4bc; /* Helles Pergament */
-      --text-dark: #3e2a14;
-      --text-gold: #d4af37;
-      --accent: #c0392b; 
+      --wood-dark: #3e2723;
+      --wood-light: #8d6e63;
+      --wood-face: #6d4c41;
+      --ui-bg: #2b1d16; /* Dunkler Hintergrund für Container */
+      --text-color: #ffe0b2;
+      --accent-gold: #ffb300;
+      --outline: #1a0e05;
     }
 
     body {
       margin: 0;
       padding: 20px;
-      background-color: var(--bg-dark);
-      background-image: var(--bg-wood);
+      /* Ein dunkler, comicartiger Hintergrund (simuliert Kerker/Taverne) */
+      background: radial-gradient(circle at center, #5d4037 0%, #1a0e05 100%);
       font-family: 'MedievalSharp', cursive;
-      color: var(--text-dark);
+      color: var(--text-color);
       min-height: 100vh;
       display: flex;
       justify-content: center;
@@ -33,73 +33,91 @@
     }
 
     .main-frame {
-      background: var(--frame-bg);
-      background-image: url('https://www.transparenttextures.com/patterns/old-paper.png');
+      /* Sieht aus wie ein Spielfenster */
+      background-color: var(--ui-bg);
+      /* Holzmuster Simulation */
+      background-image: repeating-linear-gradient(45deg, rgba(0,0,0,0.1) 0px, rgba(0,0,0,0.1) 10px, transparent 10px, transparent 20px);
       max-width: 900px;
       width: 100%;
-      border: 4px double var(--frame-border);
-      border-radius: 20px;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.6), inset 0 0 30px rgba(212, 175, 55, 0.2);
+      /* Dicker Comic-Rahmen */
+      border: 8px solid var(--wood-dark);
+      border-radius: 15px;
+      box-shadow: 0 0 0 4px #000, 0 20px 50px rgba(0,0,0,0.8);
       overflow: hidden;
       position: relative;
+    }
+
+    /* Schrauben in den Ecken */
+    .main-frame::after {
+      content: '';
+      position: absolute;
+      top: 10px; right: 10px;
+      width: 15px; height: 15px;
+      background: #795548;
+      border-radius: 50%;
+      box-shadow: inset 2px 2px 5px rgba(0,0,0,0.5), 0 0 2px #000;
+      z-index: 5;
     }
 
     .header {
       text-align: center;
       padding: 25px 0;
-      background: linear-gradient(to bottom, rgba(212, 175, 55, 0.2), transparent);
-      border-bottom: 2px solid rgba(212, 175, 55, 0.3);
+      background: linear-gradient(to bottom, rgba(0,0,0,0.6), transparent);
+      border-bottom: 4px solid var(--wood-dark);
+      box-shadow: 0 5px 10px rgba(0,0,0,0.5);
     }
 
     .header h1 {
       margin: 0;
-      font-size: 2.8rem;
-      color: var(--text-dark);
-      text-shadow: 1px 1px 2px rgba(255,255,255,0.5), -1px -1px 2px rgba(0,0,0,0.2);
+      font-size: 3rem;
+      color: var(--accent-gold);
+      /* Die typische schwarze Comic-Umrandung */
+      text-shadow: 3px 3px 0 #000, -1px -1px 0 #000;
+      letter-spacing: 2px;
     }
 
-    /* Navigation */
+    /* --- COMIC BUTTONS (Holz-Look) --- */
     .menu-container {
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 15px;
       padding: 20px;
-      background: rgba(0,0,0,0.03);
     }
 
     .nav-btn {
       text-decoration: none;
-      color: var(--text-dark);
+      color: #fff;
       font-weight: bold;
+      font-size: 1.1rem;
       padding: 10px 20px;
-      border: 2px solid var(--frame-border);
-      border-radius: 12px;
-      background: linear-gradient(145deg, #fff, #e6d8a7);
-      box-shadow: 3px 3px 8px rgba(0,0,0,0.1);
-      transition: all 0.2s ease;
-      position: relative;
-      overflow: hidden;
+      
+      /* Holz-Optik */
+      background: var(--wood-face);
+      border: 3px solid #2e1e18;
+      border-radius: 8px;
+      /* 3D Effekt unten */
+      border-bottom-width: 6px;
+      
+      text-shadow: 2px 2px 0 #000;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.4);
+      transition: transform 0.1s, border-bottom-width 0.1s, margin-top 0.1s;
     }
 
     .nav-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 4px 4px 12px rgba(0,0,0,0.2);
-      color: var(--accent);
-      border-color: var(--accent);
+      background: var(--wood-light);
+      filter: brightness(1.1);
     }
-    
-    .nav-btn::after {
-        content: '';
-        position: absolute;
-        top: 0; left: -100%;
-        width: 100%; height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-        transition: 0.4s;
-    }
-    .nav-btn:hover::after { left: 100%; }
 
-    /* Hero Bereich */
+    /* Klick-Effekt: Button wird "eingedrückt" */
+    .nav-btn:active {
+      transform: translateY(3px);
+      border-bottom-width: 3px;
+      margin-top: 3px; /* Ausgleich damit er nicht springt */
+      box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+    }
+
+    /* --- HERO BEREICH --- */
     .hero-section {
       text-align: center;
       padding: 40px 20px;
@@ -110,8 +128,8 @@
 
     .hero-image-wrapper {
       position: relative;
-      width: 280px;
-      height: 280px;
+      width: 300px;
+      height: 300px;
       margin-bottom: 30px;
     }
 
@@ -119,58 +137,47 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      border-radius: 50%;
-      border: 6px solid var(--frame-border);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-      position: relative;
-      z-index: 2;
-    }
-    
-    .hero-image-wrapper::before {
-        content: '';
-        position: absolute;
-        top: 50%; left: 50%;
-        width: 110%; height: 110%;
-        transform: translate(-50%, -50%);
-        border-radius: 50%;
-        background: radial-gradient(circle, rgba(212, 175, 55, 0.6) 0%, transparent 70%);
-        z-index: 1;
-        animation: pulse 3s infinite ease-in-out;
-    }
-    
-    @keyframes pulse {
-        0%, 100% { opacity: 0.6; scale: 1; }
-        50% { opacity: 1; scale: 1.05; }
+      /* Rahmen wie ein Avatar-Slot */
+      border-radius: 20px; /* Weniger rund, mehr "Slot" */
+      border: 8px solid var(--accent-gold);
+      box-shadow: 
+        0 0 0 4px #000, /* Schwarze Außenlinie */
+        inset 0 0 20px rgba(0,0,0,0.7); /* Schatten innen */
+      background: #000;
     }
 
-    /* Spruch-Box */
+    /* Spruch-Box: Sieht aus wie ein Quest-Text */
     .quote-container {
-      max-width: 80%;
+      max-width: 85%;
       min-height: 80px;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 20px;
-      background: rgba(255,255,255,0.3);
-      border-radius: 15px;
-      border: 2px dashed rgba(212, 175, 55, 0.5);
+      background: rgba(0, 0, 0, 0.4);
+      border: 3px solid rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      box-shadow: inset 0 0 10px #000;
       position: relative;
     }
 
     #quote-text {
-      font-size: 1.5rem;
+      font-size: 1.6rem;
       margin: 0;
-      color: var(--text-dark);
-      font-weight: bold;
-      min-height: 1.5em; /* Verhindert Springen */
+      color: #fff;
+      text-shadow: 2px 2px 0 #000;
+      font-weight: normal;
+      line-height: 1.4;
     }
 
-    /* Blinkender Cursor */
     .cursor {
       display: inline-block;
-      width: 2px;
-      background-color: var(--text-dark);
+      width: 8px;
+      height: 20px;
+      background-color: var(--accent-gold);
       animation: blink 1s infinite;
+      vertical-align: bottom;
+      margin-left: 5px;
     }
 
     @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
@@ -179,9 +186,9 @@
       text-align: center;
       padding: 15px;
       font-size: 0.9rem;
-      color: rgba(62, 42, 20, 0.7);
-      background: rgba(0,0,0,0.05);
-      border-top: 1px solid rgba(0,0,0,0.1);
+      color: #888;
+      background: rgba(0,0,0,0.5);
+      border-top: 2px solid var(--wood-dark);
     }
   </style>
 </head>
@@ -189,15 +196,15 @@
 
   <div class="main-frame">
     <header class="header">
-      <h1>👑 World of Ducks 👑</h1>
+      <h1>🗡️ World of Ducks 🛡️</h1>
     </header>
 
     <nav class="menu-container">
-      <a href="blogs.html" class="nav-btn">📜 Blogs</a>
-      <a href="memory.html" class="nav-btn">🧠 Memory</a>
-      <a href="chat.html" class="nav-btn">💬 Chat</a>
-      <a href="galgenman.html" class="nav-btn">😵 Galgenman</a>
-      <a href="inspo.html" class="nav-btn">✨ Inspo</a>
+      <a href="blogs.html" class="nav-btn">Blogs</a>
+      <a href="memory.html" class="nav-btn">Memory</a>
+      <a href="chat.html" class="nav-btn">Chat</a>
+      <a href="galgenman.html" class="nav-btn">Galgenman</a>
+      <a href="inspo.html" class="nav-btn">Inspo</a>
     </nav>
 
     <main class="hero-section">
@@ -206,12 +213,12 @@
       </div>
 
       <div class="quote-container">
-        <span id="quote-text"></span><span class="cursor">|</span>
+        <span id="quote-text"></span><span class="cursor"></span>
       </div>
     </main>
 
     <footer class="footer">
-      © 2025 World of Ducks – Ein Projekt im Retro-RPG Stil
+      © 2025 World of Ducks – Level 1 Web-Abenteuer
     </footer>
   </div>
 
@@ -237,42 +244,32 @@
     let currentQuote = "";
 
     function typeWriter() {
-      // Wähle aktuellen Spruch (zufällig oder der Reihe nach)
-      // Hier: Zufällig auswählen, wenn wir gerade neu anfangen zu tippen
       if (charIndex === 0 && !isDeleting) {
         currentQuote = quotes[Math.floor(Math.random() * quotes.length)];
       }
 
       if (!isDeleting) {
-        // SCHREIBEN
         textElement.textContent = currentQuote.substring(0, charIndex + 1);
         charIndex++;
 
         if (charIndex === currentQuote.length) {
-          // Fertig geschrieben -> Warten, dann löschen
           isDeleting = true;
-          setTimeout(typeWriter, 3000); // 3 Sekunden Lesezeit
+          setTimeout(typeWriter, 3000); 
         } else {
-          // Weiter tippen (schnell)
           setTimeout(typeWriter, 50); 
         }
       } else {
-        // LÖSCHEN (damit der neue Platz hat)
         textElement.textContent = currentQuote.substring(0, charIndex - 1);
         charIndex--;
 
         if (charIndex === 0) {
-          // Fertig gelöscht -> Neuer Spruch
           isDeleting = false;
-          setTimeout(typeWriter, 500); // Kurz warten vor dem nächsten
+          setTimeout(typeWriter, 500); 
         } else {
-          // Weiter löschen (sehr schnell)
           setTimeout(typeWriter, 20);
         }
       }
     }
-
-    // Starten
     document.addEventListener('DOMContentLoaded', typeWriter);
   </script>
 
