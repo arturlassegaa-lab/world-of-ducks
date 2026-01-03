@@ -38,12 +38,11 @@
       box-sizing: border-box;
     }
 
-    /* --- UNIFIED RPG HEADER DESIGN (Wie auf anderen Seiten) --- */
+    /* --- UNIFIED RPG HEADER & MENU (1:1 Kopie vom Standard-Design) --- */
     .header {
       width: 100%;
       text-align: center;
       padding: 20px 0;
-      /* Der klassische RPG-Verlauf */
       background: linear-gradient(to bottom, #3c2b15, #1a0e05);
       border-bottom: 3px solid #5b3b1d;
       box-shadow: 0 5px 15px rgba(0,0,0,0.8);
@@ -54,33 +53,34 @@
     .header h1 {
       font-size: 2.5rem;
       margin: 0;
-      /* Medieval Style statt Glossy */
       font-family: 'MedievalSharp', cursive;
       color: #ffcc33;
       text-shadow: 2px 2px 4px #000;
       letter-spacing: 1px;
-      background: none;
-      -webkit-text-fill-color: initial;
+      /* Entfernt den alten Glossy-Effekt für den Titel */
+      background: none; 
+      -webkit-text-fill-color: initial; 
     }
 
-    /* --- UNIFIED MENU BUTTONS --- */
-    .menu-container {
+    /* Menü Container */
+    .menu {
       display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
       justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
       padding: 15px;
       width: 100%;
-      /* Hintergrund leicht abgedunkelt, aber passend */
-      background: rgba(20, 10, 5, 0.6); 
+      /* Leicht transparent, damit man das Feuerwerk sieht */
+      background: rgba(26, 14, 5, 0.8); 
+      border-bottom: 1px solid rgba(91, 59, 29, 0.5);
     }
 
-    .nav-btn {
+    /* Die Standard-Buttons */
+    .btn {
+      display: inline-block;
       text-decoration: none;
       font-size: 1rem;
       padding: 10px 22px;
-      margin: 5px;
-      /* Der Retro-Button Style */
       background: #5b3b1d;
       color: #ffcc33;
       border: 2px solid #d6a85b;
@@ -91,14 +91,14 @@
       font-family: 'MedievalSharp', cursive;
     }
 
-    .nav-btn:hover {
+    .btn:hover {
       background: #7a5028;
       transform: scale(1.05);
       color: #fff;
       box-shadow: 0 0 10px rgba(255, 204, 51, 0.4);
     }
 
-    /* --- MITTEL-TEIL (Bleibt im Inspo Style) --- */
+    /* --- INHALT (Inspo Spezifisch) --- */
     .center-piece {
       flex-grow: 1; 
       display: flex;
@@ -117,7 +117,6 @@
       text-align: center;
       cursor: pointer;
       line-height: 1.4;
-      /* Hier behalten wir den Glossy Look für den Content */
       background: linear-gradient(to bottom, #ffffff 0%, #dcdcdc 50%, #888888 51%, #ffffff 100%);
       -webkit-background-clip: text;
       background-clip: text;
@@ -133,7 +132,6 @@
       filter: drop-shadow(0 0 25px rgba(255,255,255,0.8));
     }
 
-    /* ASCII SPINNER STYLES */
     .duck-spinner {
       width: 300px;
       height: 200px;
@@ -167,7 +165,6 @@
       font-size: 0.8rem;
       padding: 15px;
       text-align: center;
-      /* Kleiner Trenner unten */
       border-top: 1px solid #333;
       background: #000;
     }
@@ -188,9 +185,7 @@
       transition: transform 0.3s;
       filter: drop-shadow(0 0 5px #0f0);
     }
-    #snake-trigger-area:hover {
-      transform: scale(1.2);
-    }
+    #snake-trigger-area:hover { transform: scale(1.2); }
 
     .loader-ring {
       position: absolute;
@@ -230,11 +225,7 @@
       pointer-events: none;
     }
 
-    #snake-overlay.open {
-      transform: scale(1);
-      opacity: 1;
-      pointer-events: all;
-    }
+    #snake-overlay.open { transform: scale(1); opacity: 1; pointer-events: all; }
 
     #snake-canvas {
       background: #000;
