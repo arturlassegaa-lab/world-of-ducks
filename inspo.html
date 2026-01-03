@@ -8,7 +8,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,700&family=Poppins:wght@700&family=Amiri&display=swap" rel="stylesheet">
   
   <style>
-    /* --- RESET & BASIC --- */
+    /* --- BASIC SETUP --- */
     body {
       margin: 0;
       padding: 0;
@@ -20,16 +20,13 @@
       position: relative;
     }
 
-    /* Das Feuerwerk Canvas liegt ganz hinten */
     canvas {
       position: absolute;
-      top: 0;
-      left: 0;
+      top: 0; left: 0;
       z-index: 1; 
       pointer-events: none; 
     }
 
-    /* Container für den Inhalt */
     .content-layer {
       position: relative;
       z-index: 10;
@@ -41,37 +38,28 @@
       box-sizing: border-box;
     }
 
-    /* --- DER NEUE RPG HEADER (Mix aus Dark Mode & Holz) --- */
+    /* --- RPG HEADER MIT GLOSSY TEXT --- */
     .header {
       width: 100%;
       text-align: center;
       padding: 20px 0;
-      
-      /* RPG Holz-Hintergrund, aber dunkel abgedunkelt */
       background-color: #1a0e05; 
       background-image: url('https://www.transparenttextures.com/patterns/wood-pattern.png');
-      
-      /* Goldene Kante unten */
       border-bottom: 3px solid #d4af37;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.8), 0 0 15px rgba(212, 175, 55, 0.3);
-      
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
       position: relative;
       z-index: 20;
     }
 
-    /* Glossy Text im Header */
     .header h1 {
       font-size: 2.5rem;
       margin: 0;
       font-family: 'Playfair Display', serif;
       font-style: italic;
-      
-      /* Der Chrom/Silber Effekt */
       background: linear-gradient(to bottom, #fff 0%, #e0e0e0 40%, #999 50%, #fff 100%);
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
-      
       filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
       letter-spacing: 1px;
     }
@@ -84,20 +72,18 @@
       justify-content: center;
       padding: 15px;
       width: 100%;
-      /* Hintergrund leicht abgedunkelt für Lesbarkeit */
       background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
     }
 
     .nav-btn {
       text-decoration: none;
-      color: #d4af37; /* Goldene Schrift passend zum RPG Look */
+      color: #d4af37;
       font-size: 0.9rem;
       padding: 8px 16px;
       border: 1px solid #d4af37;
       border-radius: 12px;
-      background: rgba(26, 14, 5, 0.7); /* Dunkles Holz-Transparent */
+      background: rgba(26, 14, 5, 0.7);
       transition: all 0.3s ease;
-      font-family: 'MedievalSharp', cursive; /* Optional, falls geladen, sonst Standard */
     }
 
     .nav-btn:hover {
@@ -106,33 +92,34 @@
       box-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
     }
 
-    /* --- DER MITTEL-SATZ (LINK) --- */
+    /* --- MITTEL-TEIL: ASCII ENTEN & TEXT --- */
     .center-piece {
       flex-grow: 1; 
       display: flex;
-      justify-content: center;
-      align-items: center;
+      justify-content: center; 
+      align-items: center;     
       width: 100%;
       padding: 20px;
+      gap: 20px; /* Abstand */
     }
 
+    /* Der Link in der Mitte */
     .vibe-link {
       text-decoration: none;
       font-family: 'Playfair Display', serif;
       font-style: italic;
-      font-size: 2.8rem; 
+      font-size: 2.5rem; 
       text-align: center;
       cursor: pointer;
       line-height: 1.4;
-      
-      /* Glossy Effekt */
       background: linear-gradient(to bottom, #ffffff 0%, #dcdcdc 50%, #888888 51%, #ffffff 100%);
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
-      
       transition: transform 0.2s;
       filter: drop-shadow(0 0 15px rgba(255,255,255,0.4));
+      white-space: nowrap; 
+      z-index: 100; /* Text über den Enten */
     }
 
     .vibe-link:hover {
@@ -140,16 +127,32 @@
       filter: drop-shadow(0 0 25px rgba(255,255,255,0.8));
     }
 
-    /* Speziell für Arabisch */
-    .arabic-font {
-      font-family: 'Amiri', serif;
-      font-style: normal;
+    /* --- DER DREHENDE ASCII-FRAME --- */
+    .duck-spinner {
+      width: 300px;  /* Genug Platz für die ASCII Zeichen */
+      height: 200px;
+      border: none;
+      background: transparent;
+      overflow: hidden;
+      
+      /* Animation */
+      animation: spinDuck 5s linear infinite;
+      
+      /* Skalierung, falls das ASCII zu groß ist */
+      transform: scale(0.8); 
     }
+
+    /* 3D-Rotation um die Y-Achse */
+    @keyframes spinDuck {
+      0% { transform: perspective(1000px) rotateY(0deg) scale(0.8); }
+      100% { transform: perspective(1000px) rotateY(360deg) scale(0.8); }
+    }
+
+    .arabic-font { font-family: 'Amiri', serif; }
 
     .cursor {
       display: inline-block;
-      width: 3px;
-      height: 1em;
+      width: 3px; height: 1em;
       background-color: #fff;
       margin-left: 5px;
       animation: blink 1s infinite;
@@ -158,7 +161,6 @@
     }
     @keyframes blink { 50% { opacity: 0; } }
 
-    /* Footer */
     .footer {
       color: #666;
       font-size: 0.8rem;
@@ -166,10 +168,16 @@
       text-align: center;
     }
 
-    /* Responsive */
-    @media (max-width: 600px) {
+    /* Responsive: Auf Handys Enten untereinander oder ausblenden */
+    @media (max-width: 1000px) {
+      .center-piece { flex-direction: column; gap: 10px; }
       .header h1 { font-size: 2rem; }
-      .vibe-link { font-size: 1.8rem; }
+      .vibe-link { font-size: 1.5rem; white-space: normal; }
+      .duck-spinner { width: 250px; height: 150px; transform: scale(0.6); }
+      @keyframes spinDuck {
+        0% { transform: perspective(1000px) rotateY(0deg) scale(0.6); }
+        100% { transform: perspective(1000px) rotateY(360deg) scale(0.6); }
+      }
     }
   </style>
 </head>
@@ -192,9 +200,13 @@
     </nav>
 
     <div class="center-piece">
+      <iframe src="ascii-art.html" class="duck-spinner" scrolling="no"></iframe>
+
       <a href="https://www.youtube.com/watch?v=MfTRf__R8-s&list=RDMfTRf__R8-s&start_radio=1" target="_blank" class="vibe-link">
         <span id="typing-text"></span><span class="cursor"></span>
       </a>
+
+      <iframe src="ascii-art.html" class="duck-spinner" scrolling="no"></iframe>
     </div>
 
     <footer class="footer">
@@ -203,13 +215,13 @@
   </div>
 
   <script>
-    /* --- TYPEWRITER 5 SPRACHEN --- */
+    /* --- TEXT ANIMATION --- */
     const phrases = [
-      "Pass auf wen du liebst",       // Deutsch
-      "Watch who you love",           // Englisch
-      "Fais attention à qui tu aimes",// Französisch
-      "انتبه لمن تحب",                // Arabisch
-      "Kimi sevdiğine dikkat et"      // Türkisch
+      "Pass auf wen du liebst",
+      "Watch who you love",
+      "Fais attention à qui tu aimes",
+      "انتبه لمن تحب",
+      "Kimi sevdiğine dikkat et"
     ];
 
     const textElement = document.getElementById('typing-text');
@@ -221,40 +233,29 @@
     function typeWriter() {
       currentPhrase = phrases[phraseIndex];
       
-      // Arabisch braucht spezielle Klasse für Schriftart
-      if (phraseIndex === 3) { 
-        textElement.classList.add('arabic-font');
-      } else {
-        textElement.classList.remove('arabic-font');
-      }
+      if (phraseIndex === 3) textElement.classList.add('arabic-font');
+      else textElement.classList.remove('arabic-font');
 
       if (!isDeleting) {
         textElement.textContent = currentPhrase.substring(0, charIndex + 1);
         charIndex++;
-
         if (charIndex === currentPhrase.length) {
           isDeleting = true;
-          setTimeout(typeWriter, 4000); // 4 Sekunden stehen lassen
-        } else {
-          setTimeout(typeWriter, 100); 
-        }
+          setTimeout(typeWriter, 4000); 
+        } else { setTimeout(typeWriter, 100); }
       } else {
         textElement.textContent = currentPhrase.substring(0, charIndex - 1);
         charIndex--;
-
         if (charIndex === 0) {
           isDeleting = false;
           phraseIndex = (phraseIndex + 1) % phrases.length;
           setTimeout(typeWriter, 500);
-        } else {
-          setTimeout(typeWriter, 50); 
-        }
+        } else { setTimeout(typeWriter, 50); }
       }
     }
     document.addEventListener('DOMContentLoaded', typeWriter);
 
-
-    /* --- FEUERWERK ANIMATION --- */
+    /* --- FEUERWERK --- */
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
     let w, h;
@@ -271,33 +272,19 @@
 
     class Particle {
       constructor(x, y, color) {
-        this.x = x;
-        this.y = y;
-        this.color = color;
+        this.x = x; this.y = y; this.color = color;
         const angle = random(0, Math.PI * 2);
         const speed = random(1, 5);
         this.vx = Math.cos(angle) * speed;
         this.vy = Math.sin(angle) * speed;
-        this.alpha = 1; 
-        this.decay = random(0.01, 0.03); 
-        this.gravity = 0.05; 
+        this.alpha = 1; this.decay = random(0.01, 0.03); this.gravity = 0.05; 
       }
-
       update() {
-        this.x += this.vx;
-        this.y += this.vy;
-        this.vy += this.gravity; 
-        this.alpha -= this.decay;
+        this.x += this.vx; this.y += this.vy; this.vy += this.gravity; this.alpha -= this.decay;
       }
-
       draw() {
-        ctx.save();
-        ctx.globalAlpha = this.alpha;
-        ctx.fillStyle = this.color;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.restore();
+        ctx.save(); ctx.globalAlpha = this.alpha; ctx.fillStyle = this.color;
+        ctx.beginPath(); ctx.arc(this.x, this.y, 2, 0, Math.PI * 2); ctx.fill(); ctx.restore();
       }
     }
 
@@ -306,28 +293,17 @@
       const y = random(h * 0.1, h * 0.5);
       const colors = ["#ff0040", "#00ffff", "#ffff00", "#ff00ff", "#00ff00", "#ffffff", "#d4af37"];
       const color = colors[Math.floor(random(0, colors.length))];
-      
-      for (let i = 0; i < 60; i++) {
-        particles.push(new Particle(x, y, color));
-      }
+      for (let i = 0; i < 60; i++) particles.push(new Particle(x, y, color));
     }
 
     function animate() {
       ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
       ctx.fillRect(0, 0, w, h);
-
       for (let i = particles.length - 1; i >= 0; i--) {
-        particles[i].update();
-        particles[i].draw();
-        if (particles[i].alpha <= 0) {
-          particles.splice(i, 1);
-        }
+        particles[i].update(); particles[i].draw();
+        if (particles[i].alpha <= 0) particles.splice(i, 1);
       }
-
-      if (Math.random() < 0.04) {
-        launchFirework();
-      }
-
+      if (Math.random() < 0.04) launchFirework();
       requestAnimationFrame(animate);
     }
     animate();
