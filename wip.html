@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Baustelle — World of Ducks</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #2a2a2a;
+      background-image: url('https://www.transparenttextures.com/patterns/wood-pattern.png');
+      font-family: 'MedievalSharp', cursive;
+      color: #ffd26a;
+      text-align: center;
+      height: 100vh;
+      overflow: hidden; /* Damit beim Klicken nichts scrollt */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    h1 { font-size: 3em; color: #ffcc33; margin-bottom: 10px; text-shadow: 2px 2px 0 #000; }
+    p { font-size: 1.2em; color: #ccc; margin-bottom: 30px; }
+
+    /* Das Spiel */
+    .game-container {
+      background: rgba(0,0,0,0.6);
+      padding: 30px;
+      border: 4px solid #5b3b1d;
+      border-radius: 20px;
+      width: 300px;
+    }
+
+    #duck-btn {
+      font-size: 5rem;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.1s;
+      display: inline-block;
+    }
+    #duck-btn:active { transform: scale(0.9) rotate(-10deg); }
+
+    .score-board {
+      font-size: 1.5rem;
+      margin: 20px 0;
+      color: #fff;
+    }
+
+    .rank {
+      font-size: 1rem;
+      color: #d4af37;
+      min-height: 1.2em;
+    }
+
+    .back-btn {
+      margin-top: 30px;
+      display: inline-block;
+      text-decoration: none;
+      padding: 10px 20px;
+      background: #8b0000;
+      color: white;
+      border-radius: 5px;
+      border: 2px solid #fff;
+    }
+    .back-btn:hover { background: #ff0000; }
+
+    /* Fliegende +1 Animation */
+    .plus-one {
+      position: absolute;
+      color: #fff;
+      font-weight: bold;
+      pointer-events: none;
+      animation: floatUp 1s ease-out forwards;
+    }
+    @keyframes floatUp {
+      0% { opacity: 1; transform: translateY(0); }
+      100% { opacity: 0; transform: translateY(-50px); }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🚧 Under Construction 🚧</h1>
+  <p>Hier wird noch gequackt! Diese Seite ist noch nicht fertig.<br>Sammle solange ein paar Brotkrumen:</p>
+
+  <div class="game-container">
+    <div class="score-board">Brotkrumen: <span id="score">0</span> 🍞</div>
+    
+    <div id="duck-btn" onclick="clickDuck(event)">🦆</div>
+    
+    <div class="rank" id="rank-display">Rang: Anfänger-Ente</div>
+  </div>
+
+  <a href="blogs.html" class="back-btn">Zurück zur Übersicht</a>
+
+  <script>
+    let score = 0;
+    const scoreEl = document.getElementById('score');
+    const rankEl = document.getElementById('rank-display');
+
+    function clickDuck(e) {
+      score++;
+      scoreEl.innerText = score;
+      updateRank();
+      spawnParticle(e.clientX, e.clientY);
+    }
+
+    function updateRank() {
+      if (score === 10) rankEl.innerText = "Rang: Hungrige Ente";
+      if (score === 50) rankEl.innerText = "Rang: Brot-Sommelier";
+      if (score === 100) rankEl.innerText = "Rang: Teich-Boss";
+      if (score === 250) rankEl.innerText = "Rang: King of Quack";
+      if (score === 500) rankEl.innerText = "Rang: Gottkaiser des Weizens";
+    }
+
+    function spawnParticle(x, y) {
+      const el = document.createElement('div');
+      el.innerText = "+1 🍞";
+      el.className = 'plus-one';
+      el.style.left = (x - 20) + 'px';
+      el.style.top = (y - 40) + 'px';
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 1000);
+    }
+  </script>
+
+</body>
+</html>
