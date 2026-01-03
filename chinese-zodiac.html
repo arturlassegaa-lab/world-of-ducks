@@ -89,30 +89,34 @@
     /* --- DAS ÄSTHETISCHE GLAS-GRID --- */
     .zodiac-grid {
       display: grid;
-      /* Automatisch anpassendes Gitter (meist 3 oder 4 Spalten auf Desktop) */
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 20px;
       padding: 10px;
     }
 
-    .zodiac-card {
+    /* WICHTIG: Hier ist die Änderung für die Links */
+    a.zodiac-card {
+      display: block; /* Damit der Link eine Box ist */
+      text-decoration: none; /* Keine Unterstreichung */
+      color: inherit; /* Textfarbe behalten */
+      
       /* Sehr transparentes Schwarz -> Drache scheint durch */
       background: rgba(0, 0, 0, 0.25); 
-      /* Leichter Blur, damit Text lesbar bleibt, aber Hintergrund sichtbar ist */
       backdrop-filter: blur(3px); 
       -webkit-backdrop-filter: blur(3px);
       
-      border: 1px solid rgba(255, 215, 0, 0.15); /* Feiner Goldrand */
+      border: 1px solid rgba(255, 215, 0, 0.15);
       border-radius: 12px;
       padding: 20px;
       text-align: left;
       transition: all 0.3s ease;
+      cursor: pointer; /* Zeigt die Hand beim Hover */
     }
 
-    /* Hover-Effekt: Karte wird deutlicher */
-    .zodiac-card:hover {
+    /* Hover-Effekt */
+    a.zodiac-card:hover {
       transform: translateY(-5px) scale(1.02);
-      background: rgba(0, 0, 0, 0.7); /* Wird dunkler beim Hover für Lesbarkeit */
+      background: rgba(0, 0, 0, 0.7); 
       border-color: #ffd700;
       box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
       z-index: 20;
@@ -141,7 +145,7 @@
       font-size: 0.95em; 
       line-height: 1.5; 
       color: #eee; 
-      text-shadow: 1px 1px 2px #000; /* Textschatten für Lesbarkeit auf Drachen */
+      text-shadow: 1px 1px 2px #000;
     }
 
     .footer {
@@ -171,12 +175,12 @@
       <a href="chat.html" class="btn">Chat</a>
       <a href="galgenman.html" class="btn">Galgenman</a>
       <a href="inspo.html" class="btn">Inspo</a>
-      <a href="chinese-zodiac.html" class="btn">CYZ</a>
+      <a href="chinese-zodiac.html" class="btn" style="background: #d4af37; color: #000;">CYZ</a>
     </nav>
 
     <div class="zodiac-grid">
       
-      <div class="zodiac-card">
+      <a href="zodiac-detail.html?tier=ratte" class="zodiac-card">
         <div class="zodiac-header">
           <span class="zodiac-icon">🐀</span>
           <div class="zodiac-title">
@@ -185,9 +189,9 @@
           </div>
         </div>
         <p class="zodiac-desc">Schlau und flink. Findet immer das letzte Stück Brot. Ein wahrer Überlebenskünstler.</p>
-      </div>
+      </a>
 
-      <div class="zodiac-card">
+      <a href="zodiac-detail.html?tier=bueffel" class="zodiac-card">
         <div class="zodiac-header">
           <span class="zodiac-icon">🐂</span>
           <div class="zodiac-title">
@@ -196,9 +200,9 @@
           </div>
         </div>
         <p class="zodiac-desc">Stark und geduldig. Zieht den Karren durch tiefen Schlamm. Verlässlich wie ein Fels.</p>
-      </div>
+      </a>
 
-      <div class="zodiac-card">
+      <a href="zodiac-detail.html?tier=tiger" class="zodiac-card">
         <div class="zodiac-header">
           <span class="zodiac-icon">🐅</span>
           <div class="zodiac-title">
@@ -207,9 +211,9 @@
           </div>
         </div>
         <p class="zodiac-desc">Mutig und unberechenbar. Ein geborener Anführer voller Leidenschaft.</p>
-      </div>
+      </a>
 
-      <div class="zodiac-card">
+      <a href="zodiac-detail.html?tier=hase" class="zodiac-card">
         <div class="zodiac-header">
           <span class="zodiac-icon">🐇</span>
           <div class="zodiac-title">
@@ -218,9 +222,9 @@
           </div>
         </div>
         <p class="zodiac-desc">Sanft und elegant. Hoppelt lieber elegant davon, als Streit zu suchen. Diplomatisch.</p>
-      </div>
+      </a>
 
-      <div class="zodiac-card" style="border-color: rgba(255, 50, 50, 0.4);">
+      <a href="zodiac-detail.html?tier=drache" class="zodiac-card" style="border-color: rgba(255, 50, 50, 0.4);">
         <div class="zodiac-header">
           <span class="zodiac-icon">🐉</span>
           <div class="zodiac-title">
@@ -229,9 +233,9 @@
           </div>
         </div>
         <p class="zodiac-desc">Mächtig und charismatisch. Spuckt Feuer der Begeisterung. Der Boss im Horoskop.</p>
-      </div>
+      </a>
 
-      <div class="zodiac-card">
+      <a href="zodiac-detail.html?tier=schlange" class="zodiac-card">
         <div class="zodiac-header">
           <span class="zodiac-icon">🐍</span>
           <div class="zodiac-title">
@@ -240,9 +244,9 @@
           </div>
         </div>
         <p class="zodiac-desc">Weise und geheimnisvoll. Beobachtet alles aus dem Schilf. Plant den nächsten Zug.</p>
-      </div>
+      </a>
 
-      <div class="zodiac-card">
+      <a href="zodiac-detail.html?tier=pferd" class="zodiac-card">
         <div class="zodiac-header">
           <span class="zodiac-icon">🐎</span>
           <div class="zodiac-title">
@@ -251,9 +255,9 @@
           </div>
         </div>
         <p class="zodiac-desc">Freiheitsliebend und energisch. Galoppiert immer Richtung Horizont. Niemals stillstehen!</p>
-      </div>
+      </a>
 
-      <div class="zodiac-card">
+      <a href="zodiac-detail.html?tier=ziege" class="zodiac-card">
         <div class="zodiac-header">
           <span class="zodiac-icon">🐐</span>
           <div class="zodiac-title">
@@ -262,9 +266,9 @@
           </div>
         </div>
         <p class="zodiac-desc">Kreativ und friedlich. Träumt von grünen Wiesen und Harmonie. Ein Künstler.</p>
-      </div>
+      </a>
 
-      <div class="zodiac-card">
+      <a href="zodiac-detail.html?tier=affe" class="zodiac-card">
         <div class="zodiac-header">
           <span class="zodiac-icon">🐒</span>
           <div class="zodiac-title">
@@ -273,9 +277,9 @@
           </div>
         </div>
         <p class="zodiac-desc">Witzig und intelligent. Hat immer einen genialen Streich auf Lager. Der Clown.</p>
-      </div>
+      </a>
 
-      <div class="zodiac-card">
+      <a href="zodiac-detail.html?tier=hahn" class="zodiac-card">
         <div class="zodiac-header">
           <span class="zodiac-icon">🐓</span>
           <div class="zodiac-title">
@@ -284,9 +288,9 @@
           </div>
         </div>
         <p class="zodiac-desc">Stolz und pünktlich. Liebt das Rampenlicht und glänzende Federn.</p>
-      </div>
+      </a>
 
-      <div class="zodiac-card">
+      <a href="zodiac-detail.html?tier=hund" class="zodiac-card">
         <div class="zodiac-header">
           <span class="zodiac-icon">🐕</span>
           <div class="zodiac-title">
@@ -295,9 +299,9 @@
           </div>
         </div>
         <p class="zodiac-desc">Loyal und ehrlich. Passt auf die Herde auf. Ein treuer Freund fürs Leben.</p>
-      </div>
+      </a>
 
-      <div class="zodiac-card">
+      <a href="zodiac-detail.html?tier=schwein" class="zodiac-card">
         <div class="zodiac-header">
           <span class="zodiac-icon">🐖</span>
           <div class="zodiac-title">
@@ -306,7 +310,7 @@
           </div>
         </div>
         <p class="zodiac-desc">Großzügig und gutmütig. Genießt das Leben und gutes Essen in vollen Zügen.</p>
-      </div>
+      </a>
 
     </div>
 
