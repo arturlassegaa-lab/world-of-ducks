@@ -1,280 +1,400 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Galgenman — World of Ducks</title>
-<link rel="stylesheet" href="style.css">
-<style>
-  body{
-    margin:0;
-    text-align:center;
-    background-color:#2a2a2a;
-    background-image:url('https://www.transparenttextures.com/patterns/wood-pattern.png');
-    font-family:'MedievalSharp',cursive;
-    color:#ffd26a;
-  }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>World of Ducks — Global Galgenman</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
+  <style>
+    /* --- DESIGN-VARIABLEN (wie Index) --- */
+    :root {
+      --bg-dark: #1a0e05;
+      --bg-wood: url('https://www.transparenttextures.com/patterns/wood-pattern.png');
+      --frame-border: #d4af37;
+      --frame-bg: #f4e4bc;
+      --text-dark: #3e2a14;
+      --accent: #c0392b; /* Explosions-Rot */
+    }
 
-  .frame{
-    max-width:1000px;
-    margin:40px auto;
-    border:5px solid #5b3b1d;
-    border-radius:10px;
-    background-color:rgba(40,25,10,0.9);
-    box-shadow:0 0 25px #000;
-    padding:20px;
-  }
+    body {
+      margin: 0;
+      padding: 20px;
+      background-color: var(--bg-dark);
+      background-image: var(--bg-wood);
+      font-family: 'MedievalSharp', cursive;
+      color: var(--text-dark);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-sizing: border-box;
+    }
 
-  header.header{
-    background:linear-gradient(to bottom,#3c2b15,#1a0e05);
-    padding:20px;
-    border-bottom:3px solid #5b3b1d;
-  }
+    .main-frame {
+      background: var(--frame-bg);
+      background-image: url('https://www.transparenttextures.com/patterns/old-paper.png');
+      max-width: 900px;
+      width: 100%;
+      border: 4px double var(--frame-border);
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+      padding: 20px;
+      position: relative;
+      overflow: hidden; /* Wichtig für die Explosion */
+      transition: background 0.2s;
+    }
 
-  header.header h1{
-    color:#ffcc33;
-    text-shadow:2px 2px 4px #000;
-    font-size:2.2em;
-    margin:0;
-  }
+    .header h1 {
+      text-align: center;
+      margin: 10px 0 20px;
+      font-size: 2.2rem;
+      color: var(--text-dark);
+      text-shadow: 1px 1px 0px rgba(255,255,255,0.4);
+    }
 
-  nav.menu{margin:25px 0;}
-  .btn{
-    display:inline-block;margin:8px;padding:10px 22px;
-    background:#5b3b1d;color:#ffcc33;border:2px solid #d6a85b;
-    border-radius:8px;text-decoration:none;text-shadow:1px 1px 3px #000;
-    box-shadow:inset 0 0 10px #000;transition:all .2s ease;
-  }
-  .btn:hover{background:#7a5028;transform:scale(1.05);}
+    /* Navigation */
+    .menu-container {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 25px;
+    }
 
-  main{
-    display:flex;
-    flex-wrap:wrap;
-    justify-content:center;
-    gap:30px;
-    margin-top:20px;
-  }
+    .nav-btn {
+      text-decoration: none;
+      color: var(--text-dark);
+      font-weight: bold;
+      padding: 8px 16px;
+      border: 2px solid var(--frame-border);
+      border-radius: 10px;
+      background: linear-gradient(145deg, #fff, #e6d8a7);
+      transition: transform 0.2s;
+    }
+    .nav-btn:hover { transform: translateY(-2px); }
 
-  .game-box{
-    background:linear-gradient(180deg,#6b4f2b,#5b3d1a);
-    border:3px solid #5b3b1d;
-    border-radius:10px;
-    padding:20px;
-    width:460px;
-    box-shadow:inset 0 0 10px #000;
-  }
+    /* Game Area */
+    .game-area {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
 
-  #wordDisplay{
-    font-size:2.1em;
-    letter-spacing:10px;
-    margin:20px 0;
-    color:#ffe28a;
-    text-shadow:1px 1px 3px #000;
-  }
+    .hint-box {
+      background: rgba(0,0,0,0.05);
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-style: italic;
+    }
 
-  #letters{
-    display:flex;
-    flex-wrap:wrap;
-    justify-content:center;
-    gap:6px;
-    margin:15px 0;
-  }
+    .word-display {
+      font-size: 2.5rem;
+      letter-spacing: 15px;
+      font-weight: bold;
+      margin: 10px 0;
+      min-height: 50px;
+    }
 
-  .letter-btn{
-    width:32px;height:32px;
-    border:none;
-    border-radius:6px;
-    background:#5b3b1d;
-    color:#ffcc33;
-    font-family:'MedievalSharp',cursive;
-    font-size:1em;
-    cursor:pointer;
-    box-shadow:inset 0 0 6px #000;
-    transition:all .15s;
-  }
-  .letter-btn:hover{background:#7a5028;transform:scale(1.1);}
-  .letter-btn.used{background:#2a2a2a;color:#888;cursor:default;transform:none;}
+    /* Die Ente */
+    .duck-container {
+      position: relative;
+      width: 200px;
+      height: 200px;
+    }
 
-  #message{
-    margin-top:10px;
-    font-size:1.1em;
-    color:#ffcc33;
-    text-shadow:1px 1px 2px #000;
-    min-height:30px;
-  }
+    .game-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 15px;
+      border: 4px solid var(--frame-border);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      transition: transform 0.3s;
+    }
 
-  .ente-img{
-    width:300px;
-    max-width:90%;
-    border:5px solid #d6a85b;
-    border-radius:12px;
-    box-shadow:0 0 15px #000;
-  }
+    /* Bomb Counter */
+    .bomb-status {
+      font-size: 1.5rem;
+      margin-top: -10px;
+    }
 
-  .bomb{
-    margin:20px auto;
-    font-size:4em;
-    height:1.2em;
-    transition:transform 0.2s;
-  }
+    /* Tastatur */
+    .keyboard {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 5px;
+      max-width: 600px;
+    }
 
-  /* Explosion Animation */
-  @keyframes explode {
-    0% { transform: scale(1) rotate(0deg); }
-    20% { transform: scale(1.4) rotate(20deg); }
-    40% { transform: scale(0.8) rotate(-20deg); }
-    60% { transform: scale(1.8) rotate(0deg); }
-    80% { transform: scale(0.5); }
-    100% { transform: scale(3); opacity:0; }
-  }
+    .key-btn {
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--text-dark);
+      background: #fff;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: 'MedievalSharp', cursive;
+      font-size: 1.1rem;
+      transition: all 0.1s;
+    }
+    .key-btn:hover:not(:disabled) { background: #e6d8a7; transform: scale(1.1); }
+    .key-btn:disabled { background: #bbb; color: #777; border-color: transparent; cursor: default; transform: none; }
 
-  .explode{
-    animation: explode 0.7s forwards;
-  }
+    /* Ergebnis Nachricht */
+    .result-msg {
+      font-size: 1.4rem;
+      font-weight: bold;
+      min-height: 1.5em;
+      text-align: center;
+      color: var(--accent);
+    }
 
-  .footer{
-    background:#1a0e05;
-    padding:10px;
-    border-top:3px solid #5b3b1d;
-    font-size:0.9em;
-    color:#d6a85b;
-    margin-top:30px;
-    border-radius:0 0 10px 10px;
-  }
+    .restart-btn {
+      padding: 10px 25px;
+      background: var(--text-dark);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      font-family: 'MedievalSharp', cursive;
+      display: none; /* Erst unsichtbar */
+    }
+    .restart-btn:hover { background: #553a1f; }
 
-  .greeting{
-    font-style:italic;
-    color:#ffe28a;
-    margin-top:15px;
-    text-shadow:1px 1px 2px #000;
-  }
-</style>
+    /* --- EXPLOSIONS-ANIMATION --- */
+    @keyframes shake {
+      0% { transform: translate(1px, 1px) rotate(0deg); }
+      10% { transform: translate(-1px, -2px) rotate(-1deg); }
+      20% { transform: translate(-3px, 0px) rotate(1deg); }
+      30% { transform: translate(3px, 2px) rotate(0deg); }
+      40% { transform: translate(1px, -1px) rotate(1deg); }
+      50% { transform: translate(-1px, 2px) rotate(-1deg); }
+      60% { transform: translate(-3px, 1px) rotate(0deg); }
+      70% { transform: translate(3px, 1px) rotate(-1deg); }
+      80% { transform: translate(-1px, -1px) rotate(1deg); }
+      90% { transform: translate(1px, 2px) rotate(0deg); }
+      100% { transform: translate(1px, -2px) rotate(-1deg); }
+    }
+
+    @keyframes boom-flash {
+      0% { background-color: var(--frame-bg); }
+      50% { background-color: #ff5555; }
+      100% { background-color: #000; }
+    }
+
+    .exploding .main-frame {
+      animation: shake 0.5s;
+      animation-iteration-count: 2;
+    }
+    
+    .exploding body {
+       overflow: hidden;
+    }
+
+    .destroyed-img {
+      transform: scale(0) rotate(180deg);
+      opacity: 0;
+      transition: all 0.5s ease-out;
+    }
+    
+    .explosion-emoji {
+        position: absolute;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        font-size: 8rem;
+        pointer-events: none;
+        transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .show-boom { transform: translate(-50%, -50%) scale(2); }
+
+  </style>
 </head>
 <body>
-  <div class="frame">
+
+  <div class="main-frame" id="gameFrame">
     <header class="header">
-      <h1>💣 World of Ducks – Galgenman</h1>
+      <h1>🌍 Global Galgenman 💣</h1>
     </header>
 
-    <nav class="menu">
-      <a href="index.html" class="btn">Home</a>
-      <a href="blogs.html" class="btn">Blogs</a>
-      <a href="memory.html" class="btn">Memory</a>
-      <a href="chat.html" class="btn">Chat</a>
-      <a href="galgenman.html" class="btn" aria-current="page">Galgenman</a>
-      <a href="inspo.html" class="btn">Inspo</a>
+    <nav class="menu-container">
+      <a href="index.html" class="nav-btn">Home</a>
+      <a href="blogs.html" class="nav-btn">Blogs</a>
+      <a href="memory.html" class="nav-btn">Memory</a>
+      <a href="chat.html" class="nav-btn">Chat</a>
+      <a href="galgenman.html" class="nav-btn" style="background:#d4af37;">Galgenman</a>
+      <a href="inspo.html" class="nav-btn">Inspo</a>
     </nav>
 
-    <main>
-      <section class="game-box">
-        <h2>🔤 Errate das geheime Entenwort!</h2>
+    <div class="game-area">
+      <div class="hint-box">
+        Sprache: <span id="langHint" style="font-weight:bold;">---</span>
+      </div>
 
-        <p>Das Wort hat 6 Buchstaben… schaffst du es, bevor die Bombe explodiert? 💣</p>
+      <div class="duck-container">
+        <img src="imgs/ente3.jpg" id="duckImg" class="game-img" alt="Die Ente">
+        <div id="boomOverlay" class="explosion-emoji">💥</div>
+      </div>
 
-        <div class="bomb" id="bomb">💣</div>
+      <div class="bomb-status" id="bombStatus">💣 6</div>
+      
+      <div id="wordDisplay" class="word-display">_ _ _ _</div>
 
-        <div id="wordDisplay">_ _ _ _ _ _</div>
-        <div id="letters"></div>
+      <div class="result-msg" id="message"></div>
+      
+      <div id="keyboard" class="keyboard"></div>
 
-        <div id="message"></div>
-
-        <button id="restartBtn" class="btn" style="margin-top:10px;">Neues Spiel</button>
-
-        <p class="greeting">👋 Grüße an Bjarne – möge deine Bombe niemals platzen!</p>
-      </section>
-
-      <img src="imgs/ente4.jpg" alt="Ente beim Galgenman-Spiel" class="ente-img">
-    </main>
-
-    <footer class="footer">© 2025 World of Ducks – Explosive Abenteuer</footer>
+      <button id="restartBtn" class="restart-btn" onclick="initGame()">Nochmal spielen</button>
+    </div>
   </div>
 
 <script>
-  let chosenWord = "CANARD"; // Fixes Wort
+  // Die 25 "Enten" (Lateinische Schrift für Spielbarkeit)
+  const duckWords = [
+    { w: "DUCK", l: "Englisch" },
+    { w: "YAZI", l: "Chinesisch (Mandarin)" },
+    { w: "BATTAKH", l: "Hindi / Urdu" },
+    { w: "PATO", l: "Spanisch / Portugiesisch" },
+    { w: "CANARD", l: "Französisch" },
+    { w: "BATTA", l: "Arabisch" },
+    { w: "HAAS", l: "Bengalisch" },
+    { w: "UTKA", l: "Russisch" },
+    { w: "BEBEK", l: "Indonesisch" },
+    { w: "ENTE", l: "Deutsch" },
+    { w: "AHIRU", l: "Japanisch" },
+    { w: "BATA", l: "Swahili" },
+    { w: "BADAKA", l: "Marathi" },
+    { w: "BATU", l: "Telugu" },
+    { w: "ORDEK", l: "Türkisch" }, // Ördek vereinfacht
+    { w: "VATTU", l: "Tamil" },
+    { w: "VIT", l: "Vietnamesisch" },
+    { w: "ORI", l: "Koreanisch" },
+    { w: "ANATRA", l: "Italienisch" },
+    { w: "PET", l: "Thai" },
+    { w: "ORDAK", l: "Persisch" },
+    { w: "KACZKA", l: "Polnisch" },
+    { w: "AND", l: "Dänisch" },
+    { w: "ANKKA", l: "Finnisch" },
+    { w: "EEND", l: "Niederländisch" }
+  ];
+
+  let currentWord = "";
+  let currentLang = "";
   let guessed = [];
-  let fails = 0;
-  const maxFails = 6;
+  let mistakes = 0;
+  const maxMistakes = 6;
 
-  const wordDisplay = document.getElementById("wordDisplay");
-  const lettersDiv = document.getElementById("letters");
-  const message = document.getElementById("message");
-  const bomb = document.getElementById("bomb");
-  const restartBtn = document.getElementById("restartBtn");
+  const wordEl = document.getElementById('wordDisplay');
+  const langEl = document.getElementById('langHint');
+  const keyboardEl = document.getElementById('keyboard');
+  const messageEl = document.getElementById('message');
+  const bombEl = document.getElementById('bombStatus');
+  const duckImg = document.getElementById('duckImg');
+  const boomOverlay = document.getElementById('boomOverlay');
+  const restartBtn = document.getElementById('restartBtn');
+  const gameFrame = document.getElementById('gameFrame');
 
-  function initGame(){
+  function initGame() {
+    // Reset UI
+    duckImg.classList.remove('destroyed-img');
+    boomOverlay.classList.remove('show-boom');
+    gameFrame.classList.remove('exploding');
+    messageEl.textContent = "";
+    messageEl.style.color = "";
+    restartBtn.style.display = "none";
+    keyboardEl.style.display = "flex";
+    
+    // Reset Stats
     guessed = [];
-    fails = 0;
-    message.textContent = "";
-    bomb.textContent = "💣";
-    bomb.classList.remove("explode");
+    mistakes = 0;
+    bombEl.textContent = "💣 " + (maxMistakes - mistakes);
+
+    // Zufälliges Wort wählen
+    const randomObj = duckWords[Math.floor(Math.random() * duckWords.length)];
+    currentWord = randomObj.w;
+    currentLang = randomObj.l;
+    
+    langEl.textContent = currentLang;
+    
     renderWord();
-    createLetters();
+    createKeyboard();
   }
 
-  function renderWord(){
-    let out = "";
-    for (let c of chosenWord){
-      out += guessed.includes(c) ? c + " " : "_ ";
-    }
-    wordDisplay.textContent = out.trim();
+  function renderWord() {
+    const display = currentWord.split('').map(letter => 
+      guessed.includes(letter) ? letter : "_"
+    ).join(' ');
+    wordEl.textContent = display;
   }
 
-  function createLetters(){
-    lettersDiv.innerHTML = "";
+  function createKeyboard() {
+    keyboardEl.innerHTML = '';
     const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    for (let l of alphabet){
-      let b = document.createElement("button");
-      b.textContent = l;
-      b.className = "letter-btn";
-      b.onclick = () => guess(l, b);
-      lettersDiv.appendChild(b);
+    for (let char of alphabet) {
+      const btn = document.createElement('button');
+      btn.textContent = char;
+      btn.className = 'key-btn';
+      btn.onclick = () => handleGuess(char, btn);
+      keyboardEl.appendChild(btn);
     }
   }
 
-  function guess(letter, btn){
-    if (btn.classList.contains("used")) return;
-    btn.classList.add("used");
-
-    if (chosenWord.includes(letter)){
+  function handleGuess(letter, btn) {
+    btn.disabled = true;
+    
+    if (currentWord.includes(letter)) {
       guessed.push(letter);
       renderWord();
       checkWin();
     } else {
-      fails++;
-      bombShake();
-      message.textContent = `Falsch geraten (${fails}/${maxFails})`;
-      if (fails >= maxFails){
-        explodeBomb();
+      mistakes++;
+      bombEl.textContent = "💣 " + (maxMistakes - mistakes);
+      
+      // Kleiner Wackeleffekt bei Fehler
+      duckImg.style.transform = `rotate(${Math.random() * 10 - 5}deg) scale(1.05)`;
+      setTimeout(() => duckImg.style.transform = "rotate(0) scale(1)", 200);
+
+      if (mistakes >= maxMistakes) {
+        gameOver(false);
       }
     }
   }
 
-  function bombShake(){
-    bomb.style.transform = "scale(1.1)";
-    setTimeout(()=> bomb.style.transform = "scale(1)", 150);
-  }
-
-  function checkWin(){
-    const all = [...chosenWord].every(c => guessed.includes(c));
-    if (all){
-      message.textContent = "🎉 GEWONNEN! Du hast CANARD entschärft!";
-      disableAll();
+  function checkWin() {
+    // Prüfen, ob alle Buchstaben gefunden wurden
+    const won = currentWord.split('').every(l => guessed.includes(l));
+    if (won) {
+      gameOver(true);
     }
   }
 
-  function explodeBomb(){
-    message.textContent = "💥 BOOOOM! Die Bombe ist explodiert! Das Wort war CANARD!";
-    bomb.classList.add("explode");
-    disableAll();
+  function gameOver(hasWon) {
+    keyboardEl.style.display = 'none'; // Tastatur weg
+    restartBtn.style.display = 'inline-block'; // Neustart Button da
+
+    if (hasWon) {
+      messageEl.textContent = "Yesssssss";
+      messageEl.style.color = "green";
+      wordEl.style.color = "green";
+    } else {
+      // VERLOREN - EXPLOSION! 💥
+      messageEl.textContent = "C'est comme ça, c'est la vie, tu peux rien y faire.";
+      messageEl.style.color = "#c0392b";
+      wordEl.textContent = currentWord; // Lösung zeigen
+
+      // Visuelle Explosion
+      gameFrame.classList.add('exploding'); // Frame wackelt
+      duckImg.classList.add('destroyed-img'); // Ente verschwindet/dreht sich
+      boomOverlay.classList.add('show-boom'); // Emoji kommt riesig
+    }
   }
 
-  function disableAll(){
-    document.querySelectorAll(".letter-btn").forEach(b=>b.classList.add("used"));
-  }
-
-  restartBtn.onclick = initGame;
-
+  // Start beim Laden
   initGame();
+
 </script>
 </body>
 </html>
