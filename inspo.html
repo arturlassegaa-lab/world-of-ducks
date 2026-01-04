@@ -539,7 +539,7 @@
       for(let type in nenScores) { if(nenScores[type] > max) { max = nenScores[type]; resultType = type; } }
       const typeData = {
         "Enhancer": { de: "Verstärker (Enhancer)", color: "#28a745", desc: "Du bist einfach gestrickt, entschlossen und ehrlich. Du lügst selten und handelst nach Gefühl." },
-        "Transmuter": { de: "Wandler (Transmuter)", color: "#6f42c1", desc: "Du bist launisch und ein Schwindler. Du verheimlichst deine wahre Natur und bist unberechenbar." },
+        "Transmuter": { de: "Wandler (Transmuter)", color: "#6f42c1", desc: "Du bist launisch und sehr clever. Du verheimlichst deine wahre Natur und bist unberechenbar." },
         "Emitter": { de: "Emittent (Emitter)", color: "#ffc107", desc: "Du bist ungeduldig und emotional, aber extrem loyal. Ähnlich wie Verstärker, aber volatiler." },
         "Conjurer": { de: "Beschwörer (Conjurer)", color: "#dc3545", desc: "Du bist sensibel und analytisch. Du machst dir oft zu viele Sorgen und bist sehr logisch." },
         "Manipulator": { de: "Manipulator", color: "#17a2b8", desc: "Du willst alles kontrollieren und gehst logisch vor. Du streitest gerne, um deine Meinung durchzusetzen." },
@@ -551,5 +551,258 @@
       document.getElementById('nen-result-desc').innerText = res.desc;
     }
   </script>
+  <style>
+  .lightning-spark {
+    position: absolute;
+    width: 2px;
+    height: 10px;
+    background: #00ffff;
+    box-shadow: 0 0 10px #fff, 0 0 20px #00ffff;
+    pointer-events: none;
+    z-index: 9999;
+    border-radius: 2px;
+    opacity: 1;
+    transform-origin: center;
+  }
+  
+  /* Aura um den Cursor */
+  body.godspeed-active {
+    cursor: none; /* Maus verstecken für besseren Effekt */
+  }
+  #killua-aura {
+    position: fixed;
+    width: 20px; height: 20px;
+    background: rgba(100, 200, 255, 0.5);
+    border-radius: 50%;
+    box-shadow: 0 0 15px 5px #00ffff;
+    pointer-events: none;
+    z-index: 9998;
+    display: none;
+    mix-blend-mode: screen;
+  }
+</style>
+
+<div id="killua-aura"></div>
+
+<script>
+  let godspeedActive = false;
+  const aura = document.getElementById('killua-aura');
+  let lastX = 0, lastY = 0;
+
+  // Toggle Godspeed mit Taste "K"
+  document.addEventListener('keydown', (e) => {
+    if (e.key.toLowerCase() === 'k') {
+      godspeedActive = !godspeedActive;
+      document.body.classList.toggle('godspeed-active');
+      aura.style.display = godspeedActive ? 'block' : 'none';
+      
+      // Kleines Feedback
+      if(godspeedActive) {
+        // Optional: Sound abspielen oder Bildschirm kurz aufblitzen lassen
+        const flash = document.createElement('div');
+        flash.style.cssText = "position:fixed;top:0;left:0;width:100vw;height:100vh;background:#fff;opacity:0.8;z-index:10000;pointer-events:none;transition:opacity 0.2s;";
+        document.body.appendChild(flash);
+        setTimeout(() => flash.style.opacity = 0, 50);
+        setTimeout(() => flash.remove(), 250);
+      }
+    }
+  });
+
+  document.addEventListener('mousemove', (e) => {
+    if (!godspeedActive) return;
+
+    // Aura folgt der Maus
+    aura.style.left = (e.clientX - 10) + 'px';
+    aura.style.top = (e.clientY - 10) + 'px';
+
+    // Blitze erzeugen basierend auf Bewegung
+    const dist = Math.hypot(e.clientX - lastX, e.clientY - lastY);
+    
+    if (dist > 5) { // Nur wenn man sich bewegt
+      createLightning(e.clientX, e.clientY, lastX, lastY);
+      lastX = e.clientX;
+      lastY = e.clientY;
+    }
+  });
+
+  function createLightning(x, y, lx, ly) {
+    const spark = document.createElement('div');
+    spark.className = 'lightning-spark';
+    
+    // Zufällige Rotation und Länge für den "Zack"-Effekt
+    const angle = Math.atan2(y - ly, x - lx) * (180 / Math.PI);
+    const randomAngle = angle + (Math.random() - 0.5) * 90; // Starke Streuung
+    const size = Math.random() * 20 + 10;
+
+    spark.style.left = x + 'px';
+    spark.style.top = y + 'px';
+    spark.style.height = size + 'px';
+    spark.style.transform = `rotate(${randomAngle}deg)`;
+    
+    document.body.appendChild(spark);
+
+    // Animation: Blitz verschwindet schnell
+    let opacity = 1;
+    const fade = setInterval(() => {
+      opacity -= 0.1;
+      spark.style.opacity = opacity;
+      spark.style.transform += ` scale(${1 + Math.random()})`; // Wilder Effekt
+      
+      if (opacity <= 0) {
+        clearInterval(fade);
+        spark.remove();
+      }
+    }, 20);
+  }
+</script>
+<style>
+  /* Die Spinne */
+  #phantom-spider {
+    position: fixed;
+    font-size: 2.5rem; /* Größe der Spinne */
+    z-index: 9990; /* Über dem Hintergrund, unter Overlays */
+    cursor: crosshair;
+    user-select: none;
+    display: none; /* Erstmal unsichtbar */
+    filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.8));
+    transition: transform 0.1s;
+  }
+  #phantom-spider:active { transform: scale(0.9); }
+
+  /* Die Nummer auf dem Rücken (z.B. 12 oder 4) */
+  .spider-num {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -40%);
+    font-size: 0.7rem;
+    color: #fff;
+    font-weight: bold;
+    font-family: Arial, sans-serif;
+    pointer-events: none;
+    text-shadow: 0 0 2px #000;
+  }
+
+  /* KURAPIKA SCARLET EYES MODE */
+  #kurapika-overlay {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    /* Roter Vignette-Effekt */
+    background: radial-gradient(circle at center, transparent 20%, rgba(180, 0, 0, 0.3) 70%, rgba(100, 0, 0, 0.9) 100%);
+    pointer-events: none;
+    z-index: 10000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    display: flex; justify-content: center; align-items: center; gap: 50px;
+    mix-blend-mode: multiply; /* Macht alles dunkler/bedrohlicher */
+  }
+  
+  /* Die glühenden Augen */
+  .scarlet-eye {
+    width: 150px; height: 150px;
+    border-radius: 50%;
+    /* Scharlachrotes Leuchten */
+    background: radial-gradient(circle, #ff0000 0%, #8b0000 40%, transparent 70%);
+    box-shadow: 0 0 50px #ff0000;
+    opacity: 0;
+    transform: scale(0.5);
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  
+  /* Aktivierungsklassen */
+  body.kurapika-mode #kurapika-overlay { opacity: 1; }
+  body.kurapika-mode .scarlet-eye { opacity: 1; transform: scale(1); }
+  
+  /* Roter Schimmer für den ganzen Body */
+  body.kurapika-mode .content-layer { filter: sepia(1) hue-rotate(-50deg) saturate(3); transition: filter 0.2s; }
+</style>
+
+<div id="phantom-spider">🕷️<span class="spider-num">12</span></div>
+
+<div id="kurapika-overlay">
+  <div class="scarlet-eye"></div>
+  <div class="scarlet-eye"></div>
+</div>
+
+<script>
+  const spider = document.getElementById('phantom-spider');
+  let spiderInterval;
+  
+  // Zufällige Spinne spawnen
+  function spawnSpider() {
+    // Zufällige Seite wählen (0: Oben, 1: Rechts, 2: Unten, 3: Links)
+    const side = Math.floor(Math.random() * 4);
+    let startX, startY, endX, endY;
+    
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    const padding = 100;
+
+    // Koordinaten berechnen (Start -> Ende gegenüberliegend)
+    switch(side) {
+      case 0: startX = Math.random() * w; startY = -padding; endX = Math.random() * w; endY = h + padding; break;
+      case 1: startX = w + padding; startY = Math.random() * h; endX = -padding; endY = Math.random() * h; break;
+      case 2: startX = Math.random() * w; startY = h + padding; endX = Math.random() * w; endY = -padding; break;
+      case 3: startX = -padding; startY = Math.random() * h; endX = w + padding; endY = Math.random() * h; break;
+    }
+
+    // Rotation berechnen damit sie in Laufrichtung schaut
+    const angle = Math.atan2(endY - startY, endX - startX) * (180 / Math.PI) + 90;
+
+    spider.style.display = 'block';
+    spider.style.left = startX + 'px';
+    spider.style.top = startY + 'px';
+    spider.style.transform = `rotate(${angle}deg)`;
+    
+    // Animation starten
+    const duration = 6000 + Math.random() * 4000; // 6-10 Sekunden Laufzeit
+    const startTime = Date.now();
+    
+    function move() {
+      const elapsed = Date.now() - startTime;
+      const progress = elapsed / duration;
+      
+      if (progress >= 1 || spider.style.display === 'none') {
+        if(spider.style.display !== 'none') {
+            spider.style.display = 'none'; // Angekommen
+            scheduleNextSpider();
+        }
+        return;
+      }
+      
+      const currentX = startX + (endX - startX) * progress;
+      const currentY = startY + (endY - startY) * progress;
+      
+      spider.style.left = currentX + 'px';
+      spider.style.top = currentY + 'px';
+      
+      requestAnimationFrame(move);
+    }
+    
+    requestAnimationFrame(move);
+  }
+
+  function scheduleNextSpider() {
+    // Nächste Spinne kommt in 10 bis 30 Sekunden
+    setTimeout(spawnSpider, 10000 + Math.random() * 20000);
+  }
+
+  // Klick-Event (Der Tod der Spinne)
+  spider.addEventListener('click', (e) => {
+    e.stopPropagation(); // Verhindert Klicks auf darunterliegende Elemente
+    spider.style.display = 'none'; // Spinne weg
+    
+    // KURAPIKA MODE AKTIVIEREN
+    document.body.classList.add('kurapika-mode');
+    
+    // Nach 2 Sekunden wieder normal
+    setTimeout(() => {
+      document.body.classList.remove('kurapika-mode');
+      scheduleNextSpider();
+    }, 2000);
+  });
+
+  // Start: Erste Spinne kommt nach 3 Sekunden zum Testen
+  setTimeout(spawnSpider, 3000); 
+
+</script>
 </body>
 </html>
