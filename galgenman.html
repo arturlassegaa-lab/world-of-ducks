@@ -67,13 +67,16 @@
       gap: 20px;
     }
 
+    /* --- ÄNDERUNG HIER: Bild ist jetzt eckig und flexibel --- */
     .duck-portrait {
-      width: 200px;
-      height: 200px;
-      object-fit: cover;
-      border-radius: 50%;
-      border: 5px solid #d6a85b; /* Goldener Rand */
-      box-shadow: 0 0 15px rgba(0,0,0,0.5);
+      max-width: 300px; /* Begrenzung damit es nicht riesig wird */
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      border: 3px solid #d6a85b; /* Goldener Rahmen */
+      border-radius: 10px; /* Nur leicht abgerundete Ecken */
+      box-shadow: 0 0 20px rgba(0,0,0,0.7);
+      background-color: #000; /* Hintergrund falls PNG transparent ist */
     }
 
     .bomb-container { font-size: 4rem; margin: 10px 0; cursor: default; transition: transform 0.2s; }
@@ -171,7 +174,8 @@
     </header>
 
     <nav class="menu">
-      <a href="index.html" class="btn">Home</a> <a href="blogs.html" class="btn">Blogs</a>
+      <a href="index.html" class="btn">Home</a>
+      <a href="blogs.html" class="btn">Blogs</a>
       <a href="memory.html" class="btn">Memory</a>
       <a href="chat.html" class="btn">Chat</a>
       <a href="galgenman.html" class="btn">Galgenman</a>
@@ -180,7 +184,7 @@
     </nav>
 
     <div class="game-area">
-      <img src="imgs/ente3.jpg" alt="Bomben-Ente" class="duck-portrait">
+      <img src="imgs/galgenman-ente.jpeg" alt="Bomben-Ente" class="duck-portrait">
 
       <div class="bomb-container" id="bomb">💣</div>
       
