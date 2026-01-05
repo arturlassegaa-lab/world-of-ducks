@@ -95,7 +95,7 @@
       text-align: center; border-top: 1px solid #333; background: #000;
     }
 
-    /* --- SNAKE SECRET STYLE --- */
+    /* --- SNAKE SECRET STYLE & LEADERBOARD --- */
     #snake-trigger-area {
       position: fixed; bottom: 10px; right: 10px; width: 50px; height: 50px;
       display: flex; justify-content: center; align-items: center; font-size: 2rem;
@@ -111,22 +111,29 @@
     #snake-trigger-area:hover .loader-ring { opacity: 1; animation: spinLoad 1s linear forwards; }
 
     #snake-overlay {
-      position: fixed; bottom: 20px; right: 20px; width: 320px; height: 420px;
+      position: fixed; bottom: 20px; right: 20px; 
+      /* Breiter gemacht für Leaderboard */
+      width: 480px; height: 430px;
       background: rgba(0, 20, 0, 0.95); border: 2px solid #0f0; border-radius: 15px;
       box-shadow: 0 0 30px rgba(0, 255, 0, 0.4); z-index: 200;
-      display: flex; flex-direction: column; align-items: center; padding: 10px;
+      display: flex; flex-direction: row; /* Nebeneinander */
+      padding: 15px; gap: 15px;
       transform: scale(0); transform-origin: bottom right;
       transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       opacity: 0; pointer-events: none;
     }
     #snake-overlay.open { transform: scale(1); opacity: 1; pointer-events: all; }
     
+    .snake-game-area {
+      display: flex; flex-direction: column; align-items: center; width: 300px;
+    }
+
     #snake-canvas { background: #000; border: 1px solid #333; box-shadow: inset 0 0 10px #0f0; }
 
     .snake-ui {
       width: 100%; display: flex; justify-content: space-between;
       color: #0f0; font-family: 'Courier New', Courier, monospace;
-      font-weight: bold; margin-bottom: 10px; text-shadow: 0 0 5px #0f0;
+      font-weight: bold; margin-bottom: 5px; text-shadow: 0 0 5px #0f0;
     }
     .close-snake {
       background: none; border: 1px solid #0f0; color: #0f0; cursor: pointer;
@@ -134,7 +141,28 @@
     }
     .close-snake:hover { background: #0f0; color: #000; }
 
-    /* --- HXH HUNTER EXAM SECRET STYLE (FULLSCREEN FISHING) --- */
+    /* LEADERBOARD STYLES */
+    .leaderboard-panel {
+      flex-grow: 1; border-left: 1px solid #0f0; padding-left: 15px;
+      color: #0f0; font-family: 'Courier New', monospace; font-size: 0.9rem;
+      display: flex; flex-direction: column;
+    }
+    .lb-title { font-weight: bold; text-decoration: underline; margin-bottom: 10px; text-align: center; }
+    .lb-list { list-style: none; padding: 0; margin: 0; width: 100%; }
+    .lb-item { 
+      display: flex; justify-content: space-between; 
+      margin-bottom: 8px; border-bottom: 1px dashed #0a0; padding-bottom: 2px;
+    }
+    .lb-name { max-width: 80px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    
+    .player-name-input {
+      background: #000; border: 1px solid #0f0; color: #0f0; 
+      padding: 5px; width: 100%; margin-bottom: 10px; font-family: inherit;
+      text-align: center;
+    }
+    .player-name-input::placeholder { color: #050; }
+    
+    /* --- HXH HUNTER EXAM SECRET STYLE --- */
     #hxh-trigger-area {
       position: fixed; bottom: 10px; left: 10px; width: 50px; height: 50px;
       display: flex; justify-content: center; align-items: center; font-size: 2rem;
@@ -204,19 +232,67 @@
 
     @keyframes spinLoad { to { transform: rotate(360deg); } }
 
+    /* HXH EXTRA: GODSPEED & SPIDER */
+    .lightning-spark {
+      position: absolute; width: 2px; height: 10px; background: #00ffff;
+      box-shadow: 0 0 10px #fff, 0 0 20px #00ffff; pointer-events: none; z-index: 9999;
+      border-radius: 2px; opacity: 1; transform-origin: center;
+    }
+    body.godspeed-active { cursor: none; }
+    #killua-aura {
+      position: fixed; width: 20px; height: 20px; background: rgba(100, 200, 255, 0.5);
+      border-radius: 50%; box-shadow: 0 0 15px 5px #00ffff; pointer-events: none;
+      z-index: 9998; display: none; mix-blend-mode: screen;
+    }
+
+    #phantom-spider {
+      position: fixed; font-size: 2.5rem; z-index: 9990; cursor: crosshair;
+      user-select: none; display: none; filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.8));
+      transition: transform 0.1s;
+    }
+    #phantom-spider:active { transform: scale(0.9); }
+    .spider-num {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -40%);
+      font-size: 0.7rem; color: #fff; font-weight: bold; pointer-events: none; text-shadow: 0 0 2px #000;
+    }
+
+    #kurapika-overlay {
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      background: radial-gradient(circle at center, transparent 20%, rgba(180, 0, 0, 0.3) 70%, rgba(100, 0, 0, 0.9) 100%);
+      pointer-events: none; z-index: 10000; opacity: 0; transition: opacity 0.3s ease;
+      display: flex; justify-content: center; align-items: center; gap: 50px; mix-blend-mode: multiply;
+    }
+    .scarlet-eye {
+      width: 150px; height: 150px; border-radius: 50%;
+      background: radial-gradient(circle, #ff0000 0%, #8b0000 40%, transparent 70%);
+      box-shadow: 0 0 50px #ff0000; opacity: 0; transform: scale(0.5);
+      transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    body.kurapika-mode #kurapika-overlay { opacity: 1; }
+    body.kurapika-mode .scarlet-eye { opacity: 1; transform: scale(1); }
+    body.kurapika-mode .content-layer { filter: sepia(1) hue-rotate(-50deg) saturate(3); transition: filter 0.2s; }
+
     @media (max-width: 1000px) {
       .center-piece { flex-direction: column; gap: 10px; }
       .header h1 { font-size: 2rem; }
       .vibe-link { font-size: 1.5rem; white-space: normal; }
       .duck-spinner { width: 250px; height: 150px; transform: scale(0.6); }
-      #snake-overlay { width: 90vw; height: 60vh; bottom: 50%; right: 5vw; left: 5vw; transform-origin: center; transform: translateY(50%) scale(0); }
+      #snake-overlay { width: 90vw; height: auto; flex-direction: column; bottom: 50%; right: 5vw; left: 5vw; transform-origin: center; transform: translateY(50%) scale(0); }
       #snake-overlay.open { transform: translateY(50%) scale(1); }
+      .leaderboard-panel { border-left: none; border-top: 1px solid #0f0; padding-left: 0; padding-top: 10px; }
     }
   </style>
 </head>
 <body>
 
   <canvas id="fireworks-canvas"></canvas>
+
+  <div id="killua-aura"></div>
+  <div id="phantom-spider">🕷️<span class="spider-num">12</span></div>
+  <div id="kurapika-overlay">
+    <div class="scarlet-eye"></div>
+    <div class="scarlet-eye"></div>
+  </div>
 
   <div id="snake-trigger-area" title="Start Snake">
     <div class="loader-ring"></div>
@@ -229,12 +305,25 @@
   </div>
 
   <div id="snake-overlay">
-    <div class="snake-ui">
-      <span>SCORE: <span id="snake-score">0</span></span>
-      <button class="close-snake" onclick="closeSnakeGame()">X</button>
+    <div class="snake-game-area">
+      <div class="snake-ui">
+        <span>SCORE: <span id="snake-score">0</span></span>
+        <button class="close-snake" onclick="closeSnakeGame()">X</button>
+      </div>
+      <input type="text" id="player-name" class="player-name-input" placeholder="Dein Name..." maxlength="10">
+      
+      <canvas id="snake-canvas" width="300" height="300"></canvas>
+      <div style="color: #0f0; font-size: 0.7rem; margin-top: 5px; font-family: monospace;">Benutze Pfeiltasten</div>
     </div>
-    <canvas id="snake-canvas" width="300" height="300"></canvas>
-    <div style="color: #0f0; font-size: 0.7rem; margin-top: 5px; font-family: monospace;">Benutze Pfeiltasten</div>
+    
+    <div class="leaderboard-panel">
+      <div class="lb-title">TOP 3</div>
+      <ul class="lb-list" id="leaderboard-list">
+        <li class="lb-item"><span>---</span><span>0</span></li>
+        <li class="lb-item"><span>---</span><span>0</span></li>
+        <li class="lb-item"><span>---</span><span>0</span></li>
+      </ul>
+    </div>
   </div>
 
   <div id="hxh-overlay">
@@ -346,12 +435,15 @@
     }
     animateFireworks();
 
-    /* --- SNAKE GAME LOGIC --- */
+    /* --- SNAKE GAME LOGIC (WITH LEADERBOARD) --- */
     const snakeTrigger = document.getElementById('snake-trigger-area');
     const snakeOverlay = document.getElementById('snake-overlay');
     const sCanvas = document.getElementById('snake-canvas');
     const sCtx = sCanvas.getContext('2d');
     const scoreEl = document.getElementById('snake-score');
+    const nameInput = document.getElementById('player-name');
+    const leaderboardList = document.getElementById('leaderboard-list');
+
     let snakeTimer; let gameInterval; 
     let snake = []; let food = {}; 
     let direction = 'RIGHT'; 
@@ -361,7 +453,11 @@
     snakeTrigger.addEventListener('mouseenter', () => { snakeTimer = setTimeout(openSnakeGame, 1000); });
     snakeTrigger.addEventListener('mouseleave', () => { clearTimeout(snakeTimer); });
 
-    function openSnakeGame() { snakeOverlay.classList.add('open'); initSnake(); }
+    function openSnakeGame() { 
+      snakeOverlay.classList.add('open'); 
+      updateLeaderboardDisplay(); // Zeige Bestenliste beim Öffnen
+      initSnake(); 
+    }
     function closeSnakeGame() { snakeOverlay.classList.remove('open'); clearInterval(gameInterval); }
 
     function initSnake() {
@@ -399,14 +495,53 @@
 
       let newHead = {x: snakeX, y: snakeY};
       if(snakeX < 0 || snakeX >= sCanvas.width || snakeY < 0 || snakeY >= sCanvas.height || collision(newHead, snake)) {
-        clearInterval(gameInterval); sCtx.fillStyle = 'rgba(255,0,0,0.5)'; sCtx.fillRect(0,0,sCanvas.width, sCanvas.height); 
+        clearInterval(gameInterval); 
+        sCtx.fillStyle = 'rgba(255,0,0,0.5)'; sCtx.fillRect(0,0,sCanvas.width, sCanvas.height); 
         sCtx.fillStyle = '#fff'; sCtx.font = "20px monospace"; sCtx.fillText("GAME OVER", 100, 150);
+        
+        saveScore(score); // SCORE SPEICHERN
         setTimeout(initSnake, 1500); 
       } else { snake.unshift(newHead); }
     }
+    
     function collision(head, array) {
       for(let i = 0; i < array.length; i++) { if(head.x == array[i].x && head.y == array[i].y) return true; }
       return false;
+    }
+
+    /* LEADERBOARD LOGIC (LocalStorage) */
+    function saveScore(currentScore) {
+      let playerName = nameInput.value.trim() || "Anonym"; // Name oder Default
+      let scores = JSON.parse(localStorage.getItem('snakeLeaderboard')) || [];
+      
+      // Neuen Eintrag hinzufügen
+      scores.push({ name: playerName, score: currentScore });
+      
+      // Sortieren (Höchster zuerst)
+      scores.sort((a, b) => b.score - a.score);
+      
+      // Nur Top 3 behalten
+      scores = scores.slice(0, 3);
+      
+      // Speichern
+      localStorage.setItem('snakeLeaderboard', JSON.stringify(scores));
+      
+      // Anzeige aktualisieren
+      updateLeaderboardDisplay();
+    }
+
+    function updateLeaderboardDisplay() {
+      let scores = JSON.parse(localStorage.getItem('snakeLeaderboard')) || [];
+      leaderboardList.innerHTML = ""; // Liste leeren
+      
+      // 3 Plätze füllen (auch wenn leer)
+      for(let i = 0; i < 3; i++) {
+        let entry = scores[i] || { name: "---", score: 0 };
+        let li = document.createElement("li");
+        li.className = "lb-item";
+        li.innerHTML = `<span class="lb-name">${entry.name}</span><span>${entry.score}</span>`;
+        leaderboardList.appendChild(li);
+      }
     }
 
     /* --- HXH GAME LOGIC (HARD MODE) --- */
@@ -539,7 +674,7 @@
       for(let type in nenScores) { if(nenScores[type] > max) { max = nenScores[type]; resultType = type; } }
       const typeData = {
         "Enhancer": { de: "Verstärker (Enhancer)", color: "#28a745", desc: "Du bist einfach gestrickt, entschlossen und ehrlich. Du lügst selten und handelst nach Gefühl." },
-        "Transmuter": { de: "Wandler (Transmuter)", color: "#6f42c1", desc: "Du bist launisch und sehr clever. Du verheimlichst deine wahre Natur und bist unberechenbar." },
+        "Transmuter": { de: "Wandler (Transmuter)", color: "#6f42c1", desc: "Du bist launisch und ein Schwindler. Du verheimlichst deine wahre Natur und bist unberechenbar." },
         "Emitter": { de: "Emittent (Emitter)", color: "#ffc107", desc: "Du bist ungeduldig und emotional, aber extrem loyal. Ähnlich wie Verstärker, aber volatiler." },
         "Conjurer": { de: "Beschwörer (Conjurer)", color: "#dc3545", desc: "Du bist sensibel und analytisch. Du machst dir oft zu viele Sorgen und bist sehr logisch." },
         "Manipulator": { de: "Manipulator", color: "#17a2b8", desc: "Du willst alles kontrollieren und gehst logisch vor. Du streitest gerne, um deine Meinung durchzusetzen." },
@@ -550,259 +685,89 @@
       titleEl.innerText = res.de; titleEl.style.color = res.color; titleEl.style.textShadow = `0 0 20px ${res.color}`;
       document.getElementById('nen-result-desc').innerText = res.desc;
     }
-  </script>
-  <style>
-  .lightning-spark {
-    position: absolute;
-    width: 2px;
-    height: 10px;
-    background: #00ffff;
-    box-shadow: 0 0 10px #fff, 0 0 20px #00ffff;
-    pointer-events: none;
-    z-index: 9999;
-    border-radius: 2px;
-    opacity: 1;
-    transform-origin: center;
-  }
-  
-  /* Aura um den Cursor */
-  body.godspeed-active {
-    cursor: none; /* Maus verstecken für besseren Effekt */
-  }
-  #killua-aura {
-    position: fixed;
-    width: 20px; height: 20px;
-    background: rgba(100, 200, 255, 0.5);
-    border-radius: 50%;
-    box-shadow: 0 0 15px 5px #00ffff;
-    pointer-events: none;
-    z-index: 9998;
-    display: none;
-    mix-blend-mode: screen;
-  }
-</style>
 
-<div id="killua-aura"></div>
+    /* GODSPEED KEY LISTENER */
+    let godspeedActive = false;
+    const aura = document.getElementById('killua-aura');
+    let lastX = 0, lastY = 0;
 
-<script>
-  let godspeedActive = false;
-  const aura = document.getElementById('killua-aura');
-  let lastX = 0, lastY = 0;
-
-  // Toggle Godspeed mit Taste "K"
-  document.addEventListener('keydown', (e) => {
-    if (e.key.toLowerCase() === 'k') {
-      godspeedActive = !godspeedActive;
-      document.body.classList.toggle('godspeed-active');
-      aura.style.display = godspeedActive ? 'block' : 'none';
-      
-      // Kleines Feedback
-      if(godspeedActive) {
-        // Optional: Sound abspielen oder Bildschirm kurz aufblitzen lassen
-        const flash = document.createElement('div');
-        flash.style.cssText = "position:fixed;top:0;left:0;width:100vw;height:100vh;background:#fff;opacity:0.8;z-index:10000;pointer-events:none;transition:opacity 0.2s;";
-        document.body.appendChild(flash);
-        setTimeout(() => flash.style.opacity = 0, 50);
-        setTimeout(() => flash.remove(), 250);
-      }
-    }
-  });
-
-  document.addEventListener('mousemove', (e) => {
-    if (!godspeedActive) return;
-
-    // Aura folgt der Maus
-    aura.style.left = (e.clientX - 10) + 'px';
-    aura.style.top = (e.clientY - 10) + 'px';
-
-    // Blitze erzeugen basierend auf Bewegung
-    const dist = Math.hypot(e.clientX - lastX, e.clientY - lastY);
-    
-    if (dist > 5) { // Nur wenn man sich bewegt
-      createLightning(e.clientX, e.clientY, lastX, lastY);
-      lastX = e.clientX;
-      lastY = e.clientY;
-    }
-  });
-
-  function createLightning(x, y, lx, ly) {
-    const spark = document.createElement('div');
-    spark.className = 'lightning-spark';
-    
-    // Zufällige Rotation und Länge für den "Zack"-Effekt
-    const angle = Math.atan2(y - ly, x - lx) * (180 / Math.PI);
-    const randomAngle = angle + (Math.random() - 0.5) * 90; // Starke Streuung
-    const size = Math.random() * 20 + 10;
-
-    spark.style.left = x + 'px';
-    spark.style.top = y + 'px';
-    spark.style.height = size + 'px';
-    spark.style.transform = `rotate(${randomAngle}deg)`;
-    
-    document.body.appendChild(spark);
-
-    // Animation: Blitz verschwindet schnell
-    let opacity = 1;
-    const fade = setInterval(() => {
-      opacity -= 0.1;
-      spark.style.opacity = opacity;
-      spark.style.transform += ` scale(${1 + Math.random()})`; // Wilder Effekt
-      
-      if (opacity <= 0) {
-        clearInterval(fade);
-        spark.remove();
-      }
-    }, 20);
-  }
-</script>
-<style>
-  /* Die Spinne */
-  #phantom-spider {
-    position: fixed;
-    font-size: 2.5rem; /* Größe der Spinne */
-    z-index: 9990; /* Über dem Hintergrund, unter Overlays */
-    cursor: crosshair;
-    user-select: none;
-    display: none; /* Erstmal unsichtbar */
-    filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.8));
-    transition: transform 0.1s;
-  }
-  #phantom-spider:active { transform: scale(0.9); }
-
-  /* Die Nummer auf dem Rücken (z.B. 12 oder 4) */
-  .spider-num {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -40%);
-    font-size: 0.7rem;
-    color: #fff;
-    font-weight: bold;
-    font-family: Arial, sans-serif;
-    pointer-events: none;
-    text-shadow: 0 0 2px #000;
-  }
-
-  /* KURAPIKA SCARLET EYES MODE */
-  #kurapika-overlay {
-    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-    /* Roter Vignette-Effekt */
-    background: radial-gradient(circle at center, transparent 20%, rgba(180, 0, 0, 0.3) 70%, rgba(100, 0, 0, 0.9) 100%);
-    pointer-events: none;
-    z-index: 10000;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    display: flex; justify-content: center; align-items: center; gap: 50px;
-    mix-blend-mode: multiply; /* Macht alles dunkler/bedrohlicher */
-  }
-  
-  /* Die glühenden Augen */
-  .scarlet-eye {
-    width: 150px; height: 150px;
-    border-radius: 50%;
-    /* Scharlachrotes Leuchten */
-    background: radial-gradient(circle, #ff0000 0%, #8b0000 40%, transparent 70%);
-    box-shadow: 0 0 50px #ff0000;
-    opacity: 0;
-    transform: scale(0.5);
-    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  }
-  
-  /* Aktivierungsklassen */
-  body.kurapika-mode #kurapika-overlay { opacity: 1; }
-  body.kurapika-mode .scarlet-eye { opacity: 1; transform: scale(1); }
-  
-  /* Roter Schimmer für den ganzen Body */
-  body.kurapika-mode .content-layer { filter: sepia(1) hue-rotate(-50deg) saturate(3); transition: filter 0.2s; }
-</style>
-
-<div id="phantom-spider">🕷️<span class="spider-num">12</span></div>
-
-<div id="kurapika-overlay">
-  <div class="scarlet-eye"></div>
-  <div class="scarlet-eye"></div>
-</div>
-
-<script>
-  const spider = document.getElementById('phantom-spider');
-  let spiderInterval;
-  
-  // Zufällige Spinne spawnen
-  function spawnSpider() {
-    // Zufällige Seite wählen (0: Oben, 1: Rechts, 2: Unten, 3: Links)
-    const side = Math.floor(Math.random() * 4);
-    let startX, startY, endX, endY;
-    
-    const w = window.innerWidth;
-    const h = window.innerHeight;
-    const padding = 100;
-
-    // Koordinaten berechnen (Start -> Ende gegenüberliegend)
-    switch(side) {
-      case 0: startX = Math.random() * w; startY = -padding; endX = Math.random() * w; endY = h + padding; break;
-      case 1: startX = w + padding; startY = Math.random() * h; endX = -padding; endY = Math.random() * h; break;
-      case 2: startX = Math.random() * w; startY = h + padding; endX = Math.random() * w; endY = -padding; break;
-      case 3: startX = -padding; startY = Math.random() * h; endX = w + padding; endY = Math.random() * h; break;
-    }
-
-    // Rotation berechnen damit sie in Laufrichtung schaut
-    const angle = Math.atan2(endY - startY, endX - startX) * (180 / Math.PI) + 90;
-
-    spider.style.display = 'block';
-    spider.style.left = startX + 'px';
-    spider.style.top = startY + 'px';
-    spider.style.transform = `rotate(${angle}deg)`;
-    
-    // Animation starten
-    const duration = 6000 + Math.random() * 4000; // 6-10 Sekunden Laufzeit
-    const startTime = Date.now();
-    
-    function move() {
-      const elapsed = Date.now() - startTime;
-      const progress = elapsed / duration;
-      
-      if (progress >= 1 || spider.style.display === 'none') {
-        if(spider.style.display !== 'none') {
-            spider.style.display = 'none'; // Angekommen
-            scheduleNextSpider();
+    document.addEventListener('keydown', (e) => {
+      if (e.key.toLowerCase() === 'k') {
+        godspeedActive = !godspeedActive;
+        document.body.classList.toggle('godspeed-active');
+        aura.style.display = godspeedActive ? 'block' : 'none';
+        if(godspeedActive) {
+          const flash = document.createElement('div');
+          flash.style.cssText = "position:fixed;top:0;left:0;width:100vw;height:100vh;background:#fff;opacity:0.8;z-index:10000;pointer-events:none;transition:opacity 0.2s;";
+          document.body.appendChild(flash);
+          setTimeout(() => flash.style.opacity = 0, 50);
+          setTimeout(() => flash.remove(), 250);
         }
-        return;
       }
+    });
+
+    document.addEventListener('mousemove', (e) => {
+      if (!godspeedActive) return;
+      aura.style.left = (e.clientX - 10) + 'px';
+      aura.style.top = (e.clientY - 10) + 'px';
+      const dist = Math.hypot(e.clientX - lastX, e.clientY - lastY);
+      if (dist > 5) { createLightning(e.clientX, e.clientY, lastX, lastY); lastX = e.clientX; lastY = e.clientY; }
+    });
+
+    function createLightning(x, y, lx, ly) {
+      const spark = document.createElement('div');
+      spark.className = 'lightning-spark';
+      const angle = Math.atan2(y - ly, x - lx) * (180 / Math.PI);
+      const randomAngle = angle + (Math.random() - 0.5) * 90;
+      const size = Math.random() * 20 + 10;
+      spark.style.left = x + 'px'; spark.style.top = y + 'px'; spark.style.height = size + 'px';
+      spark.style.transform = `rotate(${randomAngle}deg)`;
+      document.body.appendChild(spark);
+      let opacity = 1;
+      const fade = setInterval(() => {
+        opacity -= 0.1; spark.style.opacity = opacity; spark.style.transform += ` scale(${1 + Math.random()})`;
+        if (opacity <= 0) { clearInterval(fade); spark.remove(); }
+      }, 20);
+    }
+
+    /* SPIDER EASTER EGG */
+    const spider = document.getElementById('phantom-spider');
+    function spawnSpider() {
+      const side = Math.floor(Math.random() * 4);
+      let startX, startY, endX, endY;
+      const w = window.innerWidth; const h = window.innerHeight; const padding = 100;
+      switch(side) {
+        case 0: startX = Math.random() * w; startY = -padding; endX = Math.random() * w; endY = h + padding; break;
+        case 1: startX = w + padding; startY = Math.random() * h; endX = -padding; endY = Math.random() * h; break;
+        case 2: startX = Math.random() * w; startY = h + padding; endX = Math.random() * w; endY = -padding; break;
+        case 3: startX = -padding; startY = Math.random() * h; endX = w + padding; endY = Math.random() * h; break;
+      }
+      const angle = Math.atan2(endY - startY, endX - startX) * (180 / Math.PI) + 90;
+      spider.style.display = 'block'; spider.style.left = startX + 'px'; spider.style.top = startY + 'px';
+      spider.style.transform = `rotate(${angle}deg)`;
+      const duration = 6000 + Math.random() * 4000; const startTime = Date.now();
       
-      const currentX = startX + (endX - startX) * progress;
-      const currentY = startY + (endY - startY) * progress;
-      
-      spider.style.left = currentX + 'px';
-      spider.style.top = currentY + 'px';
-      
+      function move() {
+        const elapsed = Date.now() - startTime; const progress = elapsed / duration;
+        if (progress >= 1 || spider.style.display === 'none') {
+          if(spider.style.display !== 'none') { spider.style.display = 'none'; scheduleNextSpider(); }
+          return;
+        }
+        const currentX = startX + (endX - startX) * progress;
+        const currentY = startY + (endY - startY) * progress;
+        spider.style.left = currentX + 'px'; spider.style.top = currentY + 'px';
+        requestAnimationFrame(move);
+      }
       requestAnimationFrame(move);
     }
+    function scheduleNextSpider() { setTimeout(spawnSpider, 10000 + Math.random() * 20000); }
     
-    requestAnimationFrame(move);
-  }
-
-  function scheduleNextSpider() {
-    // Nächste Spinne kommt in 10 bis 30 Sekunden
-    setTimeout(spawnSpider, 10000 + Math.random() * 20000);
-  }
-
-  // Klick-Event (Der Tod der Spinne)
-  spider.addEventListener('click', (e) => {
-    e.stopPropagation(); // Verhindert Klicks auf darunterliegende Elemente
-    spider.style.display = 'none'; // Spinne weg
-    
-    // KURAPIKA MODE AKTIVIEREN
-    document.body.classList.add('kurapika-mode');
-    
-    // Nach 2 Sekunden wieder normal
-    setTimeout(() => {
-      document.body.classList.remove('kurapika-mode');
-      scheduleNextSpider();
-    }, 2000);
-  });
-
-  // Start: Erste Spinne kommt nach 3 Sekunden zum Testen
-  setTimeout(spawnSpider, 3000); 
-
-</script>
+    spider.addEventListener('click', (e) => {
+      e.stopPropagation(); spider.style.display = 'none';
+      document.body.classList.add('kurapika-mode');
+      setTimeout(() => { document.body.classList.remove('kurapika-mode'); scheduleNextSpider(); }, 2000);
+    });
+    setTimeout(spawnSpider, 3000); 
+  </script>
 </body>
 </html>
