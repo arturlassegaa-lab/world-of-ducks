@@ -19,7 +19,8 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      user-select: none; /* Kein Text markieren beim wilden Klicken */
+      user-select: none;
+      -webkit-user-select: none; /* Wichtig für Safari/Mobile */
     }
 
     h1 { font-size: 2.5em; color: #ffcc33; margin-bottom: 5px; text-shadow: 2px 2px 0 #000; }
@@ -40,7 +41,7 @@
       font-size: 2.5rem;
       color: #fff;
       font-weight: bold;
-      font-family: monospace; /* Damit die Zahlen nicht wackeln */
+      font-family: monospace;
       margin-bottom: 10px;
       text-shadow: 0 0 10px #ff0000;
     }
@@ -51,24 +52,25 @@
       color: #d4af37;
     }
 
+    /* Der Enten-Button */
     #duck-btn {
       font-size: 6rem;
-      cursor: pointer;
       transition: transform 0.05s;
       display: inline-block;
-      filter: grayscale(100%); /* Grau wenn inaktiv */
+      filter: grayscale(100%);
       opacity: 0.5;
-      pointer-events: none; /* Nicht klickbar wenn inaktiv */
+      cursor: default;
+      /* Wichtig: Verhindert Zoomen auf Handys beim schnellen Tippen */
+      touch-action: manipulation; 
     }
     
     /* Wenn Spiel läuft */
     #duck-btn.active {
       filter: grayscale(0%);
       opacity: 1;
-      pointer-events: auto;
       cursor: crosshair;
     }
-    #duck-btn.active:active { transform: scale(0.85); }
+    /* Klick-Effekt via JS gesteuert für besseres Feedback */
 
     .start-btn {
       background: #8b0000;
@@ -137,7 +139,7 @@
     <div class="timer" id="timer">5.00</div>
     <div class="score-board">Brot: <span id="score">0</span> 🍞</div>
     
-    <div id="duck-btn" onclick="clickDuck(event)">🦆</div>
+    <div id="duck-btn" onmousedown="clickDuck(event)">🦆</div>
     
     <div class="result-msg" id="rank-display">Bereit?</div>
 
@@ -150,9 +152,9 @@
 
   <script>
     let score = 0;
-    let timeLeft = 5.00;
     let gameInterval;
     let isPlaying = false;
+    let endTime = 0; // Wir speichern jetzt den Ziel-Zeitpunkt
     
     // Elemente holen
     const scoreEl = document.getElementById('score');
@@ -169,39 +171,50 @@
     function startGame() {
       if(isPlaying) return;
       
-      // Reset
+      // Reset UI
       score = 0;
-      timeLeft = 5.00;
       scoreEl.innerText = "0";
       timerEl.innerText = "5.00";
       rankEl.innerText = "GIB ALLES!";
       timerEl.style.color = "#fff";
       
-      // UI Update
       isPlaying = true;
-      duckBtn.classList.add('active'); // Ente wird bunt
-      startBtn.style.display = 'none'; // Button weg
+      duckBtn.classList.add('active'); 
+      startBtn.style.display = 'none'; 
+
+      // WICHTIG: Wir setzen den End-Zeitpunkt auf JETZT + 5000ms
+      endTime = Date.now() + 5000;
 
       // Timer starten
       gameInterval = setInterval(() => {
-        timeLeft -= 0.01;
-        timerEl.innerText = timeLeft.toFixed(2);
+        // Berechne verbleibende Zeit basierend auf Systemuhr
+        let remaining = endTime - Date.now();
 
-        if(timeLeft <= 1.0) timerEl.style.color = "#ff0000"; // Rot bei letzter Sekunde
-
-        if(timeLeft <= 0) {
+        if (remaining <= 0) {
+          remaining = 0;
+          timerEl.innerText = "0.00";
           endGame();
+          return;
         }
-      }, 10);
+
+        // Sekunden und Millisekunden formatieren
+        let seconds = remaining / 1000;
+        timerEl.innerText = seconds.toFixed(2);
+
+        if(seconds <= 1.0) timerEl.style.color = "#ff0000"; 
+      }, 16); // ca. 60 FPS update, aber die Zeitberechnung ist jetzt unabhängig davon
     }
 
     function clickDuck(e) {
       if(!isPlaying) return;
 
+      // Verhindert Text-Markierung beim Doppelklick
+      e.preventDefault(); 
+
       score++;
       scoreEl.innerText = score;
       
-      // Kleiner Wackel-Effekt bei der Ente
+      // Kleiner Wackel-Effekt
       duckBtn.style.transform = `scale(0.9) rotate(${Math.random() * 20 - 10}deg)`;
       setTimeout(() => duckBtn.style.transform = "scale(1) rotate(0deg)", 50);
 
@@ -211,11 +224,10 @@
     function endGame() {
       clearInterval(gameInterval);
       isPlaying = false;
-      duckBtn.classList.remove('active'); // Ente wieder grau
-      startBtn.style.display = 'inline-block'; // Button wieder da
+      duckBtn.classList.remove('active');
+      startBtn.style.display = 'inline-block';
       startBtn.innerText = "Nochmal?";
-      timerEl.innerText = "0.00";
-
+      
       // Highscore Check
       if(score > highscore) {
         highscore = score;
@@ -241,10 +253,12 @@
       const el = document.createElement('div');
       el.innerText = "+1";
       el.className = 'plus-one';
-      // Zufällige leichte Variation in der Position damit es natürlicher aussieht
+      
+      // Zufallsposition um den Klick
       const offsetX = (Math.random() - 0.5) * 40;
       el.style.left = (x - 20 + offsetX) + 'px';
       el.style.top = (y - 40) + 'px';
+      
       document.body.appendChild(el);
       setTimeout(() => el.remove(), 600);
     }
