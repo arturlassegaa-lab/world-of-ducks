@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WorldOfDucks - Profil</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* --- Premium Design-Variablen --- */
+    :root {
+      --bg-gradient-1: #0d1115;
+      --bg-gradient-2: #1a212a;
+      --text-main: #e2e8f0;
+      --text-muted: #94a3b8;
+      --accent: #00e054;
+      --accent-glow: rgba(0, 224, 84, 0.2);
+      --glass-bg: rgba(26, 33, 42, 0.6);
+      --glass-border: rgba(255, 255, 255, 0.05);
+    }
+
+    body {
+      background: radial-gradient(circle at 50% 0%, var(--bg-gradient-2) 0%, var(--bg-gradient-1) 100%);
+      color: var(--text-main);
+      font-family: 'Outfit', sans-serif;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      overflow: hidden; 
+    }
+
+    /* --- Moderner Glassmorphism Header --- */
+    .site-header {
+      position: fixed;
+      top: 0; left: 0; width: 100%;
+      background: var(--glass-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--glass-border);
+      padding: 16px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-sizing: border-box;
+      z-index: 100;
+    }
+
+    .logo {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #fff;
+      text-decoration: none;
+      letter-spacing: -0.5px;
+    }
+    .logo .green {
+      color: var(--accent);
+    }
+
+    .main-nav {
+      display: flex;
+      gap: 30px;
+    }
+    
+    .main-nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      transition: color 0.3s ease;
+    }
+    .main-nav a:hover {
+      color: var(--accent);
+    }
+
+    /* --- Hauptinhalt --- */
+    main {
+      height: 100vh;
+      position: relative;
+    }
+
+    .animation-container {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      /* Der Container lässt Klicks durch, damit der Button klickbar bleibt */
+      pointer-events: none; 
+      z-index: 1;
+    }
+
+    /* --- Die Elemente, die jetzt fliegen (Bilder UND Button) --- */
+    .floating-element {
+      position: absolute;
+      top: 0; 
+      left: 0;
+      transform-origin: center center;
+      /* Wichtig: Erlaubt Klicks auf die animierten Elemente */
+      pointer-events: auto; 
+    }
+
+    /* --- Spezifische Styles für die Bilder --- */
+    .superhero {
+      width: 250px; 
+      height: 250px;
+      object-fit: contain; 
+      opacity: 0.6; 
+      filter: drop-shadow(0 20px 30px rgba(0,0,0,0.5));
+    }
+
+    /* --- Spezifische Styles für den fliegenden Button --- */
+    .profile-link {
+      background: transparent;
+      color: var(--accent);
+      padding: 18px 48px;
+      border-radius: 50px;
+      border: 1px solid var(--accent);
+      font-size: 1.2rem;
+      font-weight: 700;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      box-shadow: 0 0 20px var(--accent-glow), inset 0 0 10px rgba(0, 224, 84, 0.05);
+      backdrop-filter: blur(4px);
+      /* Damit sich der Text im Button nicht umbricht, wenn er fliegt */
+      white-space: nowrap; 
+    }
+    
+    /* Der Hover-Effekt bleibt bestehen, auch wenn man ihn jagen muss */
+    .profile-link:hover {
+      background: var(--accent);
+      color: var(--bg-gradient-1);
+      box-shadow: 0 10px 30px var(--accent-glow), 0 0 40px rgba(0, 224, 84, 0.4);
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <a href="index.html" class="logo">WorldOf<span class="green">Ducks</span></a>
+    <nav class="main-nav">
+      <a href="wip.html">Filme</a>
+      <a href="wip.html">Listen</a>
+      <a href="wip.html">Mitglieder</a>
+      <a href="wip.html">Journal</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="animation-container">
+      <img src="https://static.wikia.nocookie.net/warner-bros-entertainment/images/5/55/Batman_Blue.png/revision/latest/scale-to-width-down/1000?cb=20250720042633" alt="Batman" class="floating-element superhero">
+      <img src="https://static.wikia.nocookie.net/one-minute-meelee-fanon/images/9/91/Gon.png/revision/latest?cb=20211008200841" alt="Spider-Man" class="floating-element superhero">
+      <img src="https://images.universal-music.de/img/assets/600/600084/1/480/lucky-luke.png" alt="Iron Man" class="floating-element superhero">
+      
+      <a href="https://letterboxd.com/gaaa41/" target="_blank" class="floating-element profile-link">
+        Letterboxd
+      </a>
+    </div>
+  </main>
+
+  <script>
+    // Wir sammeln jetzt alles ein, was fliegen soll (Bilder und den Button)
+    const floaters = document.querySelectorAll('.floating-element');
+
+    function flyRandomly(el, currentX, currentY, currentRotation) {
+      // Dynamische Abmessung des aktuellen Elements holen
+      const elWidth = el.offsetWidth;
+      const elHeight = el.offsetHeight;
+
+      // Bereich berechnen, damit das Element (egal wie breit es ist) im Bild bleibt
+      const targetX = Math.random() * (window.innerWidth - elWidth);
+      const targetY = Math.random() * (window.innerHeight - elHeight);
+      
+      const targetRotation = currentRotation + (Math.random() * 360 + 360);
+      const duration = Math.random() * 10000 + 10000;
+
+      const animation = el.animate([
+        { transform: `translate(${currentX}px, ${currentY}px) rotate(${currentRotation}deg)` },
+        { transform: `translate(${targetX}px, ${targetY}px) rotate(${targetRotation}deg)` }
+      ], {
+        duration: duration,
+        easing: 'ease-in-out',
+        fill: 'forwards'
+      });
+
+      animation.onfinish = () => {
+        flyRandomly(el, targetX, targetY, targetRotation);
+      };
+    }
+
+    // Für jedes Element (Bild oder Link) einen eigenen Startpunkt berechnen
+    floaters.forEach(el => {
+      // Warten, bis das Element gerendert ist, um die korrekte Breite zu haben
+      requestAnimationFrame(() => {
+        const startX = Math.random() * (window.innerWidth - el.offsetWidth);
+        const startY = Math.random() * (window.innerHeight - el.offsetHeight);
+        
+        flyRandomly(el, startX, startY, 0);
+      });
+    });
+  </script>
+</body>
+</html>
