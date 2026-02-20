@@ -72,9 +72,15 @@
       max-width:300px;
       color:#ffcc33;
       box-shadow:0 0 20px rgba(0,0,0,0.4);
-      transition:transform 0.2s;
+      transition:transform 0.2s, filter 0.2s, opacity 0.2s;
+      text-decoration: none; /* Verhindert Unterstriche bei Links */
+      display: block; /* Damit die Karte als Block klickbar ist */
     }
-    .blog-card:hover{transform:scale(1.03);}
+    
+    /* Hover-Effekt nur für aktive (nicht-WIP) Karten */
+    .blog-card:not(.wip):hover{
+      transform:scale(1.03);
+    }
 
     .blog-card img{
       width:100%;
@@ -95,6 +101,13 @@
     .blog-card p{
       font-size:0.95em;
       color:#ffe28a;
+    }
+
+    /* --- NEU: Das Styling für die "Work in Progress" Karten --- */
+    .blog-card.wip {
+      opacity: 0.55; /* Macht die Karte halbtransparent */
+      filter: grayscale(80%) brightness(0.6); /* Entzieht Farbe und legt einen dunklen Schatten darüber */
+      cursor: not-allowed; /* Zeigt das "Verboten"-Symbol als Mauszeiger */
     }
 
     .footer{
@@ -132,7 +145,7 @@
       bis zu philosophischen Quackereien und wilden Teich-Partys.</p>
 
       <div class="blog-grid">
-        <a href="wip.html" class="blog-card">
+        <a href="wip.html" class="blog-card wip">
           <img src="imgs/politik-ente.jpeg" alt="Politik-Ente">
           <h3>🐣 Politik und Wirtschaft</h3>
           <p>Neueste Analysen über Enten-Demokratien. (In Arbeit)</p>
@@ -144,28 +157,28 @@
           <p>Philosophische Diskussionen & Manuskripte.</p>
         </a>
 
-        <a href="wip.html" class="blog-card">
+        <a href="wip.html" class="blog-card wip">
           <img src="imgs/ente-ente.jpeg" alt="Entenleben">
           <h3>🦆 Frank Rosin</h3>
           <p>Tipps und Tricks in der Küche (In Arbeit)</p>
         </a>
 
-        <a href="wip.html" class="blog-card">
+        <a href="wip.html" class="blog-card wip">
           <img src="imgs/party-ente.jpeg" alt="Party Ente">
           <h3>🎉 Party</h3>
           <p>Die besten Spots für Teichraves. (In Arbeit)</p>
         </a>
 
-        <a href="wip.html" class="blog-card">
+        <a href="wip.html" class="blog-card wip">
           <img src="imgs/soccer-ente.jpeg" alt="Soccer Ente">
           <h3>⚽ Soccer</h3>
           <p>Duckball News & Ergebnisse. (In Arbeit)</p>
         </a>
 
-        <a href="wip.html" class="blog-card">
+        <a href="blog-fundk.html" class="blog-card">
           <img src="imgs/kunst-ente.jpeg" alt="Wirtschaft Ente">
           <h3>🎬 Film und Kunst</h3>
-          <p>Von Leonardo Da Vinci bis Di Caprio. (In Arbeit)</p>
+          <p>Von Leonardo Da Vinci bis Di Caprio.</p>
         </a>
       </div>
     </main>
