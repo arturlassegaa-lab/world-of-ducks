@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quack & Giraffe</title>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;font-family:system-ui,sans-serif;color:#19372f;background:radial-gradient(circle at 10% 15%,#fff0a3,transparent 40%),radial-gradient(circle at 90% 80%,#ffb6a3,transparent 45%),#aee8d3}main{width:min(680px,100%);background:#fffdf4;border:3px solid #19372f;border-radius:32px;padding:clamp(20px,5vw,44px);box-shadow:9px 10px 0 #19372f;position:relative}header{text-align:center}.animals{font-size:70px;animation:bounce 2s ease-in-out infinite} @keyframes bounce{50%{transform:translateY(-8px) rotate(3deg)}}h1{font-size:clamp(32px,6vw,48px);line-height:1;letter-spacing:-2px;margin:12px 0}h2{font-size:clamp(23px,4vw,30px);line-height:1.2}p{line-height:1.5}.meta{display:flex;justify-content:space-between;font-weight:750;font-size:14px;margin-top:25px}.track{height:12px;background:#e4e7dd;border-radius:20px;overflow:hidden;margin:10px 0 24px}.bar{height:100%;background:#efab35;transition:width .35s}.tag{display:inline-block;background:#d5efcc;padding:6px 12px;border-radius:30px;font-size:13px;font-weight:700}.answers{display:grid;grid-template-columns:1fr 1fr;gap:12px}button,.link{font:inherit;font-weight:700;color:inherit;border:2px solid #19372f;border-radius:15px;background:#fff;padding:16px;text-align:left;cursor:pointer;box-shadow:3px 3px 0 #19372f;transition:transform .15s,background .15s;text-decoration:none}button:hover:not(:disabled),.link:hover{transform:translateY(-3px);background:#fff0a3}button:disabled{cursor:default;opacity:.85}button.correct{background:#a9e6b0}button.wrong{background:#ffb0a5}button:focus-visible,a:focus-visible{outline:3px solid #6555d9;outline-offset:4px}#next,.primary{display:block;width:100%;text-align:center;background:#ffc94c;margin-top:18px}#feedback{min-height:55px;margin-top:16px;font-weight:650}.hidden{display:none!important}#end{text-align:center}#result{font-size:46px;font-weight:900;margin:10px}.confetti{position:fixed;top:-20px;width:10px;height:16px;pointer-events:none;animation:fall 2.5s linear forwards}@keyframes fall{to{transform:translate(var(--drift),110vh) rotate(720deg)}}@media(max-width:480px){.answers{grid-template-columns:1fr}.animals{font-size:54px}}@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.confetti{display:none}}
+</style>
+</head>
+<body>
+<main>
+<header><div class="animals" aria-hidden="true">🦆 🦒</div><h1>Quack & Giraffe</h1><p>Zwischen Teich und Savanne liegt dein Schicksal.</p></header>
+<section id="game">
+<div class="meta"><span id="counter"></span><span id="score"></span></div>
+<div class="track" role="progressbar" aria-label="Beantwortete Fragen" aria-valuemin="0" aria-valuemax="12" aria-valuenow="0"><div class="bar" id="bar"></div></div>
+<span class="tag" id="tag"></span><h2 id="question" tabindex="-1"></h2>
+<div class="answers" id="answers"></div><p id="feedback" aria-live="polite"></p>
+<button id="next" class="hidden">Nächste Frage →</button>
+</section>
+<section id="end" class="hidden"><div style="font-size:64px">🎁</div><h2 tabindex="-1" id="endTitle">Mission erfolgreich!</h2><div id="result"></div><p id="verdict"></p><p>Der geheime Rat der Enten und Giraffen hat eine Überraschung für dich hinterlegt.</p><a class="link primary" href="Ebenezer.pdf" target="_blank" rel="noopener">🎁 Überraschung öffnen</a><button id="restart" style="margin-top:20px">↻ Noch eine Runde</button></section>
+</main>
+<script>
+const questions = [
+['🦆 Warm-up','Wie nennt man eine männliche Ente?',['Erpel','Enterich von Quack','Ganter','Hahn'],0,'Ein Erpel. Adelstitel sind optional.'],
+['🦒 Easy','Was frisst eine Giraffe besonders gerne?',['Pommes','Fische','Blätter und Triebe','Gummibärchen'],2,'Blätter und Triebe – der Salat hängt einfach weiter oben.'],
+['🦆 Knifflig','Wie heißt die Stockente wissenschaftlich?',['Anser anser','Anas platyrhynchos','Cygnus olor','Gallus gallus'],1,'Anas platyrhynchos. Klingt wie ein Zauberspruch.'],
+['🦒 Expertenmodus','Wie viele Halswirbel hat eine Giraffe normalerweise?',['14','21','12','7'],3,'Sieben, genau wie beim Menschen. Nur deutlich länger!'],
+['🦆 Easy','Was hilft Enten beim Schwimmen?',['Schwimmhäute','Ein Außenbordmotor','Saugnäpfe','Schwimmflügel'],0,'Schwimmhäute machen die Füße zu kleinen Paddeln.'],
+['🦒 Knifflig','Wie lang kann die Zunge einer Giraffe ungefähr werden?',['5 cm','15 cm','45–50 cm','150 cm'],2,'Bis etwa einen halben Meter. Beeindruckende Snack-Reichweite!'],
+['🦆 Expertenmodus','Wie lange brütet eine Stockente ihre Eier ungefähr aus?',['7 Tage','28 Tage','60 Tage','90 Tage'],1,'Rund 28 Tage bis zum kleinen Quack-Nachwuchs.'],
+['🦒 Easy','Auf welchem Kontinent leben Giraffen natürlicherweise?',['Europa','Australien','Südamerika','Afrika'],3,'Afrika. In Berlin sind sie eher seltene Mitbewohner.'],
+['🦆 Mythos-Alarm','Hat das Quaken einer Ente ein Echo?',['Ja','Nein, niemals','Nur bei Vollmond','Nur auf Französisch'],0,'Ja! Das angeblich fehlende Echo ist ein Mythos.'],
+['🦒 Knifflig','Wie heißen die hornartigen Fortsätze auf dem Giraffenkopf?',['Geweihe','Antennen','Ossikone','Stoßzähne'],2,'Ossikone – die eingebauten Giraffen-Kopfhörer, rein optisch.'],
+['🦆 Profi','Welches Organ produziert das fettige Sekret, mit dem Enten ihr Gefieder pflegen?',['Schilddrüse','Bürzeldrüse','Leber','Milz'],1,'Die Bürzeldrüse liefert das Pflegesekret. Enten-Spa inklusive.'],
+['🦒 Endgegner','Wie lange dauert die Tragzeit einer Giraffe ungefähr?',['5 Monate','9 Monate','24 Monate','15 Monate'],3,'Ungefähr 15 Monate. Gut Ding will Weile haben.']
+];
+const $=id=>document.getElementById(id);let index=0,score=0,locked=false;
+function progress(n){$('bar').style.width=(n/questions.length*100)+'%';document.querySelector('.track').setAttribute('aria-valuenow',n)}
+function render(){locked=false;const [tag,q,opts]=questions[index];$('counter').textContent=`Frage ${index+1} / ${questions.length}`;$('score').textContent=`⭐ ${score} Punkte`;progress(index);$('tag').textContent=tag;$('question').textContent=q;$('answers').replaceChildren();$('feedback').textContent='';$('next').classList.add('hidden');opts.forEach((opt,i)=>{const b=document.createElement('button');b.textContent=opt;b.onclick=()=>answer(i);$('answers').append(b)});$('question').focus()}
+function answer(i){if(locked)return;locked=true;const correct=questions[index][3];if(i===correct)score++;[...$('answers').children].forEach((b,j)=>{b.disabled=true;if(j===correct)b.classList.add('correct');else if(j===i)b.classList.add('wrong')});$('score').textContent=`⭐ ${score} Punkte`;progress(index+1);$('feedback').textContent=(i===correct?'🎉 Quack-tastisch! ':'🙈 Die Giraffe ist skeptisch. ')+questions[index][4];$('next').textContent=index===questions.length-1?'🎁 Finale – Überraschung enthüllen':'Nächste Frage →';$('next').classList.remove('hidden');$('next').focus()}
+function confetti(){for(let i=0;i<75;i++){const c=document.createElement('div');c.className='confetti';c.style.left=Math.random()*100+'vw';c.style.background=['#ffc94c','#ff7777','#42ba91','#8070da'][i%4];c.style.setProperty('--drift',(Math.random()*240-120)+'px');c.style.animationDelay=Math.random()*.6+'s';document.body.append(c);setTimeout(()=>c.remove(),3300)}}
+function finish(){$('game').classList.add('hidden');$('end').classList.remove('hidden');$('result').textContent=`${score} / ${questions.length}`;$('verdict').textContent=score>=10?'Offiziell zertifizierte Enten-Giraffen-Legende.':score>=6?'Stark! Die Savanne applaudiert.':'Dein Talent liegt offenbar im Quaken. Trotzdem gewonnen!';$('endTitle').focus();confetti();window.open('Ebenezer.pdf','_blank','noopener')}
+$('next').onclick=()=>{if(!locked)return;if(index===questions.length-1)finish();else{index++;render()}};$('restart').onclick=()=>{index=0;score=0;$('end').classList.add('hidden');$('game').classList.remove('hidden');render()};render();
+</script>
+</body>
+</html>
